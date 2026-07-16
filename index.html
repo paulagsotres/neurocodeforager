@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NeuroCodeForager</title>
+<title>neurocodeforager</title>
 <meta name="description" content="A searchable index of open-source tools cited in neuroscience papers. Launching soon.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Text:ital,wght@0,400;0,500;0,600&family=Fraunces:ital,opsz,wght@1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --ink:#1B1D16;
@@ -18,29 +18,63 @@
     --muted:#5b5b4e;
   }
   *{box-sizing:border-box; margin:0; padding:0;}
-  html, body{height:100%;}
+  html, body{min-height:100%;}
   body{
-    font-family:'Inter', sans-serif;
+    font-family:'Stack Sans Text', sans-serif;
     background:var(--paper);
     color:var(--ink);
     display:flex;
+    flex-direction:column;
     align-items:center;
     justify-content:center;
-    padding:24px;
+    padding:80px 24px 40px;
+    position:relative;
   }
-  .card{
-    max-width:480px;
-    text-align:center;
+  .about-link{
+    position:absolute; top:24px; right:28px;
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    color:var(--muted); cursor:pointer;
+    background:none; border:none; padding:0;
   }
+  .about-link:hover{color:var(--teal-deep);}
+
+  .card{max-width:480px; text-align:center;}
   .logo-mark{width:52px; height:52px; margin:0 auto 26px;}
   h1{
-    font-family:'Fraunces', serif; font-weight:500; font-size:28px;
-    letter-spacing:-0.3px; margin-bottom:16px;
+    font-family:'Stack Sans Text', sans-serif; font-weight:600; font-size:29px;
+    letter-spacing:-0.2px; margin-bottom:16px;
   }
-  h1 .accent{font-style:italic; color:var(--teal); font-weight:400;}
-  p.desc{
-    font-size:15.5px; color:var(--muted); line-height:1.6; margin-bottom:30px;
+  h1 .accent{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:400;
+    font-size:1.1em; color:var(--teal-deep);
   }
+  p.desc{font-size:15.5px; color:var(--muted); line-height:1.6; margin-bottom:32px;}
+
+  .signup{
+    display:flex; gap:8px; margin-bottom:14px;
+  }
+  .signup input[type="email"]{
+    flex:1; font-family:'Stack Sans Text', sans-serif; font-size:14.5px;
+    padding:12px 16px; border:1.5px solid var(--paper-dim); border-radius:8px;
+    background:#fff; color:var(--ink); outline:none; min-width:0;
+    transition:border-color .2s;
+  }
+  .signup input[type="email"]:focus{border-color:var(--teal);}
+  .signup button{
+    font-family:'Stack Sans Text', sans-serif; font-weight:600; font-size:14.5px;
+    color:#fff; background:var(--teal-deep); border:none; border-radius:8px;
+    padding:12px 20px; cursor:pointer; white-space:nowrap;
+    transition:background .2s;
+  }
+  .signup button:hover{background:var(--teal);}
+  .signup-note{font-size:12px; color:var(--muted); margin-bottom:30px;}
+  .signup-note.success{color:var(--teal-deep); font-weight:500;}
+  .signup-note.error{color:#a6472a;}
+
+  @media (max-width:420px){
+    .signup{flex-direction:column;}
+  }
+
   .badge{
     display:inline-flex; align-items:center; gap:9px;
     font-family:'IBM Plex Mono', monospace; font-size:12.5px;
@@ -58,9 +92,31 @@
   @media (prefers-reduced-motion: reduce){
     .badge .dot{animation:none;}
   }
+
+  .about-panel{
+    max-width:480px; margin-top:46px; padding-top:36px;
+    border-top:1px solid var(--paper-dim);
+    text-align:left;
+    display:none;
+  }
+  .about-panel.open{display:block;}
+  .about-panel h2{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; text-transform:uppercase;
+    letter-spacing:0.08em; color:var(--muted); margin-bottom:14px;
+  }
+  .about-panel p{font-size:14.5px; color:var(--muted); line-height:1.65; margin-bottom:12px;}
+  .about-panel .sig{
+    margin-top:16px; font-family:'IBM Plex Mono', monospace; font-size:12.5px; color:var(--muted);
+  }
+  .about-panel .sig a{
+    color:var(--teal-deep); text-decoration:none; border-bottom:1px solid var(--teal-soft);
+  }
+  .about-panel .sig a:hover{border-bottom-color:var(--teal-deep);}
 </style>
 </head>
 <body>
+
+<button class="about-link" id="about-toggle">About</button>
 
 <div class="card">
   <svg class="logo-mark" viewBox="0 0 40 40" fill="none">
@@ -79,15 +135,56 @@
 
   <p class="desc">A searchable index of open-source tools cited in neuroscience papers — the paper, the code, and a short tutorial on how to actually run it.</p>
 
+  <form class="signup" id="signup-form" action="https://formspree.io/f/xnjepqvd" method="POST">
+    <input type="email" name="email" placeholder="your@email.com" required>
+    <button type="submit">Notify me</button>
+  </form>
+  <div class="signup-note" id="signup-note">Get an email when it launches — no spam, just the one message.</div>
+
   <span class="badge"><span class="dot"></span>under construction — launching September</span>
+
+  <div class="about-panel" id="about-panel">
+    <h2>About</h2>
+    <p>My name is Paula Gómez-Sotres, I'm a postdoctoral researcher at the NeuCompLab in Hospital del Mar Research Institute in Barcelona studying how brains use social information to guide behavior. Alongside the science, I've always been drawn to the other side of research life: digging into the analysis that turns raw data into an answer, and thinking about how knowledge actually gets transfered, between and outside labs — or fails to.</p>
+    <p>Neurocodeforager comes from that second interest. Too much good methodology gets reinvented, or done inconsistently, simply because the code behind a paper is hard to find or hard to use. This is my attempt to make that easier, one paper at a time.</p>
+    <div class="sig">— Paula · <a href="https://www.linkedin.com/in/paula-g%C3%B3mez-sotres-722242151/" target="_blank" rel="noopener">follow for updates on LinkedIn</a></div>
+  </div>
 </div>
 
-<script data-goatcounter="https://neurocodeforager.goatcounter.com/count"
+<script>
+  document.getElementById('about-toggle').addEventListener('click', () => {
+    document.getElementById('about-panel').classList.toggle('open');
+  });
+
+  const form = document.getElementById('signup-form');
+  const note = document.getElementById('signup-note');
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    note.textContent = 'Sending...';
+    note.className = 'signup-note';
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        note.textContent = "You're on the list — I'll email you when it launches.";
+        note.className = 'signup-note success';
+        form.reset();
+      } else {
+        note.textContent = 'Something went wrong. Please try again.';
+        note.className = 'signup-note error';
+      }
+    } catch (err) {
+      note.textContent = 'Something went wrong. Please try again.';
+      note.className = 'signup-note error';
+    }
+  });
+</script>
+
+<script data-goatcounter="https://neurocodeforager.goatcounter.com"
         async src="//gc.zgo.at/count.js"></script>
-
-</body>
-</html>
-
 
 </body>
 </html>
