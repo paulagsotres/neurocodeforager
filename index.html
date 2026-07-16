@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>neurocodeforager</title>
+<title>NeuroCodeForager</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='2.6' fill='%231B1D16'/%3E%3Cpath d='M20 20 C 14 16, 9 15, 5 10' stroke='%231B1D16' stroke-width='1.4' stroke-linecap='round' fill='none'/%3E%3Cpath d='M20 20 C 12 21, 8 25, 6 31' stroke='%231B1D16' stroke-width='1.4' stroke-linecap='round' fill='none'/%3E%3Cpath d='M20 20 C 26 15, 30 9, 29 4' stroke='%231B1D16' stroke-width='1.4' stroke-linecap='round' fill='none'/%3E%3Cpath d='M20 20 C 27 23, 33 22, 37 17' stroke='%231B8C82' stroke-width='1.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='5' cy='10' r='1.8' fill='%231B1D16'/%3E%3Ccircle cx='6' cy='31' r='1.8' fill='%231B1D16'/%3E%3Ccircle cx='29' cy='4' r='1.8' fill='%231B1D16'/%3E%3Ccircle cx='37' cy='17' r='2.2' fill='%231B8C82'/%3E%3C/svg%3E">
 <meta name="description" content="A searchable index of open-source tools cited in neuroscience papers. Launching soon.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Text:ital,wght@0,400;0,500;0,600&family=Fraunces:ital,opsz,wght@1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -47,6 +48,11 @@
   h1 .accent{
     font-family:'Fraunces', serif; font-style:italic; font-weight:400;
     font-size:1.1em; color:var(--teal-deep);
+  }
+  .brand{font-weight:600;}
+  .brand .brand-accent{
+    font-family:'Fraunces', serif; font-style:italic; font-weight:400;
+    color:var(--teal-deep);
   }
   p.desc{font-size:15.5px; color:var(--muted); line-height:1.6; margin-bottom:32px;}
 
@@ -135,18 +141,25 @@
 
   <p class="desc">A searchable index of open-source tools cited in neuroscience papers — the paper, the code, and a short tutorial on how to actually run it.</p>
 
-  <form class="signup" id="signup-form" action="https://formspree.io/f/xnjepqvd" method="POST">
+  <!--
+    Email signup via Formspree (free, no backend needed).
+    1. Sign up at https://formspree.io and create a new form.
+    2. Replace YOUR_FORM_ID below with the ID they give you
+       (from a URL like https://formspree.io/f/abcdwxyz -> YOUR_FORM_ID = abcdwxyz)
+    3. Submissions land in your Formspree dashboard, exportable as CSV any time.
+  -->
+  <form class="signup" id="signup-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST">
     <input type="email" name="email" placeholder="your@email.com" required>
     <button type="submit">Notify me</button>
   </form>
-  <div class="signup-note" id="signup-note">Get an email when it launches! </div>
+  <div class="signup-note" id="signup-note">Get an email when it launches — no spam, just the one message.</div>
 
   <span class="badge"><span class="dot"></span>under construction — launching September</span>
 
   <div class="about-panel" id="about-panel">
     <h2>About</h2>
-    <p>My name is Paula Gómez-Sotres, I'm a postdoctoral researcher at the NeuCompLab in Hospital del Mar Research Institute in Barcelona studying how brains use social information to guide behavior. Alongside the science, I've always been drawn to the other side of research life: digging into the analysis that turns raw data into an answer, and thinking about how knowledge actually gets transfered, between and outside labs — or fails to.</p>
-    <p>Neurocodeforager comes from that second interest. Too much good methodology gets reinvented, or done inconsistently, simply because the code behind a paper is hard to find or hard to use. This is my attempt to make that easier, one paper at a time.</p>
+    <p>I'm a postdoctoral researcher studying how brains use social information to guide behavior. Alongside the science, I've always been drawn to the other side of research life: writing the code that turns raw data into an answer, and thinking about how knowledge actually moves between labs — or fails to.</p>
+    <p><span class="brand">neurocode<span class="brand-accent">forager</span></span> comes from that second interest. Too much good methodology gets reinvented, or done inconsistently, simply because the code behind a paper is hard to find or hard to use. This is my attempt to make that easier, one paper at a time.</p>
     <div class="sig">— Paula · <a href="https://www.linkedin.com/in/paula-g%C3%B3mez-sotres-722242151/" target="_blank" rel="noopener">follow for updates on LinkedIn</a></div>
   </div>
 </div>
@@ -183,7 +196,14 @@
   });
 </script>
 
-<script data-goatcounter="https://neurocodeforager.goatcounter.com"
+<!--
+  Traffic monitoring via GoatCounter (free, cookie-less analytics).
+  1. Sign up at https://www.goatcounter.com
+  2. Replace TU-CODIGO below with the site code they give you
+     (e.g. if your dashboard URL is https://myproject.goatcounter.com,
+     then TU-CODIGO = myproject)
+-->
+<script data-goatcounter="https://neurocodeforager.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 
 </body>
