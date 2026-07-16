@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuroCodeForager</title>
+<meta name="description" content="A searchable index of open-source tools cited in neuroscience papers. Launching soon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=Inter:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B1D16;
+    --paper:#F6F1E4;
+    --paper-dim:#EBE3CD;
+    --teal:#1B8C82;
+    --teal-deep:#146860;
+    --teal-soft:#DCEEEA;
+    --muted:#5b5b4e;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html, body{height:100%;}
+  body{
+    font-family:'Inter', sans-serif;
+    background:var(--paper);
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:24px;
+  }
+  .card{
+    max-width:480px;
+    text-align:center;
+  }
+  .logo-mark{width:52px; height:52px; margin:0 auto 26px;}
+  h1{
+    font-family:'Fraunces', serif; font-weight:500; font-size:28px;
+    letter-spacing:-0.3px; margin-bottom:16px;
+  }
+  h1 .accent{font-style:italic; color:var(--teal); font-weight:400;}
+  p.desc{
+    font-size:15.5px; color:var(--muted); line-height:1.6; margin-bottom:30px;
+  }
+  .badge{
+    display:inline-flex; align-items:center; gap:9px;
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px;
+    color:var(--teal-deep); background:var(--teal-soft);
+    padding:9px 16px; border-radius:999px;
+  }
+  .badge .dot{
+    width:7px; height:7px; border-radius:50%; background:var(--teal);
+    animation:pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%, 100%{opacity:1; transform:scale(1);}
+    50%{opacity:0.4; transform:scale(0.8);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .badge .dot{animation:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <svg class="logo-mark" viewBox="0 0 40 40" fill="none">
+    <circle cx="20" cy="20" r="2.6" fill="#1B1D16"/>
+    <path d="M20 20 C 14 16, 9 15, 5 10" stroke="#1B1D16" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    <path d="M20 20 C 12 21, 8 25, 6 31" stroke="#1B1D16" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    <path d="M20 20 C 26 15, 30 9, 29 4" stroke="#1B1D16" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+    <path d="M20 20 C 27 23, 33 22, 37 17" stroke="#1B8C82" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+    <circle cx="5" cy="10" r="1.8" fill="#1B1D16"/>
+    <circle cx="6" cy="31" r="1.8" fill="#1B1D16"/>
+    <circle cx="29" cy="4" r="1.8" fill="#1B1D16"/>
+    <circle cx="37" cy="17" r="2.2" fill="#1B8C82"/>
+  </svg>
+
+  <h1>neurocode<span class="accent">forager</span></h1>
+
+  <p class="desc">A searchable index of open-source tools cited in neuroscience papers — the paper, the code, and a short tutorial on how to actually run it.</p>
+
+  <span class="badge"><span class="dot"></span>under construction — launching September</span>
+</div>
+
+</body>
+</html>
