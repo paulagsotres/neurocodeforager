@@ -1,0 +1,43 @@
+title: Suite2p: beyond 10,000 neurons with standard two-photon microscopy
+authors: Pachitariu M., Stringer C., Dipoppa M., Schröder S., Rossi L.F., Dalgleish H., Carandini M., Harris K.D.
+journal: bioRxiv (preprint)
+year: 2017
+date: 2017-07-20
+doi: 10.1101/061507
+paper_url: https://www.biorxiv.org/content/10.1101/061507
+github_url: https://github.com/MouseLand/suite2p
+website_url: https://suite2p.readthedocs.io
+access_status: open_access
+category: image-analysis
+tags: two-photon calcium imaging, motion correction, registration, ROI detection, cell detection, spike deconvolution, GUI, neuropil correction, GCaMP, in vivo imaging, Janelia, HHMI
+data_acquisition: Two-photon calcium imaging movies (raw TIFFs or similar), typically from GCaMP-expressing neurons imaged through a cranial window or GRIN lens
+language: Python
+animal: Not applicable — general-purpose calcium imaging pipeline, demonstrated on mouse cortex recordings
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-25
+
+summary:
+Suite2p is a complete, fast pipeline for two-photon calcium imaging data — registering raw movies to correct for motion, automatically detecting active cells, extracting their fluorescence and neuropil-corrected traces, and deconvolving spike times — built to run faster than real time and recover roughly twice as many cells as prior state-of-the-art methods, with a full GUI for inspecting and curating results.
+
+abstract_long:
+Suite2p addresses the four core steps of two-photon calcium imaging analysis in one pipeline: registration (correcting for brain motion across frames, including rigid and non-rigid components), cell detection (finding active ROIs directly from the registered movie's statistics rather than requiring a separate structural channel), signal extraction (fluorescence traces per cell, with neuropil contamination subtracted), and spike deconvolution (inferring approximate spike times from the calcium traces). The pipeline runs on standard workstations, processes data faster than real time, and — because it detects cells based on activity rather than static anatomy — recovers substantially more active cells (roughly 2x) than prior approaches, enabling routine detection of well over 10,000 neurons per recording. A companion GUI lets users visually inspect detected ROIs, manually curate the automatic cell/non-cell classification, and explore extracted traces before further analysis.
+
+extra_links:
+suite2p-gui viewer documentation | https://suite2p.readthedocs.io/en/latest/gui.html
+
+sample_data_text: Suite2p can be tried without a local install via a Google Colab notebook (linked from the repo), which includes example two-photon movies to run the full pipeline.
+sample_data_url: https://suite2p.readthedocs.io/en/latest/quickstart.html
+
+tutorial_intro:
+Suite2p expects raw two-photon movie data (TIFF stacks, or several other supported microscope-specific formats) as input — it handles everything from motion correction through to deconvolved spike estimates in one run, either via the GUI or a scriptable Python call.
+
+tutorial_steps:
+Install with <code>pip install suite2p</code> (add <code>[gui]</code> for the graphical interface: <code>pip install suite2p[gui]</code>), inside a fresh conda environment (Python 3.8+ recommended).
+Launch the GUI with <code>python -m suite2p</code>, then use File → Run suite2p to configure a run: point it at your data directory, choose a save path, and set the key acquisition parameters (frame rate, number of imaging planes/channels, expected cell diameter) — or configure and run the same pipeline directly from Python/Jupyter via <code>from suite2p.run_s2p import run_s2p; ops = run_s2p(ops, db)</code>, passing your own <code>ops</code> (options) and <code>db</code> (data-location) dictionaries.
+The pipeline runs registration (rigid, then optionally non-rigid motion correction), automatic cell detection, and signal extraction with neuropil subtraction, followed by spike deconvolution — all in one pass, with no manual intervention required between steps.
+Open the results in the GUI to inspect detected ROIs overlaid on the registered movie, review each ROI's extracted trace, and manually correct the automatic cell/not-cell classification (the classifier's output is stored in <code>iscell.npy</code>, which you can overwrite based on your manual curation).
+If registration or cell detection quality looks poor on your first pass, revisit the key parameters (expected cell diameter is the most common one to adjust) and rerun — the GUI displays diagnostic views of the registered movie and mean/max-projection images to help you spot problems (residual motion, wrong diameter estimate) quickly.
+
+tutorial_output:
+A results folder containing <code>F.npy</code> (per-ROI fluorescence traces), <code>Fneu.npy</code> (matched neuropil traces), <code>spks.npy</code> (deconvolved spike estimates), <code>stat.npy</code> (per-ROI statistics — position, shape, etc.), <code>iscell.npy</code> (the cell/not-cell classification, editable in the GUI), and <code>ops.npy</code> (the run's configuration and registration diagnostics) — everything needed for downstream analysis of neural activity or further curation.

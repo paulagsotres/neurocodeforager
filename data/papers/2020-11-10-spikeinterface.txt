@@ -1,0 +1,44 @@
+title: SpikeInterface, a unified framework for spike sorting
+authors: Buccino A.P., Hurwitz C.L., Garcia S., Magland J., Siegle J.H., Hurwitz R., Hennig M.H.
+journal: eLife
+year: 2020
+date: 2020-11-10
+doi: 10.7554/eLife.61834
+paper_url: https://elifesciences.org/articles/61834
+github_url: https://github.com/SpikeInterface/spikeinterface
+website_url: https://spikeinterface.readthedocs.io
+access_status: open_access
+category: electrophysiology
+tags: spike sorting, unified framework, Kilosort, MountainSort, IronClust, SpyKING CIRCUS, Phy, preprocessing, postprocessing, quality metrics, benchmarking, curation, extracellular electrophysiology, Neuropixels, DANDI, NWB
+data_acquisition: Extracellular electrophysiology recordings in any common file format (Neuropixels, Open Ephys, Intan, Blackrock, NWB, and many others)
+language: Python
+animal: Not applicable — a format- and algorithm-agnostic framework, not tied to a species or acquisition system
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-25
+
+summary:
+SpikeInterface is a Python framework that wraps essentially every popular spike-sorting algorithm (including Kilosort, MountainSort, IronClust, SpyKING CIRCUS, and others) behind one consistent API, so you can read/write dozens of extracellular file formats, preprocess and postprocess recordings, run and directly compare multiple sorters on the same data, compute standard quality metrics, and export curated results to Phy — all without learning each tool's own idiosyncratic interface.
+
+abstract_long:
+Before SpikeInterface, comparing spike-sorting algorithms meant learning a different, often incompatible tool for each one — complicating reproducible benchmarking and slowing adoption of newer methods. SpikeInterface unifies this landscape: its extractors module reads and writes dozens of recording and sorting file formats (so a recording loaded once works with any wrapped sorter); its preprocessing module handles standard steps like filtering, common referencing, and whitening; its sorters module wraps essentially all popular spike sorters (many packaged for one-line execution via Docker/Singularity, avoiding manual installation of each one's dependencies); its postprocessing and quality-metrics modules compute standard curation statistics (ISI violations, waveform metrics, and more) usable for automatic or manual curation; and its comparison module benchmarks sorter outputs against each other or against ground truth. The authors demonstrate the framework by reproducibly running, comparing, and benchmarking multiple spike sorters on real and simulated datasets with only a few lines of code, substantially reducing the manual-curation burden compared to running each sorter's own native pipeline.
+
+extra_links:
+spikeinterface-gui (Qt-based interactive viewer for sorting results) | https://github.com/SpikeInterface/spikeinterface-gui
+
+sample_data_text: The paper's benchmark datasets are on the DANDI archive.
+sample_data_url: https://gui.dandiarchive.org/#/dandiset/000034
+
+tutorial_intro:
+SpikeInterface expects an extracellular recording in essentially any common electrophysiology format — its extractors handle format conversion, so you generally don't need to convert your data yourself before starting.
+
+tutorial_steps:
+Install with <code>pip install spikeinterface[full]</code> (the <code>[full]</code> extra pulls in all the optional sub-module dependencies; <code>[full,widgets]</code> additionally adds interactive visualization widgets).
+Load your recording with the appropriate extractor for your format, for example <code>recording = se.read_openephys(folder_path)</code> or the equivalent reader for Neuropixels/SpikeGLX, Blackrock, NWB, etc. — the resulting <code>recording</code> object works identically regardless of the original file format.
+Apply preprocessing as needed (for example, bandpass filtering and common median referencing) by chaining preprocessing functions on the recording object — each step returns a new lazy recording object, so nothing is computed until you actually run a sorter or write to disk.
+Run one or more sorters on the same preprocessed recording via a single consistent call, for example <code>sorting_KS = ss.run_sorter('kilosort4', recording)</code> and <code>sorting_MS = ss.run_sorter('mountainsort5', recording)</code> — many sorters run inside a prebuilt Docker/Singularity container automatically, so you don't need to separately install each one's own dependencies.
+Compute quality metrics and postprocessing outputs (waveforms, templates, ISI violation rates, and more) on each sorting result, then either curate manually (label units as good/noise/etc.) or apply an automatic curation rule based on the quality metrics, before exporting the curated result to Phy for final visual inspection.
+If you're comparing multiple sorters or validating against ground truth, use the comparison module to directly benchmark one sorting output against another (or against known ground-truth spike times), producing standard agreement/precision/recall statistics.
+
+tutorial_output:
+A curated <code>Sorting</code> object (spike times and cluster labels) per sorter run, exportable to Phy's native format for visualization, plus computed quality metrics and postprocessing outputs (waveforms, templates, correlograms) per unit — and, if multiple sorters were compared, agreement statistics quantifying how consistently different algorithms identified the same units.

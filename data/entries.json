@@ -1,5 +1,158 @@
 [
   {
+    "id": "2017-07-20-suite2p",
+    "title": "Suite2p: beyond 10,000 neurons with standard two-photon microscopy",
+    "authors": "Pachitariu M., Stringer C., Dipoppa M., Schröder S., Rossi L.F., Dalgleish H., Carandini M., Harris K.D.",
+    "journal": "bioRxiv (preprint)",
+    "year": 2017,
+    "date": "2017-07-20",
+    "doi": "10.1101/061507",
+    "paper_url": "https://www.biorxiv.org/content/10.1101/061507",
+    "website_url": "https://suite2p.readthedocs.io",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "image-analysis",
+    "categories": [
+      "image-analysis"
+    ],
+    "tags": [
+      "two-photon calcium imaging",
+      "motion correction",
+      "registration",
+      "ROI detection",
+      "cell detection",
+      "spike deconvolution",
+      "GUI",
+      "neuropil correction",
+      "GCaMP",
+      "in vivo imaging",
+      "Janelia",
+      "HHMI"
+    ],
+    "summary": "Suite2p is a complete, fast pipeline for two-photon calcium imaging data — registering raw movies to correct for motion, automatically detecting active cells, extracting their fluorescence and neuropil-corrected traces, and deconvolving spike times — built to run faster than real time and recover roughly twice as many cells as prior state-of-the-art methods, with a full GUI for inspecting and curating results.",
+    "abstract_long": "Suite2p addresses the four core steps of two-photon calcium imaging analysis in one pipeline: registration (correcting for brain motion across frames, including rigid and non-rigid components), cell detection (finding active ROIs directly from the registered movie's statistics rather than requiring a separate structural channel), signal extraction (fluorescence traces per cell, with neuropil contamination subtracted), and spike deconvolution (inferring approximate spike times from the calcium traces). The pipeline runs on standard workstations, processes data faster than real time, and — because it detects cells based on activity rather than static anatomy — recovers substantially more active cells (roughly 2x) than prior approaches, enabling routine detection of well over 10,000 neurons per recording. A companion GUI lets users visually inspect detected ROIs, manually curate the automatic cell/non-cell classification, and explore extracted traces before further analysis.",
+    "data_acquisition": "Two-photon calcium imaging movies (raw TIFFs or similar), typically from GCaMP-expressing neurons imaged through a cranial window or GRIN lens",
+    "language": "Python",
+    "animal": "Not applicable — general-purpose calcium imaging pipeline, demonstrated on mouse cortex recordings",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "Suite2p expects raw two-photon movie data (TIFF stacks, or several other supported microscope-specific formats) as input — it handles everything from motion correction through to deconvolved spike estimates in one run, either via the GUI or a scriptable Python call.",
+    "tutorial_steps": [
+      "Install with <code>pip install suite2p</code> (add <code>[gui]</code> for the graphical interface: <code>pip install suite2p[gui]</code>), inside a fresh conda environment (Python 3.8+ recommended).",
+      "Launch the GUI with <code>python -m suite2p</code>, then use File → Run suite2p to configure a run: point it at your data directory, choose a save path, and set the key acquisition parameters (frame rate, number of imaging planes/channels, expected cell diameter) — or configure and run the same pipeline directly from Python/Jupyter via <code>from suite2p.run_s2p import run_s2p; ops = run_s2p(ops, db)</code>, passing your own <code>ops</code> (options) and <code>db</code> (data-location) dictionaries.",
+      "The pipeline runs registration (rigid, then optionally non-rigid motion correction), automatic cell detection, and signal extraction with neuropil subtraction, followed by spike deconvolution — all in one pass, with no manual intervention required between steps.",
+      "Open the results in the GUI to inspect detected ROIs overlaid on the registered movie, review each ROI's extracted trace, and manually correct the automatic cell/not-cell classification (the classifier's output is stored in <code>iscell.npy</code>, which you can overwrite based on your manual curation).",
+      "If registration or cell detection quality looks poor on your first pass, revisit the key parameters (expected cell diameter is the most common one to adjust) and rerun — the GUI displays diagnostic views of the registered movie and mean/max-projection images to help you spot problems (residual motion, wrong diameter estimate) quickly."
+    ],
+    "tutorial_output": "A results folder containing <code>F.npy</code> (per-ROI fluorescence traces), <code>Fneu.npy</code> (matched neuropil traces), <code>spks.npy</code> (deconvolved spike estimates), <code>stat.npy</code> (per-ROI statistics — position, shape, etc.), <code>iscell.npy</code> (the cell/not-cell classification, editable in the GUI), and <code>ops.npy</code> (the run's configuration and registration diagnostics) — everything needed for downstream analysis of neural activity or further curation.",
+    "sample_data": {
+      "text": "Suite2p can be tried without a local install via a Google Colab notebook (linked from the repo), which includes example two-photon movies to run the full pipeline.",
+      "url": "https://suite2p.readthedocs.io/en/latest/quickstart.html"
+    },
+    "code": {
+      "repo_url": "https://github.com/MouseLand/suite2p",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "suite2p-gui viewer documentation",
+        "url": "https://suite2p.readthedocs.io/en/latest/gui.html"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2018-08-20-deeplabcut",
+    "title": "DeepLabCut: markerless pose estimation of user-defined body parts with deep learning",
+    "authors": "Mathis A., Mamidanna P., Cury K.M., Abe T., Murthy V.N., Mathis M.W., Bethge M.",
+    "journal": "Nature Neuroscience",
+    "year": 2018,
+    "date": "2018-08-20",
+    "doi": "10.1038/s41593-018-0209-y",
+    "paper_url": "https://www.nature.com/articles/s41593-018-0209-y",
+    "website_url": "https://www.deeplabcut.org",
+    "access_status": "paywall_restricted",
+    "citation_count": null,
+    "category": "automated-behavioral-tracking",
+    "categories": [
+      "automated-behavioral-tracking"
+    ],
+    "tags": [
+      "markerless pose estimation",
+      "transfer learning",
+      "DeepLabCut",
+      "DLC",
+      "SuperAnimal",
+      "multi-animal tracking",
+      "GUI",
+      "Google Colab",
+      "Docker",
+      "mouse",
+      "Drosophila",
+      "reaching",
+      "egg-laying",
+      "keypoint tracking"
+    ],
+    "summary": "DeepLabCut is a markerless pose-estimation toolbox that uses transfer learning from networks pretrained on human pose estimation to track user-defined body parts in animals from ordinary video, requiring only a small number of manually labeled frames — since its original 2018 release it has grown into a full ecosystem covering multi-animal tracking, 3D pose, and (via SuperAnimal) pretrained models that work across species with no task-specific training at all.",
+    "abstract_long": "DeepLabCut adapts a deep neural network architecture originally developed for human pose estimation (based on DeeperCut) to animal tracking via transfer learning: starting from weights pretrained on a large human-pose dataset, the network can be fine-tuned to detect user-defined animal body parts from a relatively small number of hand-labeled training frames (the original paper demonstrated accurate tracking from as few as ~200 labeled frames). The authors validate this on three very different behaviors — trail tracking and reaching in mice, and egg-laying behavior in Drosophila — showing human-level labeling accuracy without any markers or specialized hardware. Since publication, the DeepLabCut ecosystem has expanded considerably: DeepLabCut 2.x added a full Python package and GUI, later work added multi-animal pose estimation and identity tracking, 3D pose reconstruction from multiple cameras, and most recently the SuperAnimal models (Ye et al., 2024), which are pretrained across many species and often work directly on new data with zero additional training.",
+    "data_acquisition": "Standard video of an animal (or, in later multi-animal versions, several animals) performing a behavior — no markers or specialized hardware required",
+    "language": "Python (TensorFlow/PyTorch backends across versions)",
+    "animal": "Demonstrated in mice, Drosophila, and (in later work) many other species; general-purpose via transfer learning",
+    "gpu_required": "",
+    "difficulty": "beginner",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "DeepLabCut works on any video of an animal performing a behavior. For a completely new setup, expect to label a modest number of frames yourself (the original paper used as few as ~200); if your species/setup resembles one of the SuperAnimal pretrained model's training data, you may be able to skip labeling and training entirely.",
+    "tutorial_steps": [
+      "Install via conda/pip following the instructions in the repo (a GPU is strongly recommended for training, though CPU-only inference is workable for small jobs), or use the provided Docker image or Google Colab notebook to avoid a local install altogether.",
+      "Create a new project (<code>deeplabcut.create_new_project(...)</code> in Python, or via the GUI), which sets up a standardized folder structure and lets you define the skeleton — the set of body parts you want to track — for your specific animal/behavior.",
+      "Extract and manually label training frames using the built-in labeling GUI: DeepLabCut selects a representative, diverse set of frames from your videos for you to annotate, minimizing labeling effort while maximizing training coverage.",
+      "Train the network (<code>deeplabcut.train_network(...)</code>) — thanks to transfer learning from a pretrained backbone, this converges with far fewer labeled frames and less training time than training a pose-estimation network from scratch.",
+      "Evaluate the trained model on held-out labeled frames, then run inference on new, unlabeled videos (<code>deeplabcut.analyze_videos(...)</code>) to extract body-part coordinates and confidence scores frame by frame; use the built-in plotting/labeling-video tools to visually confirm tracking quality before trusting the output for downstream analysis.",
+      "If you're tracking multiple interacting animals, use the multi-animal project workflow instead (introduced in DeepLabCut 2.2+, described in Lauer et al. 2022), which additionally handles identity assignment across frames. If your species/setup is well covered by an existing SuperAnimal model, try that first via <code>deeplabcut.video_inference_superanimal(...)</code> before investing in your own labeling and training."
+    ],
+    "tutorial_output": "Per-frame, per-body-part (x, y) coordinates with a confidence/likelihood score, saved per video (typically as HDF5/CSV), plus optional labeled videos and trajectory plots for visual quality control — for multi-animal projects, coordinates additionally carry a consistent identity/track assignment across frames.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/DeepLabCut/DeepLabCut",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Nath, Mathis et al. 2019 (Nature Protocols step-by-step user guide for DeepLabCut 2.x)",
+        "url": "https://doi.org/10.1038/s41596-019-0176-0"
+      },
+      {
+        "label": "Lauer et al. 2022 (multi-animal pose estimation and tracking with DeepLabCut)",
+        "url": "https://doi.org/10.1038/s41592-022-01443-0"
+      },
+      {
+        "label": "SuperAnimal pretrained models (Ye et al., Nat Commun 2024 — zero-shot pose estimation across species)",
+        "url": "https://doi.org/10.1038/s41467-024-48792-2"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2018-09-26-stardist",
     "title": "Cell Detection with Star-Convex Polygons",
     "authors": "Schmidt U., Weigert M., Broaddus C., Myers G.",
@@ -87,6 +240,85 @@
     ],
     "related_ids": [],
     "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2018-12-10-fmriprep",
+    "title": "fMRIPrep: a robust preprocessing pipeline for functional MRI",
+    "authors": "Esteban O., Markiewicz C.J., Blair R.W., Moodie C.A., Isik A.I., Erramuzpe A., Kent J.D., Goncalves M., DuPre E., et al.",
+    "journal": "Nature Methods",
+    "year": 2019,
+    "date": "2018-12-10",
+    "doi": "10.1038/s41592-018-0235-4",
+    "paper_url": "https://www.nature.com/articles/s41592-018-0235-4",
+    "website_url": "https://fmriprep.org",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "brain-imaging",
+    "categories": [
+      "brain-imaging"
+    ],
+    "tags": [
+      "fMRI",
+      "functional MRI",
+      "preprocessing",
+      "BIDS",
+      "NiPreps",
+      "FreeSurfer",
+      "FSL",
+      "ANTs",
+      "AFNI",
+      "motion correction",
+      "normalization",
+      "quality reports",
+      "reproducibility",
+      "neuroimaging",
+      "MRIQC",
+      "confound regression"
+    ],
+    "summary": "fMRIPrep is an analysis-agnostic preprocessing pipeline for functional MRI that automatically adapts a best-practice workflow (combining FSL, ANTs, FreeSurfer, and AFNI) to the specifics of virtually any BIDS-organized dataset, producing standardized, quality-checked outputs without requiring manual parameter tuning for each new dataset.",
+    "abstract_long": "Researchers have traditionally built ad hoc fMRI preprocessing workflows for each new dataset, stitching together tools from a large inventory with study-specific parameter choices — a process that's hard to reproduce and easy to get subtly wrong. fMRIPrep instead reads a standard BIDS-organized dataset and automatically configures a \"best-in-breed\" preprocessing workflow (motion correction, susceptibility distortion correction, coregistration, spatial normalization to standard templates, confound estimation) using established neuroimaging tools under the hood, adapting to whatever acquisition parameters and available data (for example, fieldmaps or their absence) each dataset has. A key design feature is automatically generated visual quality-control reports at defined checkpoints throughout the pipeline, letting researchers quickly spot subject-level problems without manually inspecting every intermediate processing step. The authors show that fMRIPrep introduces less uncontrolled spatial smoothness than commonly used alternative preprocessing pipelines, while requiring far less manual intervention.",
+    "data_acquisition": "Functional and structural MRI data organized in the BIDS (Brain Imaging Data Structure) standard",
+    "language": "Python (Nipype workflows, wrapping FSL, ANTs, FreeSurfer, AFNI)",
+    "animal": "Not applicable — human neuroimaging preprocessing pipeline",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "fMRIPrep requires your data organized as a valid BIDS dataset. It's distributed as a Docker/Singularity container (recommended, since it bundles all underlying dependencies like FreeSurfer, FSL, ANTs, and AFNI at pinned versions) rather than a plain pip-installable package.",
+    "tutorial_steps": [
+      "Organize your raw MRI data into the BIDS format (a directory structure and naming convention for neuroimaging datasets) — this is a prerequisite for fMRIPrep, not something it does for you; tools like the BIDS validator can check your dataset before running.",
+      "Obtain a FreeSurfer license file (free for academic use, required since fMRIPrep uses FreeSurfer for surface reconstruction) and place it where the container can find it.",
+      "Run fMRIPrep via its Docker image: <code>docker run -ti --rm -v /path/to/bids:/data:ro -v /path/to/output:/out -v /path/to/license.txt:/opt/freesurfer/license.txt nipreps/fmriprep:latest /data /out participant</code> — Singularity is also supported and commonly used on shared HPC clusters where Docker isn't available.",
+      "Review the automatically generated HTML quality-control reports (one per subject) before proceeding to your own analysis — these visualize each key processing step (registration accuracy, brain extraction, normalization) so you can quickly flag subjects with problems rather than discovering them downstream.",
+      "Use the preprocessed, standardized outputs (and the accompanying confound time series — motion parameters, physiological noise estimates, etc.) as the input to your own statistical analysis pipeline of choice; fMRIPrep deliberately stops at \"minimal preprocessing\" and does not perform smoothing or statistical modeling itself."
+    ],
+    "tutorial_output": "BIDS-Derivatives-formatted preprocessed functional and structural images (in both subject-native and standard template spaces), a confounds table per run (motion parameters, physiological regressors, and other nuisance variables for use in your own denoising/statistical model), and per-subject HTML visual quality-control reports summarizing every major processing step.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/nipreps/fmriprep",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "NiPreps ecosystem (related preprocessing tools: MRIQC, sMRIPrep, dMRIPrep)",
+        "url": "https://www.nipreps.org"
+      },
+      {
+        "label": "BIDS specification (the input data standard fMRIPrep requires)",
+        "url": "https://bids.neuroimaging.io"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
     "added_by": "manual",
     "verified": true
   },
@@ -247,6 +479,159 @@
     "verified": true
   },
   {
+    "id": "2020-11-10-spikeinterface",
+    "title": "SpikeInterface, a unified framework for spike sorting",
+    "authors": "Buccino A.P., Hurwitz C.L., Garcia S., Magland J., Siegle J.H., Hurwitz R., Hennig M.H.",
+    "journal": "eLife",
+    "year": 2020,
+    "date": "2020-11-10",
+    "doi": "10.7554/eLife.61834",
+    "paper_url": "https://elifesciences.org/articles/61834",
+    "website_url": "https://spikeinterface.readthedocs.io",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "electrophysiology",
+    "categories": [
+      "electrophysiology"
+    ],
+    "tags": [
+      "spike sorting",
+      "unified framework",
+      "Kilosort",
+      "MountainSort",
+      "IronClust",
+      "SpyKING CIRCUS",
+      "Phy",
+      "preprocessing",
+      "postprocessing",
+      "quality metrics",
+      "benchmarking",
+      "curation",
+      "extracellular electrophysiology",
+      "Neuropixels",
+      "DANDI",
+      "NWB"
+    ],
+    "summary": "SpikeInterface is a Python framework that wraps essentially every popular spike-sorting algorithm (including Kilosort, MountainSort, IronClust, SpyKING CIRCUS, and others) behind one consistent API, so you can read/write dozens of extracellular file formats, preprocess and postprocess recordings, run and directly compare multiple sorters on the same data, compute standard quality metrics, and export curated results to Phy — all without learning each tool's own idiosyncratic interface.",
+    "abstract_long": "Before SpikeInterface, comparing spike-sorting algorithms meant learning a different, often incompatible tool for each one — complicating reproducible benchmarking and slowing adoption of newer methods. SpikeInterface unifies this landscape: its extractors module reads and writes dozens of recording and sorting file formats (so a recording loaded once works with any wrapped sorter); its preprocessing module handles standard steps like filtering, common referencing, and whitening; its sorters module wraps essentially all popular spike sorters (many packaged for one-line execution via Docker/Singularity, avoiding manual installation of each one's dependencies); its postprocessing and quality-metrics modules compute standard curation statistics (ISI violations, waveform metrics, and more) usable for automatic or manual curation; and its comparison module benchmarks sorter outputs against each other or against ground truth. The authors demonstrate the framework by reproducibly running, comparing, and benchmarking multiple spike sorters on real and simulated datasets with only a few lines of code, substantially reducing the manual-curation burden compared to running each sorter's own native pipeline.",
+    "data_acquisition": "Extracellular electrophysiology recordings in any common file format (Neuropixels, Open Ephys, Intan, Blackrock, NWB, and many others)",
+    "language": "Python",
+    "animal": "Not applicable — a format- and algorithm-agnostic framework, not tied to a species or acquisition system",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "SpikeInterface expects an extracellular recording in essentially any common electrophysiology format — its extractors handle format conversion, so you generally don't need to convert your data yourself before starting.",
+    "tutorial_steps": [
+      "Install with <code>pip install spikeinterface[full]</code> (the <code>[full]</code> extra pulls in all the optional sub-module dependencies; <code>[full,widgets]</code> additionally adds interactive visualization widgets).",
+      "Load your recording with the appropriate extractor for your format, for example <code>recording = se.read_openephys(folder_path)</code> or the equivalent reader for Neuropixels/SpikeGLX, Blackrock, NWB, etc. — the resulting <code>recording</code> object works identically regardless of the original file format.",
+      "Apply preprocessing as needed (for example, bandpass filtering and common median referencing) by chaining preprocessing functions on the recording object — each step returns a new lazy recording object, so nothing is computed until you actually run a sorter or write to disk.",
+      "Run one or more sorters on the same preprocessed recording via a single consistent call, for example <code>sorting_KS = ss.run_sorter('kilosort4', recording)</code> and <code>sorting_MS = ss.run_sorter('mountainsort5', recording)</code> — many sorters run inside a prebuilt Docker/Singularity container automatically, so you don't need to separately install each one's own dependencies.",
+      "Compute quality metrics and postprocessing outputs (waveforms, templates, ISI violation rates, and more) on each sorting result, then either curate manually (label units as good/noise/etc.) or apply an automatic curation rule based on the quality metrics, before exporting the curated result to Phy for final visual inspection.",
+      "If you're comparing multiple sorters or validating against ground truth, use the comparison module to directly benchmark one sorting output against another (or against known ground-truth spike times), producing standard agreement/precision/recall statistics."
+    ],
+    "tutorial_output": "A curated <code>Sorting</code> object (spike times and cluster labels) per sorter run, exportable to Phy's native format for visualization, plus computed quality metrics and postprocessing outputs (waveforms, templates, correlograms) per unit — and, if multiple sorters were compared, agreement statistics quantifying how consistently different algorithms identified the same units.",
+    "sample_data": {
+      "text": "The paper's benchmark datasets are on the DANDI archive.",
+      "url": "https://gui.dandiarchive.org/#/dandiset/000034"
+    },
+    "code": {
+      "repo_url": "https://github.com/SpikeInterface/spikeinterface",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "spikeinterface-gui (Qt-based interactive viewer for sorting results)",
+        "url": "https://github.com/SpikeInterface/spikeinterface-gui"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2020-12-14-cellpose",
+    "title": "Cellpose: a generalist algorithm for cellular segmentation",
+    "authors": "Stringer C., Wang T., Michaelos M., Pachitariu M.",
+    "journal": "Nature Methods",
+    "year": 2021,
+    "date": "2020-12-14",
+    "doi": "10.1038/s41592-020-01018-x",
+    "paper_url": "https://www.nature.com/articles/s41592-020-01018-x",
+    "website_url": "https://cellpose.readthedocs.io",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "image-analysis",
+    "categories": [
+      "image-analysis"
+    ],
+    "tags": [
+      "cell segmentation",
+      "nucleus segmentation",
+      "generalist model",
+      "deep learning",
+      "U-Net",
+      "flow field",
+      "human-in-the-loop",
+      "cyto3",
+      "Cellpose-SAM",
+      "GUI",
+      "napari",
+      "3D segmentation",
+      "microscopy",
+      "transfer learning"
+    ],
+    "summary": "Cellpose is a generalist deep-learning segmentation model that identifies cell and nucleus boundaries in a huge range of microscopy image types with no retraining or parameter adjustment, since its release evolved through human-in-the-loop fine-tuning (Cellpose 2.0), built-in image restoration (Cellpose3), and a foundation-model-scale generalist (Cellpose-SAM) — usable via GUI, Python API, or napari plugin.",
+    "abstract_long": "Cellpose predicts a spatial flow field for every pixel toward its cell's center, then groups pixels by following these flows to their common source — a formulation that handles cells of highly varied shape and size better than direct boundary or mask prediction, and generalizes to 3D by combining flows computed from 2D slices along different axes without requiring 3D-labeled training data. The original model was trained on a dataset of over 70,000 segmented objects spanning many imaging modalities and cell types. Since publication, the tool has evolved substantially: Cellpose 2.0 added human-in-the-loop retraining (correct the model's mistakes on a few images, retrain in minutes, repeat) so users can quickly specialize the generalist model to their own data; Cellpose3 added one-click image restoration (denoising, deblurring, upsampling) integrated into the segmentation workflow; and the latest Cellpose-SAM model (built on a vision transformer) further improves generalization across contrast conditions, channel orderings, and object sizes.",
+    "data_acquisition": "Any 2D or 3D microscopy image containing cells or nuclei (fluorescence, brightfield, phase contrast) — the model generalizes across imaging modalities without retraining",
+    "language": "Python",
+    "animal": "Not applicable — general-purpose cell/nucleus segmentation, not species-specific (trained data includes tissue from mouse, among many other sources)",
+    "gpu_required": "",
+    "difficulty": "beginner",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "Cellpose works out of the box on a wide range of microscopy images via its pretrained generalist models — you typically don't need to train your own model unless the built-in models perform poorly on your specific data, in which case the human-in-the-loop workflow lets you fine-tune quickly.",
+    "tutorial_steps": [
+      "Install with <code>pip install cellpose[gui]</code> (the <code>[gui]</code> extra adds the graphical interface; omit it if you only need the Python API/CLI). A GPU is recommended for speed but not required.",
+      "Try a pretrained model on your images first — either via the GUI (drag and drop an image, choose a model, click run) or the Python API: <code>from cellpose import models; model = models.Cellpose(model_type='cyto3'); masks, flows, styles, diams = model.eval(image, diameter=None, channels=[0,0])</code>, where <code>cyto3</code> is the current super-generalist model and <code>diameter=None</code> lets Cellpose auto-estimate the typical cell size in your image.",
+      "If segmentation quality is poor on your specific data, use the human-in-the-loop workflow in the GUI: correct a handful of the model's mistakes by hand, retrain from those corrections in a few minutes, and re-run — repeating this cycle a few times typically gets you a model specialized to your data without needing hundreds of fully manual annotations.",
+      "If your images are noisy, blurry, or undersampled, try Cellpose3's built-in restoration models (denoising, deblurring, upsampling) before or as part of segmentation — accessible from the GUI or via the <code>CellposeDenoiseModel</code> class in the Python API.",
+      "For 3D volumes, pass your full 3D array and set <code>do_3D=True</code> in <code>model.eval()</code> — Cellpose computes 2D flows along each axis and combines them into a 3D flow field, so no 3D-labeled training data is needed."
+    ],
+    "tutorial_output": "A labeled instance mask (each detected cell/nucleus assigned a unique integer ID, 0 for background) matching your input image dimensions, plus the underlying flow fields and per-cell diameter estimates — the mask can be exported for downstream quantification (cell counts, morphology, per-cell fluorescence intensity) or opened in the GUI/napari for visual inspection and correction.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/MouseLand/cellpose",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Cellpose 2.0 paper (human-in-the-loop training)",
+        "url": "https://doi.org/10.1038/s41592-022-01663-4"
+      },
+      {
+        "label": "cellpose-napari (plugin for the napari image viewer)",
+        "url": "https://github.com/MouseLand/cellpose-napari"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2021-05-14-zi-investigatory-circuit",
     "title": "A cell type-specific cortico-subcortical brain circuit for investigatory and novelty-seeking behavior",
     "authors": "Ahmadlou M., Houba J.H.W., van Vierbergen J.F.M., Giannouli M., Gimenez G.-A., van Weeghel C., Darbanfouladi M., Shirazi M.Y., Dziubek J., Kacem M., de Winter F., Heimel J.A.",
@@ -402,6 +787,74 @@
         "url": "https://github.com/talmo/conda_packages"
       }
     ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2023-05-03-cebra",
+    "title": "Learnable latent embeddings for joint behavioural and neural analysis",
+    "authors": "Schneider S., Lee J.H., Mathis M.W.",
+    "journal": "Nature",
+    "year": 2023,
+    "date": "2023-05-03",
+    "doi": "10.1038/s41586-023-06031-6",
+    "paper_url": "https://www.nature.com/articles/s41586-023-06031-6",
+    "website_url": "https://cebra.ai",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "neural-networks",
+    "categories": [
+      "neural-networks"
+    ],
+    "tags": [
+      "CEBRA",
+      "contrastive learning",
+      "self-supervised learning",
+      "latent embedding",
+      "representation learning",
+      "neural decoding",
+      "dimensionality reduction",
+      "calcium imaging",
+      "electrophysiology",
+      "hypothesis-driven",
+      "discovery-driven",
+      "consistency",
+      "PyTorch",
+      "joint behavior-neural analysis"
+    ],
+    "summary": "CEBRA is a contrastive-learning method that jointly embeds neural activity and behavioral data (or neural data alone, self-supervised) into a low-dimensional, consistent latent space, improving decoding accuracy over standard supervised approaches and letting you compare embeddings across sessions, subjects, and even recording modalities (for example, two-photon calcium imaging versus Neuropixels).",
+    "abstract_long": "CEBRA (Consistent EmBeddings of high-dimensional Recordings using Auxiliary variables) combines ideas from nonlinear ICA with contrastive learning to produce latent embeddings of neural time series conditioned on behavior and/or time. It supports three modes: fully supervised/hypothesis-driven (using behavioral labels to shape the embedding), self-supervised/discovery-driven (using only time, with no labels required), and hybrid. Unlike many representation-learning approaches, CEBRA doesn't rely on data augmentation or a specific generative model, and it can jointly train across multiple sessions, subjects, and even recording modalities, producing embeddings that are directly comparable across them. The authors validate CEBRA on calcium imaging and electrophysiology datasets spanning sensory, motor, and memory systems in mice, macaques, and flies — including decoding hippocampal position, uncovering kinematic features from motor cortex, and producing consistent embeddings that let two-photon and Neuropixels recordings of the same brain area be compared directly.",
+    "data_acquisition": "Not applicable — a general-purpose representation-learning method for time-series neural data (validated on both calcium imaging and electrophysiology) paired with behavioral labels",
+    "language": "Python (PyTorch)",
+    "animal": "Not applicable — demonstrated across species and recording modalities (mouse, macaque, fly)",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "CEBRA expects neural activity (spike counts, calcium traces, or any other time-series neural signal) as a 2D array (timepoints x features/neurons), optionally paired with a behavioral variable of the same length if you want to use the supervised/hypothesis-driven mode.",
+    "tutorial_steps": [
+      "Install with <code>pip install cebra</code> (GPU with PyTorch/CUDA recommended for anything beyond quick tests).",
+      "Instantiate a model: <code>from cebra import CEBRA; cebra_model = CEBRA(model_architecture='offset10-model', batch_size=512, max_iterations=10000, output_dimension=8)</code> — key choices are the model architecture, the output embedding dimensionality, and (for supervised mode) which behavioral variables to condition on.",
+      "Fit the model to your data: <code>cebra_model.fit(neural_data)</code> for self-supervised/discovery-driven embeddings (time-only), or <code>cebra_model.fit(neural_data, behavior_labels)</code> to additionally condition on a behavioral variable (hypothesis-driven) — you can pass either continuous or discrete labels, and multiple label arrays for a hybrid approach.",
+      "Generate the embedding: <code>embedding = cebra_model.transform(neural_data)</code> gives you the low-dimensional latent representation, which you can then use for decoding (for example, fitting a simple classifier/regressor from embedding to behavior), visualization, or comparing consistency across sessions/subjects/modalities.",
+      "To compare embeddings across multiple sessions or animals (a key use case in the paper), fit CEBRA jointly across datasets and use the built-in consistency metrics to quantify how similar the resulting embeddings are — low consistency can itself be a meaningful finding about differences between sessions or subjects, not just a nuisance to eliminate."
+    ],
+    "tutorial_output": "A low-dimensional embedding (an array of shape timepoints x output_dimension) representing your neural data in a space shaped by whichever behavioral variables (if any) you conditioned on — used downstream for decoding accuracy benchmarks, visualization of neural manifolds, or quantifying representational consistency across recording sessions, animals, or modalities.",
+    "sample_data": {
+      "text": "The repo's demo notebooks include example neural and behavioral datasets (hippocampus position-decoding and other benchmarks) to run the full pipeline without your own data.",
+      "url": "https://cebra.ai/docs/demos.html"
+    },
+    "code": {
+      "repo_url": "https://github.com/AdaptiveMotorControlLab/CEBRA",
+      "platform": "github"
+    },
+    "extra_links": [],
     "related_ids": [],
     "added_date": "2026-09-25",
     "added_by": "manual",

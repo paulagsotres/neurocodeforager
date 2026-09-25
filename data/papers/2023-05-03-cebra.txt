@@ -1,0 +1,40 @@
+title: Learnable latent embeddings for joint behavioural and neural analysis
+authors: Schneider S., Lee J.H., Mathis M.W.
+journal: Nature
+year: 2023
+date: 2023-05-03
+doi: 10.1038/s41586-023-06031-6
+paper_url: https://www.nature.com/articles/s41586-023-06031-6
+github_url: https://github.com/AdaptiveMotorControlLab/CEBRA
+website_url: https://cebra.ai
+access_status: open_access
+category: neural-networks
+tags: CEBRA, contrastive learning, self-supervised learning, latent embedding, representation learning, neural decoding, dimensionality reduction, calcium imaging, electrophysiology, hypothesis-driven, discovery-driven, consistency, PyTorch, joint behavior-neural analysis
+data_acquisition: Not applicable — a general-purpose representation-learning method for time-series neural data (validated on both calcium imaging and electrophysiology) paired with behavioral labels
+language: Python (PyTorch)
+animal: Not applicable — demonstrated across species and recording modalities (mouse, macaque, fly)
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-25
+
+summary:
+CEBRA is a contrastive-learning method that jointly embeds neural activity and behavioral data (or neural data alone, self-supervised) into a low-dimensional, consistent latent space, improving decoding accuracy over standard supervised approaches and letting you compare embeddings across sessions, subjects, and even recording modalities (for example, two-photon calcium imaging versus Neuropixels).
+
+abstract_long:
+CEBRA (Consistent EmBeddings of high-dimensional Recordings using Auxiliary variables) combines ideas from nonlinear ICA with contrastive learning to produce latent embeddings of neural time series conditioned on behavior and/or time. It supports three modes: fully supervised/hypothesis-driven (using behavioral labels to shape the embedding), self-supervised/discovery-driven (using only time, with no labels required), and hybrid. Unlike many representation-learning approaches, CEBRA doesn't rely on data augmentation or a specific generative model, and it can jointly train across multiple sessions, subjects, and even recording modalities, producing embeddings that are directly comparable across them. The authors validate CEBRA on calcium imaging and electrophysiology datasets spanning sensory, motor, and memory systems in mice, macaques, and flies — including decoding hippocampal position, uncovering kinematic features from motor cortex, and producing consistent embeddings that let two-photon and Neuropixels recordings of the same brain area be compared directly.
+
+sample_data_text: The repo's demo notebooks include example neural and behavioral datasets (hippocampus position-decoding and other benchmarks) to run the full pipeline without your own data.
+sample_data_url: https://cebra.ai/docs/demos.html
+
+tutorial_intro:
+CEBRA expects neural activity (spike counts, calcium traces, or any other time-series neural signal) as a 2D array (timepoints x features/neurons), optionally paired with a behavioral variable of the same length if you want to use the supervised/hypothesis-driven mode.
+
+tutorial_steps:
+Install with <code>pip install cebra</code> (GPU with PyTorch/CUDA recommended for anything beyond quick tests).
+Instantiate a model: <code>from cebra import CEBRA; cebra_model = CEBRA(model_architecture='offset10-model', batch_size=512, max_iterations=10000, output_dimension=8)</code> — key choices are the model architecture, the output embedding dimensionality, and (for supervised mode) which behavioral variables to condition on.
+Fit the model to your data: <code>cebra_model.fit(neural_data)</code> for self-supervised/discovery-driven embeddings (time-only), or <code>cebra_model.fit(neural_data, behavior_labels)</code> to additionally condition on a behavioral variable (hypothesis-driven) — you can pass either continuous or discrete labels, and multiple label arrays for a hybrid approach.
+Generate the embedding: <code>embedding = cebra_model.transform(neural_data)</code> gives you the low-dimensional latent representation, which you can then use for decoding (for example, fitting a simple classifier/regressor from embedding to behavior), visualization, or comparing consistency across sessions/subjects/modalities.
+To compare embeddings across multiple sessions or animals (a key use case in the paper), fit CEBRA jointly across datasets and use the built-in consistency metrics to quantify how similar the resulting embeddings are — low consistency can itself be a meaningful finding about differences between sessions or subjects, not just a nuisance to eliminate.
+
+tutorial_output:
+A low-dimensional embedding (an array of shape timepoints x output_dimension) representing your neural data in a space shaped by whichever behavioral variables (if any) you conditioned on — used downstream for decoding accuracy benchmarks, visualization of neural manifolds, or quantifying representational consistency across recording sessions, animals, or modalities.

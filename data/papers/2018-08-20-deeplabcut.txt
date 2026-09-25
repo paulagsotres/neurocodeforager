@@ -1,0 +1,43 @@
+title: DeepLabCut: markerless pose estimation of user-defined body parts with deep learning
+authors: Mathis A., Mamidanna P., Cury K.M., Abe T., Murthy V.N., Mathis M.W., Bethge M.
+journal: Nature Neuroscience
+year: 2018
+date: 2018-08-20
+doi: 10.1038/s41593-018-0209-y
+paper_url: https://www.nature.com/articles/s41593-018-0209-y
+github_url: https://github.com/DeepLabCut/DeepLabCut
+website_url: https://www.deeplabcut.org
+access_status: paywall_restricted
+category: automated-behavioral-tracking
+tags: markerless pose estimation, transfer learning, DeepLabCut, DLC, SuperAnimal, multi-animal tracking, GUI, Google Colab, Docker, mouse, Drosophila, reaching, egg-laying, keypoint tracking
+data_acquisition: Standard video of an animal (or, in later multi-animal versions, several animals) performing a behavior — no markers or specialized hardware required
+language: Python (TensorFlow/PyTorch backends across versions)
+animal: Demonstrated in mice, Drosophila, and (in later work) many other species; general-purpose via transfer learning
+difficulty: beginner
+citation_count:
+added_date: 2026-09-25
+
+summary:
+DeepLabCut is a markerless pose-estimation toolbox that uses transfer learning from networks pretrained on human pose estimation to track user-defined body parts in animals from ordinary video, requiring only a small number of manually labeled frames — since its original 2018 release it has grown into a full ecosystem covering multi-animal tracking, 3D pose, and (via SuperAnimal) pretrained models that work across species with no task-specific training at all.
+
+abstract_long:
+DeepLabCut adapts a deep neural network architecture originally developed for human pose estimation (based on DeeperCut) to animal tracking via transfer learning: starting from weights pretrained on a large human-pose dataset, the network can be fine-tuned to detect user-defined animal body parts from a relatively small number of hand-labeled training frames (the original paper demonstrated accurate tracking from as few as ~200 labeled frames). The authors validate this on three very different behaviors — trail tracking and reaching in mice, and egg-laying behavior in Drosophila — showing human-level labeling accuracy without any markers or specialized hardware. Since publication, the DeepLabCut ecosystem has expanded considerably: DeepLabCut 2.x added a full Python package and GUI, later work added multi-animal pose estimation and identity tracking, 3D pose reconstruction from multiple cameras, and most recently the SuperAnimal models (Ye et al., 2024), which are pretrained across many species and often work directly on new data with zero additional training.
+
+extra_links:
+Nath, Mathis et al. 2019 (Nature Protocols step-by-step user guide for DeepLabCut 2.x) | https://doi.org/10.1038/s41596-019-0176-0
+Lauer et al. 2022 (multi-animal pose estimation and tracking with DeepLabCut) | https://doi.org/10.1038/s41592-022-01443-0
+SuperAnimal pretrained models (Ye et al., Nat Commun 2024 — zero-shot pose estimation across species) | https://doi.org/10.1038/s41467-024-48792-2
+
+tutorial_intro:
+DeepLabCut works on any video of an animal performing a behavior. For a completely new setup, expect to label a modest number of frames yourself (the original paper used as few as ~200); if your species/setup resembles one of the SuperAnimal pretrained model's training data, you may be able to skip labeling and training entirely.
+
+tutorial_steps:
+Install via conda/pip following the instructions in the repo (a GPU is strongly recommended for training, though CPU-only inference is workable for small jobs), or use the provided Docker image or Google Colab notebook to avoid a local install altogether.
+Create a new project (<code>deeplabcut.create_new_project(...)</code> in Python, or via the GUI), which sets up a standardized folder structure and lets you define the skeleton — the set of body parts you want to track — for your specific animal/behavior.
+Extract and manually label training frames using the built-in labeling GUI: DeepLabCut selects a representative, diverse set of frames from your videos for you to annotate, minimizing labeling effort while maximizing training coverage.
+Train the network (<code>deeplabcut.train_network(...)</code>) — thanks to transfer learning from a pretrained backbone, this converges with far fewer labeled frames and less training time than training a pose-estimation network from scratch.
+Evaluate the trained model on held-out labeled frames, then run inference on new, unlabeled videos (<code>deeplabcut.analyze_videos(...)</code>) to extract body-part coordinates and confidence scores frame by frame; use the built-in plotting/labeling-video tools to visually confirm tracking quality before trusting the output for downstream analysis.
+If you're tracking multiple interacting animals, use the multi-animal project workflow instead (introduced in DeepLabCut 2.2+, described in Lauer et al. 2022), which additionally handles identity assignment across frames. If your species/setup is well covered by an existing SuperAnimal model, try that first via <code>deeplabcut.video_inference_superanimal(...)</code> before investing in your own labeling and training.
+
+tutorial_output:
+Per-frame, per-body-part (x, y) coordinates with a confidence/likelihood score, saved per video (typically as HDF5/CSV), plus optional labeled videos and trajectory plots for visual quality control — for multi-animal projects, coordinates additionally carry a consistent identity/track assignment across frames.

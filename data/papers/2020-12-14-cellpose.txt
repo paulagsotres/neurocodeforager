@@ -1,0 +1,41 @@
+title: Cellpose: a generalist algorithm for cellular segmentation
+authors: Stringer C., Wang T., Michaelos M., Pachitariu M.
+journal: Nature Methods
+year: 2021
+date: 2020-12-14
+doi: 10.1038/s41592-020-01018-x
+paper_url: https://www.nature.com/articles/s41592-020-01018-x
+github_url: https://github.com/MouseLand/cellpose
+website_url: https://cellpose.readthedocs.io
+access_status: open_access
+category: image-analysis
+tags: cell segmentation, nucleus segmentation, generalist model, deep learning, U-Net, flow field, human-in-the-loop, cyto3, Cellpose-SAM, GUI, napari, 3D segmentation, microscopy, transfer learning
+data_acquisition: Any 2D or 3D microscopy image containing cells or nuclei (fluorescence, brightfield, phase contrast) — the model generalizes across imaging modalities without retraining
+language: Python
+animal: Not applicable — general-purpose cell/nucleus segmentation, not species-specific (trained data includes tissue from mouse, among many other sources)
+difficulty: beginner
+citation_count:
+added_date: 2026-09-25
+
+summary:
+Cellpose is a generalist deep-learning segmentation model that identifies cell and nucleus boundaries in a huge range of microscopy image types with no retraining or parameter adjustment, since its release evolved through human-in-the-loop fine-tuning (Cellpose 2.0), built-in image restoration (Cellpose3), and a foundation-model-scale generalist (Cellpose-SAM) — usable via GUI, Python API, or napari plugin.
+
+abstract_long:
+Cellpose predicts a spatial flow field for every pixel toward its cell's center, then groups pixels by following these flows to their common source — a formulation that handles cells of highly varied shape and size better than direct boundary or mask prediction, and generalizes to 3D by combining flows computed from 2D slices along different axes without requiring 3D-labeled training data. The original model was trained on a dataset of over 70,000 segmented objects spanning many imaging modalities and cell types. Since publication, the tool has evolved substantially: Cellpose 2.0 added human-in-the-loop retraining (correct the model's mistakes on a few images, retrain in minutes, repeat) so users can quickly specialize the generalist model to their own data; Cellpose3 added one-click image restoration (denoising, deblurring, upsampling) integrated into the segmentation workflow; and the latest Cellpose-SAM model (built on a vision transformer) further improves generalization across contrast conditions, channel orderings, and object sizes.
+
+extra_links:
+Cellpose 2.0 paper (human-in-the-loop training) | https://doi.org/10.1038/s41592-022-01663-4
+cellpose-napari (plugin for the napari image viewer) | https://github.com/MouseLand/cellpose-napari
+
+tutorial_intro:
+Cellpose works out of the box on a wide range of microscopy images via its pretrained generalist models — you typically don't need to train your own model unless the built-in models perform poorly on your specific data, in which case the human-in-the-loop workflow lets you fine-tune quickly.
+
+tutorial_steps:
+Install with <code>pip install cellpose[gui]</code> (the <code>[gui]</code> extra adds the graphical interface; omit it if you only need the Python API/CLI). A GPU is recommended for speed but not required.
+Try a pretrained model on your images first — either via the GUI (drag and drop an image, choose a model, click run) or the Python API: <code>from cellpose import models; model = models.Cellpose(model_type='cyto3'); masks, flows, styles, diams = model.eval(image, diameter=None, channels=[0,0])</code>, where <code>cyto3</code> is the current super-generalist model and <code>diameter=None</code> lets Cellpose auto-estimate the typical cell size in your image.
+If segmentation quality is poor on your specific data, use the human-in-the-loop workflow in the GUI: correct a handful of the model's mistakes by hand, retrain from those corrections in a few minutes, and re-run — repeating this cycle a few times typically gets you a model specialized to your data without needing hundreds of fully manual annotations.
+If your images are noisy, blurry, or undersampled, try Cellpose3's built-in restoration models (denoising, deblurring, upsampling) before or as part of segmentation — accessible from the GUI or via the <code>CellposeDenoiseModel</code> class in the Python API.
+For 3D volumes, pass your full 3D array and set <code>do_3D=True</code> in <code>model.eval()</code> — Cellpose computes 2D flows along each axis and combines them into a 3D flow field, so no 3D-labeled training data is needed.
+
+tutorial_output:
+A labeled instance mask (each detected cell/nucleus assigned a unique integer ID, 0 for background) matching your input image dimensions, plus the underlying flow fields and per-cell diameter estimates — the mask can be exported for downstream quantification (cell counts, morphology, per-cell fluorescence intensity) or opened in the GUI/napari for visual inspection and correction.

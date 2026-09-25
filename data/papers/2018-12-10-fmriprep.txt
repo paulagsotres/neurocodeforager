@@ -1,0 +1,41 @@
+title: fMRIPrep: a robust preprocessing pipeline for functional MRI
+authors: Esteban O., Markiewicz C.J., Blair R.W., Moodie C.A., Isik A.I., Erramuzpe A., Kent J.D., Goncalves M., DuPre E., et al.
+journal: Nature Methods
+year: 2019
+date: 2018-12-10
+doi: 10.1038/s41592-018-0235-4
+paper_url: https://www.nature.com/articles/s41592-018-0235-4
+github_url: https://github.com/nipreps/fmriprep
+website_url: https://fmriprep.org
+access_status: open_access
+category: brain-imaging
+tags: fMRI, functional MRI, preprocessing, BIDS, NiPreps, FreeSurfer, FSL, ANTs, AFNI, motion correction, normalization, quality reports, reproducibility, neuroimaging, MRIQC, confound regression
+data_acquisition: Functional and structural MRI data organized in the BIDS (Brain Imaging Data Structure) standard
+language: Python (Nipype workflows, wrapping FSL, ANTs, FreeSurfer, AFNI)
+animal: Not applicable — human neuroimaging preprocessing pipeline
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-25
+
+summary:
+fMRIPrep is an analysis-agnostic preprocessing pipeline for functional MRI that automatically adapts a best-practice workflow (combining FSL, ANTs, FreeSurfer, and AFNI) to the specifics of virtually any BIDS-organized dataset, producing standardized, quality-checked outputs without requiring manual parameter tuning for each new dataset.
+
+abstract_long:
+Researchers have traditionally built ad hoc fMRI preprocessing workflows for each new dataset, stitching together tools from a large inventory with study-specific parameter choices — a process that's hard to reproduce and easy to get subtly wrong. fMRIPrep instead reads a standard BIDS-organized dataset and automatically configures a "best-in-breed" preprocessing workflow (motion correction, susceptibility distortion correction, coregistration, spatial normalization to standard templates, confound estimation) using established neuroimaging tools under the hood, adapting to whatever acquisition parameters and available data (for example, fieldmaps or their absence) each dataset has. A key design feature is automatically generated visual quality-control reports at defined checkpoints throughout the pipeline, letting researchers quickly spot subject-level problems without manually inspecting every intermediate processing step. The authors show that fMRIPrep introduces less uncontrolled spatial smoothness than commonly used alternative preprocessing pipelines, while requiring far less manual intervention.
+
+extra_links:
+NiPreps ecosystem (related preprocessing tools: MRIQC, sMRIPrep, dMRIPrep) | https://www.nipreps.org
+BIDS specification (the input data standard fMRIPrep requires) | https://bids.neuroimaging.io
+
+tutorial_intro:
+fMRIPrep requires your data organized as a valid BIDS dataset. It's distributed as a Docker/Singularity container (recommended, since it bundles all underlying dependencies like FreeSurfer, FSL, ANTs, and AFNI at pinned versions) rather than a plain pip-installable package.
+
+tutorial_steps:
+Organize your raw MRI data into the BIDS format (a directory structure and naming convention for neuroimaging datasets) — this is a prerequisite for fMRIPrep, not something it does for you; tools like the BIDS validator can check your dataset before running.
+Obtain a FreeSurfer license file (free for academic use, required since fMRIPrep uses FreeSurfer for surface reconstruction) and place it where the container can find it.
+Run fMRIPrep via its Docker image: <code>docker run -ti --rm -v /path/to/bids:/data:ro -v /path/to/output:/out -v /path/to/license.txt:/opt/freesurfer/license.txt nipreps/fmriprep:latest /data /out participant</code> — Singularity is also supported and commonly used on shared HPC clusters where Docker isn't available.
+Review the automatically generated HTML quality-control reports (one per subject) before proceeding to your own analysis — these visualize each key processing step (registration accuracy, brain extraction, normalization) so you can quickly flag subjects with problems rather than discovering them downstream.
+Use the preprocessed, standardized outputs (and the accompanying confound time series — motion parameters, physiological noise estimates, etc.) as the input to your own statistical analysis pipeline of choice; fMRIPrep deliberately stops at "minimal preprocessing" and does not perform smoothing or statistical modeling itself.
+
+tutorial_output:
+BIDS-Derivatives-formatted preprocessed functional and structural images (in both subject-native and standard template spaces), a confounds table per run (motion parameters, physiological regressors, and other nuisance variables for use in your own denoising/statistical model), and per-subject HTML visual quality-control reports summarizing every major processing step.
