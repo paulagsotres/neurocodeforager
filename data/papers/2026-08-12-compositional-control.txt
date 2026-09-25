@@ -1,0 +1,41 @@
+title: Neural basis of compositional control
+authors: Chericoni A., Fine J.M., Ismail T.S., Delgado Salazar G., Franch M.C., et al.
+journal: Nature
+year: 2026
+date: 2026-08-12
+doi: 10.1038/s41586-026-10896-8
+paper_url: https://www.nature.com/articles/s41586-026-10896-8
+github_url: https://github.com/BCM-Neurosurgery/PreyPursuit
+access_status: paywall_restricted
+category: electrophysiology
+tags: prey pursuit, continuous decision-making, control theory, compositional control, meta-controller, intracranial recordings, sEEG, single-unit recordings, Behnke-Fried electrodes, WaveClus, spike sorting, anterior cingulate cortex, hippocampus, orbitofrontal cortex, dPCA, hierarchical control, human electrophysiology, joystick task, iELVis, RAVE, changes of mind, GAM, latent dynamical systems, LDS clustering
+data_acquisition: Human single-neuron intracranial recordings — stereotactic EEG (sEEG) via AdTech Behnke-Fried microwire probes (~4 probes/patient, 8 microwires each), Blackrock Neuroport 512-channel system at 30 kHz, spike-sorted with WaveClus
+language: Python 3.11 (core pipeline); MATLAB (plotting)
+animal: Not applicable (human intracranial recordings in epilepsy patients)
+difficulty: advanced
+citation_count: 1
+added_date: 2026-09-24
+
+summary:
+Human intracranial recordings during a continuous prey-pursuit task, decomposed via a novel control-theoretic model into blended goal-specific policies, show ACC predicting policy-blend switches, hippocampus encoding and updating the latent policy state, and OFC signaling task value rather than driving the switching itself.
+
+abstract_long:
+The authors recorded single neurons from anterior cingulate cortex (ACC), hippocampus (HPC) and orbitofrontal cortex (OFC) via stereotactic EEG in 19 epilepsy patients performing a continuous, joystick-controlled prey-pursuit task, plus behavioral-only data from 50 healthy participants. They developed a control-theoretic decomposition that models pursuit behavior as a meta-controller dynamically blending several lower-level, goal-specific control policies (a continuous analogue of discrete choice). Fitting this model to behavior, they found ACC neurons predict upcoming major changes in the policy blend (akin to a "change of mind"), hippocampal neurons encode and update the latent policy-blend state supporting early planning, and OFC activity tracks the task's current value structure rather than the switching process itself — supporting a tripartite division of labor: hippocampus as state estimator, ACC as meta-controller, OFC as value-context signal.
+
+sample_data_text: The repo ships with real example behavioral + neural data from one participant, plus synthetic pseudopopulation datasets, so the full pipeline can be run end to end without needing your own recordings first.
+sample_data_url: https://github.com/BCM-Neurosurgery/PreyPursuit/tree/main/example_data
+
+tutorial_intro:
+Input data: for the behavioral controller-modeling step, per-trial joystick trajectories and prey positions; for the neural analyses (GAM tuning, dPCA, clustering), spike-sorted single-unit firing rates aligned to those same trials, organized per participant. The repo includes real example data for one participant plus synthetic data for the population-level demos, so you can run every step below without your own dataset first.
+
+tutorial_steps:
+Set up the environment: <code>conda env create -f environment.yml</code>, then <code>conda activate pac_control_env</code>, then <code>pip install --no-build-isolation "ssm @ git+https://github.com/lindermanlab/ssm"</code> (the ssm package needs to be installed separately via pip). On Windows you'll also need Visual Studio C++ Build Tools v14.0.0 or newer.
+Run the behavioral controller-modeling pipeline: <code>python -m scripts.run_controller_modeling -c pv</code>, where <code>-c</code> selects a controller class (options: p, pv, pf, pvi, pif, pvf — pv was the best-fitting class in the paper). This fits the control-theoretic decomposition to a participant's trial-by-trial behavior and takes about 15 minutes to run.
+For model recovery (checking whether the fitting procedure correctly recovers known ground-truth controller parameters from simulated data), see <code>demo/simulation_demo.ipynb</code> — full recovery runs are slow, so example results and MATLAB plotting scripts for this step are pre-computed under <code>plotting/simulation</code>.
+For detecting behavioral "changes of mind" (major switches in the policy blend) from the fitted wt trajectories, use the functions in <code>ChangeOfMind/functions/processing.py</code>, demonstrated in <code>demo/plot_switch_detection.ipynb</code> — this runs directly on the output of the controller-modeling step above.
+For relating neural firing to the fitted policy-blend variable (wt) via generalized additive models: <code>python -m scripts.run_glm_modeling -p YFD</code> (participant ID; optionally add <code>-m &lt;controller_class&gt;</code> to specify which fitted wt to use). Plot the proportion of tuned neurons, NNMF results, and Fisher information with <code>plotting/plot_nmf_fi.ipynb</code>.
+For the demixed PCA (dPCA) population analysis (condition-based and wt-binned), the pipeline lives in <code>src/dPCA</code> via the <code>DPCAPipeline</code> class, demonstrated with synthetic data in <code>demo/dPCA_demo_Final.ipynb</code>; plotting scripts are in <code>plotting/MAIN_plot_dPCA_results.m</code> (MATLAB).
+For clustering neurons by their ramping/dynamical behavior around switches, the LDS (linear dynamical system) + k-means pipeline is in <code>scripts/lds_cluster_pipeline.py</code>, demonstrated on single-subject data in <code>demo/run_lds_cluster_pipeline_demo.ipynb</code> — the full pipeline is designed to run on pseudopopulations pooled across subjects.
+
+tutorial_output:
+The controller-modeling step writes <code>model_fit_results.csv</code> (fitted controller weights and the model's evidence lower bound, ELBO) and <code>model_matrices.mat</code> (the trial-wise wt — policy-blend — time series) into <code>example_data/&lt;participant&gt;/&lt;controller&gt;/</code>. Downstream steps consume these: the switch-detection step outputs detected change-of-mind events per trial; the GAM modeling step outputs per-neuron tuning statistics to wt; the dPCA step outputs low-dimensional population components capturing how neural activity varies with time and policy-blend state; and the LDS+k-means step outputs cluster assignments describing distinct classes of single-neuron ramping dynamics around switches.

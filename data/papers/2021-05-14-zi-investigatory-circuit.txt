@@ -1,0 +1,43 @@
+title: A cell type-specific cortico-subcortical brain circuit for investigatory and novelty-seeking behavior
+authors: Ahmadlou M., Houba J.H.W., van Vierbergen J.F.M., Giannouli M., Gimenez G.-A., van Weeghel C., Darbanfouladi M., Shirazi M.Y., Dziubek J., Kacem M., de Winter F., Heimel J.A.
+journal: Science
+year: 2021
+date: 2021-05-14
+doi: 10.1126/science.abe9681
+paper_url: https://www.science.org/doi/10.1126/science.abe9681
+github_url: https://github.com/herseninstituut/Ahmadlou_etal_Science_2021
+access_status: paywall_restricted
+category: automated-behavioral-tracking, statistical-analysis
+tags: hidden Markov model, HMM, investigatory behavior, novelty seeking, zona incerta, periaqueductal gray, prelimbic cortex, optogenetics, fiber photometry, in situ hybridization, TAC1, GABAergic neurons, action sequence classification, mouse social behavior, curiosity, motivation, JAABA, behavior labeling
+data_acquisition: Mouse behavioral video (frame-by-frame labeled with JAABA) during object/conspecific investigation, combined with fiber photometry calcium recordings and optogenetic manipulation of zona incerta (ZIm) neurons
+language: MATLAB (HMM fitting, behavior sequence analysis, photometry processing via InVivoTools); JAABA (Matlab/Java) for behavior labeling
+animal: Mouse
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-24
+
+summary:
+Using a 3-state hidden Markov model fit to JAABA-labeled investigatory action sequences, this paper distinguishes "deep" from "shallow" investigation of novel objects/conspecifics, and identifies a prelimbic-cortex-to-zona-incerta-to-periaqueductal-gray circuit — with a TAC1+ inhibitory zona incerta subpopulation in particular — that drives this novelty-seeking, curiosity-motivated behavior.
+
+abstract_long:
+The authors found that inhibitory neurons in the medial zona incerta (ZIm), a subthalamic region, are essential for mice to initiate deep, sustained investigation of novel objects or conspecifics. ZIm neurons receive excitatory input from prelimbic cortex signaling the initiation of exploration, with the strength of this drive modulated by the animal's investigatory motivation. Behavior was labeled frame-by-frame with JAABA, then collapsed into a single ranked action per time step and fit with a 3-state hidden Markov model (idle, low-interest investigation, high-interest investigation) to characterize how action-sequence structure differs between novel and familiar objects/conspecifics. This let the authors define a continuous "depth of investigation" measure independent of raw interaction duration — for objects, whether a sniff is followed by a bite (deep) or not (shallow); for conspecifics, whether approach is followed by investigation with grabbing (deep) or without (shallow). Optogenetic activation of ZIm inhibitory neurons (particularly a TAC1-expressing subpopulation) increased positive arousal and investigatory depth by inhibiting the periaqueductal gray, establishing a prelimbic-cortex to ZIm to PAG circuit as a core substrate for curiosity-driven investigatory behavior.
+
+extra_links:
+JAABA (frame-by-frame behavior labeling, used to generate the HMM's input sequences) | https://github.com/kristinbranson/JAABA
+InVivoTools (fiber photometry and physiology signal processing, incl. pupil diameter extraction) | https://github.com/heimel/InVivoTools
+
+sample_data_text: Processed data and analysis scripts are archived on Zenodo. Raw movies and additional scripts are on institutional storage, available from the authors on request.
+sample_data_url: https://doi.org/10.5281/zenodo.4588941
+
+tutorial_intro:
+The pipeline has three distinct stages that each rely on a different tool: JAABA for frame-by-frame behavior labeling (a general-purpose, separately maintained open-source tool — reusable on its own for any mouse behavior video), custom MATLAB code in this repo for the HMM-based action-sequence analysis specifically, and InVivoTools for the fiber-photometry/physiology signal processing. There's no single "install and run" entry point — treat the repo as the reference implementation of the HMM analysis, to adapt to your own JAABA-labeled behavior data.
+
+tutorial_steps:
+Label your raw behavior videos frame-by-frame with JAABA. For object interaction, the relevant labeled behaviors were approach, sniff, carry, grab and bite; for social interaction, approach, investigation (body/facial/anogenital sniffing and grabbing), grab, avoid, defense, and the intruder's own approach/defense.
+Import the JAABA labels into MATLAB and collapse them into one non-overlapping action per time step by ranking behaviors by investigatory importance and keeping only the highest-ranked action at each step. For object interaction the rank order (lowest to highest) was: non-investigatory, approach, sniff, carry, grab, bite. For social interaction: non-investigatory, intruder's approach, mouse's approach, investigation/grabbing (highest). Bite/grab were ranked highest because their transition probability from sniff/investigation differed most between novel and familiar conditions — this is the specific signal the model is built to detect.
+Fit a 3-state hidden Markov model to each trial's action sequence using MATLAB's built-in <code>hmmtrain</code> (Baum-Welch parameter estimation) and <code>hmmviterbi</code> (most-likely state path decoding) functions. Initialize the transition matrix with equal probabilities across all transitions (since there's no prior expectation of state structure) and the emission matrix from the observed frequency of each labeled behavior. The 3 states the model recovers correspond to idle (no investigatory action), low-interest investigation, and high-interest investigation.
+Use the fitted HMM's transition probabilities to classify each investigatory event as deep or shallow: for objects, an event starting with sniff is "deep" if continued by a bite, otherwise "shallow"; for social interaction, an event starting with approach is "deep" if continued by investigation-with-grab, otherwise "shallow." An event ends once no investigatory action has occurred for at least 100 ms.
+For fiber photometry signal processing (thresholding, artifact rejection) and pupil diameter extraction used to relate ZIm activity and arousal to these behavioral classifications, see InVivoTools (linked above) — a general-purpose physiology toolbox from the same lab, not specific to this paper.
+
+tutorial_output:
+Per-trial action sequences reduced to single ranked actions per time bin, a fitted 3-state HMM (transition and emission matrices) per condition (e.g. novel vs. familiar object/conspecific), and a deep-vs-shallow classification for every investigatory event — the behavioral measure that the paper then correlates with ZIm fiber-photometry activity and optogenetic manipulation effects.

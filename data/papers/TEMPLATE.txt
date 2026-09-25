@@ -1,0 +1,69 @@
+# ── Core fields (fill these in for every entry) ─────────────────────────
+title: <paper title>
+authors: <Last F., Last F., Last F. — comma separated, used for citations>
+journal: <journal or preprint server, e.g. Neuron, bioRxiv, eLife>
+year: <publication year, e.g. 2026>
+date: <full date YYYY-MM-DD, optional — used on the detail page if given>
+doi: <DOI, no https:// — e.g. 10.1016/j.neuron.2021.09.002>
+paper_url: <full link to the paper>
+github_url: <full link to the MAIN code repository>
+access_status: open_access
+category: <one or more of: image-analysis, statistical-analysis, automated-behavioral-tracking, electrophysiology, brain-imaging, gene-protein-analysis, spatial-omics, neural-networks — comma-separated if more than one genuinely applies, e.g. "electrophysiology, brain-imaging">
+tags: <comma-separated search keywords: techniques, brand names, synonyms>
+data_acquisition: <specific method, with brand/model if known>
+language: <primary programming language>
+animal: <species, or "Not applicable">
+difficulty: <beginner | intermediate | advanced>
+citation_count: <number, or leave blank if unknown>
+added_date: <YYYY-MM-DD>
+
+summary:
+<one or two sentences for the search result card>
+
+tutorial:
+<detailed step-by-step: what input data is expected and how to prepare it, numbered installation/setup steps, each analysis step explained (not just the command, but what it does and why), what outputs you get and what's in them, any common gotchas. Aim for 450-700 words — thorough enough that someone unfamiliar with the tool could follow it. Used if you don't fill in tutorial_intro/tutorial_steps/tutorial_output below instead.>
+
+
+# ── Optional fields (used on the detail page when present — leave out ───
+# ── anything you don't have, the page just skips that section) ─────────
+
+website_url: <docs / project website, if there's one besides the repo>
+gpu_required: <yes | no>
+
+# One "Label | URL" per line — for extra repos (data pipeline, pose
+# tracking, etc.) beyond the main github_url above.
+extra_links:
+Data acquisition hardware/software | https://github.com/example/data-pipeline
+Pose tracking pipeline | https://github.com/example/pose-pipeline
+
+# A longer abstract/description for the detail page's "Paper" section
+# (falls back to "summary" above if left blank).
+abstract_long:
+<longer description, a paragraph or two>
+
+# Structured tutorial (used instead of the plain "tutorial" field above
+# if filled in — gives you the same intro / numbered-steps / output layout
+# as the JABS example).
+tutorial_intro:
+<one or two sentences: what input data format is expected>
+
+tutorial_steps:
+<step 1 — one per line, HTML like <code> is fine>
+<step 2>
+<step 3>
+
+tutorial_output:
+<what the user gets out — files, format, what's inside them>
+
+# Where to point people for a ready-to-use example dataset.
+sample_data_text: <short description of the sample dataset>
+sample_data_url: <link to download it>
+
+# Subject/animal details beyond the "animal" field above.
+subjects_count: <e.g. "single" or "multiple animals per video">
+subjects_strains: <e.g. "multiple" or a specific strain name>
+subjects_notes: <any caveat worth spelling out>
+
+# Comma-separated ids (filenames without .txt) of other entries to show
+# under "Related tools" on the detail page.
+related_ids: 2026-08-18-cellexplorer

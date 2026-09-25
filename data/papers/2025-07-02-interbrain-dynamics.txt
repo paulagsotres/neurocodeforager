@@ -1,0 +1,46 @@
+title: Inter-brain neural dynamics in biological and artificial intelligence systems
+authors: Zhang X., Phi N., Li Q., Gorzek R., Zwingenberger N., Huang S., Zhou J.L., Kingsbury L., Raam T., Wu Y.E., Wei D., Kao J.C., Hong W.
+journal: Nature
+year: 2025
+date: 2025-07-02
+doi: 10.1038/s41586-025-09196-4
+paper_url: https://doi.org/10.1038/s41586-025-09196-4
+github_url: https://github.com/hongw-lab/code_for_2024_zhang-phi
+access_status: paywall_restricted
+category: brain-imaging
+tags: inter-brain neural dynamics, hyperscanning, social interaction, dorsomedial prefrontal cortex, dmPFC, calcium imaging, miniscope, microendoscope, GCaMP6f, GABAergic neurons, glutamatergic neurons, partial least squares correlation, PLSC, shared neural subspace, multi-agent reinforcement learning, MARL, SLEAP, pose tracking, CNMF-E, NoRMCorre, social neuroscience, artificial intelligence, cell assembly detection
+data_acquisition: In vivo microendoscopic calcium imaging (Miniscope V4, GRIN lens) — cell-type-specific GCaMP6f (CaMKII-GCaMP6f for glutamatergic, mDlx-GCaMP6f for GABAergic neurons) recorded simultaneously in two freely interacting mice in the dmPFC
+language: MATLAB, Python
+animal: Mouse
+difficulty: advanced
+citation_count:
+added_date: 2026-09-24
+
+summary:
+Using dual-mouse microendoscopic calcium imaging in the dmPFC plus multi-agent reinforcement learning, the authors show GABAergic neurons carry a much larger "shared neural subspace" across interacting individuals than glutamatergic neurons, and that disrupting the analogous shared dimensions in AI agents impairs their social behavior.
+
+abstract_long:
+The authors recorded calcium activity simultaneously from molecularly defined glutamatergic and GABAergic neurons in the dorsomedial prefrontal cortex (dmPFC) of pairs of freely interacting mice. Using partial least squares correlation (PLSC), they partitioned each mouse's neural activity into a "shared neural subspace" (dynamics correlated across the two brains) and a "unique neural subspace" (activity specific to one animal). GABAergic neurons — despite being a minority cell type — contained a substantially larger shared subspace than glutamatergic neurons, driven by both self- and partner-behavior representations, especially during mutual aggressive interactions. The authors then trained multi-agent reinforcement learning (MARL) agents in a simple chaser-explorer environment and found that shared neural dynamics analogous to those in mice emerged between interacting agents as social behavior developed; computationally removing the shared dimensions from an agent's recurrent network substantially reduced its social actions (collisions, keeping the partner in view), establishing a causal role for shared neural dynamics in driving social interaction.
+
+extra_links:
+Behavior annotator (custom manual annotation tool) | https://github.com/hongw-lab/behavior_annotator
+Piotr Dollar's MATLAB toolbox (used for behavior annotation) | https://github.com/pdollar/toolbox
+SLEAP (multi-animal pose tracking) | https://github.com/talmolab/sleap
+MiniscopeAnalysis (1-photon calcium imaging pipeline) | https://github.com/etterguillaume/MiniscopeAnalysis
+CNMF-E (constrained NMF for endoscopic data extraction) | https://github.com/zhoupc/CNMF_E
+NoRMCorre (motion correction for calcium imaging) | https://github.com/flatironinstitute/NoRMCorre
+Cell assembly / ensemble detection (PCA-ICA) | https://github.com/tortlab/Cell-Assembly-Detection
+MARL chaser-explorer environment (Ray/RLlib) | https://github.com/hongw-lab/MARL_Environment_Chase
+
+tutorial_intro:
+Like other multi-modal systems neuroscience papers, this isn't one installable tool but a set of separate repos, most under the hongw-lab GitHub account, each handling one stage of the pipeline (behavior annotation, pose tracking, calcium imaging preprocessing, ensemble detection, or the MARL environment). The repo linked above as the main one is specifically the analysis code for reproducing this paper's own figures (PLSC, shared/unique subspace analyses); the others are more general-purpose supporting tools.
+
+tutorial_steps:
+Raw calcium videos from paired Miniscopes are first motion-corrected with <code>NoRMCorre</code>, then run through <code>CNMF-E</code> (constrained non-negative matrix factorization tuned for the large, non-uniform background typical of endoscopic 1-photon imaging) to extract per-cell fluorescence traces — both are standalone MATLAB tools usable on any similar dataset, not specific to this paper.
+Animal behavior was annotated two ways: manually, using the lab's own <code>behavior_annotator</code> tool (built on Piotr Dollar's MATLAB toolbox) for frame-by-frame labeling of a fixed behavior vocabulary (attack, sniff, approach, etc.), and automatically via posture tracking with <code>SLEAP</code>, a general-purpose multi-animal pose-tracking package — useful on its own if you just need tracking, independent of the manual annotation step.
+Once you have per-cell calcium traces and behavior annotations for two simultaneously recorded animals, the paper-specific repo (linked above) implements the core PLSC (partial least squares correlation) analysis that partitions each animal's neural activity into shared and unique subspaces — this is the part you'd actually want to adapt if you're trying to reproduce or extend the paper's specific inter-brain analysis on your own two-animal calcium imaging dataset.
+For identifying intra-brain neural ensembles (correlated groups of neurons within one animal), the repo uses a separate PCA-ICA-based cell assembly detection tool, linked above, which is also usable independently for single-brain ensemble analysis.
+The multi-agent reinforcement learning side is a separate, self-contained pipeline: a chaser-explorer environment built on Ray/RLlib (linked above), trained with PPO. If you want to test whether "shared neural dynamics" emerge in your own multi-agent RL setup, you'd apply the same PLSC analysis (from the main repo) to the agents' RNN hidden-unit activations instead of calcium traces — the underlying math is identical, only the source of "neural" activity changes.
+
+tutorial_output:
+Depends on the stage: the imaging pipeline (NoRMCorre + CNMF-E) outputs per-cell calcium fluorescence traces per animal; the PLSC analysis outputs a set of "shared neural dimensions" (with per-dimension correlation/covariance across the two animals) and a complementary "unique neural subspace" per animal, plus the fraction of neural variance each accounts for; the MARL pipeline outputs trained agent policies and, when combined with the same PLSC analysis applied to RNN activations, the equivalent shared/unique dimension breakdown for artificial agents. The paper's own source data (underlying all figures) is provided as supplementary files alongside the publication rather than a separate code repository.

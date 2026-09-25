@@ -1,0 +1,46 @@
+title: Human Neocortical Neurosolver (HNN), a new software tool for interpreting the cellular and network origin of human MEG/EEG data
+authors: Neymotin S.A., Daniels D.S., Caldwell B., McDougal R.A., Carnevale N.T., Jas M., Moore C.I., Hines M.L., Hämäläinen M., Jones S.R.
+journal: eLife
+year: 2020
+date: 2020-01-22
+doi: 10.7554/eLife.51214
+paper_url: https://elifesciences.org/articles/51214
+github_url: https://github.com/jonescompneurolab/hnn-core
+website_url: https://hnn.brown.edu
+access_status: open_access
+category: electrophysiology, brain-imaging
+tags: MEG, EEG, ECoG, current dipole, neocortical circuit model, biophysical modeling, NEURON simulator, ERP, alpha rhythm, beta rhythm, gamma rhythm, pyramidal neurons, thalamocortical, GUI, translational neuroscience, source localization, parameter optimization, hnn-core, computational neuroscience
+data_acquisition: Human non-invasive MEG/EEG (and intracranial ECoG) source-localized current-dipole recordings, compared against a biophysically detailed neocortical circuit simulation
+language: Python (built on the NEURON simulator)
+animal: Not applicable — models human MEG/EEG/ECoG; the circuit predictions it generates have separately been validated against laminar recordings in mice and monkeys
+difficulty: beginner
+citation_count: 103
+added_date: 2026-09-24
+
+summary:
+HNN is a GUI-based biophysical model of a canonical neocortical column that simulates the cellular/circuit origin of human MEG/EEG signals (evoked responses and alpha/beta/gamma rhythms), letting researchers without modeling experience directly compare simulated and recorded current-dipole waveforms to test circuit-level hypotheses.
+
+abstract_long:
+HNN's core is a model of a canonical layered neocortical column — pyramidal neurons and interneurons arranged across layers, driven by two known input pathways (proximal "feedforward" thalamic drive and distal "feedback" cortico-cortical drive). Because the model simulates the actual intracellular dendritic current flow that generates MEG/EEG signals, its output is in the same units (ampere-meters) as source-localized data, allowing direct one-to-one comparison. The GUI lets users load their own evoked-response or rhythm data, activate the network with user-defined drive parameters, run the simulation, and immediately inspect not just the resulting current dipole but the underlying single-cell spiking and layer-specific activity that produced it — turning parameter tuning into a hypothesis-testing loop. Built-in tutorials reproduce the group's own published findings on tactile evoked responses and alpha/beta/gamma rhythms, including a model-derived prediction about the laminar origin of transient beta events that was later confirmed with invasive recordings in mice and monkeys. Note: the original GUI repository described in this paper is now archived and unmaintained; it has been superseded by hnn-core, a modernized Python package (with its own GUI) that implements the same underlying model and is the version linked here.
+
+extra_links:
+Original paper-exact GUI (archived, kept only for reproducing this paper) | https://github.com/jonescompneurolab/hnn
+HNN Textbook (full documentation, tutorials, installation guide) | https://jonescompneurolab.github.io/textbook/content/preface.html
+
+sample_data_text: Example datasets from this paper (tactile evoked responses, spontaneous SI alpha/beta rhythms, and visual gamma rhythms) are bundled with the original software's data folder.
+sample_data_url: https://github.com/jonescompneurolab/hnn/tree/master/data
+
+tutorial_intro:
+The tool in this paper (the original HNN GUI) is archived and no longer maintained — install hnn-core instead, which implements the same biophysical model with active support, more features (LFP/CSD simulation, parameter optimization), and its own GUI. The core workflow described below (load data, define network structure, "activate" it with drive parameters, compare to data, inspect microcircuit detail) carries over conceptually from the original paper to hnn-core.
+
+tutorial_steps:
+Install the Anaconda Python distribution if you don't have it, then create a dedicated environment: <code>conda create -y -q -n hnn-core-env python=3.12</code>, <code>conda activate hnn-core-env</code>, then <code>conda install hnn-core-all -c jonescompneurolab -c conda-forge</code>. (If you'd rather use pip, hnn-core supports Python 3.9 through 3.13 that way — see the Installation Guide linked above for details.)
+Alternatively, try HNN in your browser with no local install via Google Colab notebooks or the Neuroscience Gateway Portal — both are linked from the Installation Guide, useful if you just want to explore before committing to a local setup.
+Load your MEG/EEG/ECoG data (this step is optional — you can also just explore rhythm generation without comparing to real data) and the default canonical neocortical column network loads automatically; adjust its structure (cell counts, connectivity) if needed.
+"Activate" the network by defining layer-specific exogenous drive — proximal drive represents feedforward thalamic input, distal drive represents feedback from higher-order cortex, and both can be single spikes, rhythmic bursts, or Poisson-distributed noisy drive depending on what signal you're trying to reproduce (evoked response vs. oscillation).
+Run the simulation and compare the resulting current-dipole waveform to your loaded data (goodness of fit is reported via RMSE), then inspect the underlying layer-specific activity, individual cell spiking, and somatic voltages that produced it to understand the circuit-level story behind the signal.
+Iterate: adjust drive timing/strength (by hand, or using HNN's built-in stepwise parameter optimization for evoked responses) to test different circuit hypotheses, and compare across simulated experimental conditions.
+For a full click-by-click walkthrough (the original paper's tutorials on evoked responses and alpha/beta/gamma rhythms have modern equivalents), see the HNN Textbook linked above rather than the archived paper-era GUI screenshots.
+
+tutorial_output:
+The primary output is a simulated current-dipole waveform (in ampere-meters, directly comparable to source-localized MEG/EEG data) for whatever drive parameters you defined, alongside the full microcircuit detail that generated it: individual pyramidal neuron and interneuron spike times, somatic voltages, and layer-specific dipole contributions. For evoked-response fitting, HNN also reports a goodness-of-fit RMSE between simulated and recorded waveforms, and (with hnn-core) supports simulating LFP and current-source-density signals alongside the dipole.

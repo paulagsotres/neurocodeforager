@@ -1,0 +1,32 @@
+name: Weekly indexing run
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'  # every Monday 06:00 UTC
+  workflow_dispatch: {}   # lets you trigger it manually from the Actions tab
+
+jobs:
+  index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Run indexing pipeline
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python scripts/index_papers.py --queue data/pending_papers.json
+
+      - name: Commit updated entries
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/papers/ data/entries.json reviews/
+          git diff --cached --quiet || git commit -m "Auto-index: weekly run"
+          git push

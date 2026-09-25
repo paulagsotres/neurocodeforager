@@ -1,0 +1,42 @@
+title: Imaging cellular activity across all organs reveals body-wide circuits
+authors: Ruetten V.M.S., Zheng W., Siwanowicz I., Mensh B.D., Eddison M., et al.
+journal: Nature
+year: 2026
+date: 2026-09-09
+doi: 10.1038/s41586-026-10979-6
+paper_url: https://www.nature.com/articles/s41586-026-10979-6
+github_url: https://github.com/vruetten/wholistic_registration
+website_url: https://wholistic.janelia.org/
+access_status: open_access
+category: image-analysis
+tags: whole-body imaging, WHOLISTIC, calcium imaging, GCaMP, GCaMP7f, zebrafish, Danionella cerebrum, spinning-disk confocal, volumetric imaging, motion correction, image registration, optical flow, cell segmentation, Voluseg, spectral clustering, coherence clustering, expansion microscopy, PhotoMap, optogenetics, body-wide circuits, systems physiology, hypoxia, sympathetic ganglion, Janelia
+data_acquisition: Volumetric fluorescence imaging — dual-color spinning-disk confocal microscopy (pancellular GCaMP7f/jRGECO1b calcium indicators plus an anatomical reference channel), ~0.3 Hz volumetric rate
+language: Python
+animal: Zebrafish (larval), Danionella cerebrum (adult)
+difficulty: advanced
+citation_count: 1
+added_date: 2026-09-24
+
+summary:
+WHOLISTIC is a whole-body live-imaging platform recording second-timescale calcium activity across nearly every cell type in a transparent vertebrate, paired with a registration/segmentation/clustering computational pipeline and whole-body expansion microscopy for anatomical follow-up.
+
+abstract_long:
+The authors built a pancellular calcium-imaging platform (WHOLISTIC) combining a transgenic zebrafish line expressing GCaMP7f in essentially all cells, high-speed volumetric spinning-disk confocal microscopy, and a computational pipeline that corrects for the large, non-rigid tissue motion caused by muscle contractions before segmenting and clustering cells into "functional tissue ensembles." Applying this across the body revealed previously unknown biology at multiple scales: chondrocyte responses to cold, meningeal responses to ketamine, rhythmic traveling calcium waves along the kidney nephron, an independent "cervical epaxial" muscle group, motor-quiescence-linked ultraslow oscillations traced to a previously uncharacterized population of long-projecting ependymal cells, and — combining WHOLISTIC with optogenetics — a causal brainstem-to-gut circuit that redirects blood flow away from the viscera during hypoxia. A new whole-body expansion microscopy protocol (WB-ExM) was developed alongside WHOLISTIC to validate cell identities and resolve fine anatomy that live imaging alone couldn't.
+
+extra_links:
+Voluseg (volumetric cell segmentation pipeline) | https://github.com/vruetten/voluseg
+PhotoMap (expansion microscopy deformation-field mapping) | https://github.com/vruetten/PhotoMap
+Whole-body 3D geometric model from WB-ExM data | https://github.com/vruetten/wholebodymodel
+
+tutorial_intro:
+This is a suite of separate, focused tools rather than one installable package — each repo under the vruetten GitHub account handles one stage of the WHOLISTIC pipeline and is released with its own versioned Zenodo archive. Expect to read each repo's own README for exact usage, since a general-purpose whole-body imaging pipeline hasn't been formally published in one interface yet.
+
+tutorial_steps:
+Start with <code>wholistic_registration</code> if your problem is non-rigid motion correction in volumetric fluorescence data — it corrects for tissue displacement caused by muscle contraction using patch-wise iterative optical flow with a multi-resolution image pyramid, and is designed to be GPU-parallelizable. It expects a "template" reference channel (something relatively stable, like an anatomical marker) alongside your signal channel of interest (for example, calcium), since the registration is computed on the stable channel and then applied to align the dynamic one.
+Once your data is registered, cell-level signals are extracted with <code>voluseg</code>, a volumetric segmentation pipeline based on constrained non-negative matrix factorization — it takes registered volumetric time-series data and outputs per-cell fluorescence traces, tuned conservatively in this paper to over-segment rather than risk merging distinct cells.
+To go from cellular calcium traces to interpretable "functional tissue ensembles," the paper uses coherence-based spectral clustering rather than plain correlation — grouping cells with temporally structured, possibly phase-lagged activity (like traveling waves) that correlation-based methods would miss. This part of the analysis isn't broken out as a standalone package in the code availability statement, so expect to implement the coherence-clustering step yourself following the Methods section if you want to reproduce it exactly.
+If your goal is validating cell identities or resolving fine anatomical structures underlying a functional signal (as the ependymal-cell finding in this paper required), the whole-body expansion microscopy protocol and its <code>PhotoMap</code> tool are the relevant pieces — PhotoMap quantifies the physical deformation field introduced by the tissue-expansion process itself, using a photobleached reference grid, so you can assess whether expansion was uniform before trusting downstream measurements.
+For a purely anatomical starting point (for example, if you want a labeled 3D reference to register your own zebrafish data against, independent of building it yourself), the <code>wholebodymodel</code> repo provides the 3D geometric model of the young zebrafish body built from this paper's WB-ExM data.
+
+tutorial_output:
+Output depends on which stage you use: <code>wholistic_registration</code> outputs a motion-corrected version of your volumetric time-series data plus the estimated per-frame displacement field; <code>voluseg</code> outputs per-cell fluorescence time series (and their spatial footprints) extracted from registered data; and <code>PhotoMap</code> outputs a quantified 3D deformation field describing how much and how uniformly a sample expanded, useful as a quality-control step before trusting expansion-microscopy-based measurements. Note: a specific raw-imaging-data repository wasn't identified in this indexing pass beyond the code releases above — check the paper's own Data Availability statement if you need the underlying imaging datasets rather than just the analysis code.

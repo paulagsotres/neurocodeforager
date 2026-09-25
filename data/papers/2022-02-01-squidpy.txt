@@ -1,0 +1,89 @@
+title: Squidpy: a scalable framework for spatial omics analysis
+authors: Palla G., Spitzer H., Klein M., Fischer D., Schaar A.C., Kuemmerle L.B., Rybakov S., Ibarra I.L., Holmberg O., Virshup I., Lotfollahi M., Richter S., Theis F.J.
+journal: Nature Methods
+year: 2022
+date: 2022-02-01
+doi: 10.1038/s41592-021-01358-2
+paper_url: https://www.nature.com/articles/s41592-021-01358-2
+website_url: https://squidpy.readthedocs.io/en/stable/
+github_url: https://github.com/scverse/squidpy
+access_status: open_access
+category: spatial-omics
+tags: spatial omics, spatial transcriptomics, spatial proteomics, single-cell analysis, spatial statistics, spatial neighborhood graph, neighborhood enrichment, co-occurrence analysis, Ripley's statistics, Moran's I, Geary's C, spatially variable genes, ligand-receptor interactions, cell-cell communication, image analysis, tissue morphology, image features, cell segmentation, Visium, Slide-seq, MERFISH, seqFISH, imaging mass cytometry, MIBI-TOF, AnnData, Scanpy, SpatialData, Dask, napari, Python, scverse
+data_acquisition: Spatially resolved molecular data from spot-based, single-cell and subcellular assays, including Visium, Slide-seq, seqFISH, MERFISH, imaging mass cytometry, MIBI-TOF and related spatial transcriptomic or proteomic technologies, optionally accompanied by high-resolution tissue microscopy images.
+language: Python
+animal: Technology-agnostic; demonstrated on mouse, human and other spatial molecular datasets.
+gpu_required: No for the core workflow; GPU may be useful for external deep-learning segmentation or image-feature extraction.
+difficulty: intermediate
+citation_count: null
+added_date: 2026-09-25
+
+summary:
+Squidpy is a scalable Python framework for analyzing spatial molecular data. It represents spatial observations as neighborhood graphs and associated tissue images, enabling quantitative analysis of cellular organization, spatially variable genes, cell-cell interactions, tissue morphology and image-derived features within a common Scanpy/AnnData workflow.
+
+abstract_long:
+Squidpy, or Spatial Quantification of Molecular Data in Python, provides a unified framework for analyzing spatially resolved omics data across spot-based, single-cell and subcellular technologies. The framework combines two central representations: a spatial neighborhood graph constructed from coordinates and an image container for large tissue images. The graph supports grid-based, k-nearest-neighbor, radius-based and Delaunay neighborhoods, while the image representation uses memory-efficient and lazy-loading mechanisms based on xarray and Dask. On top of these representations, Squidpy implements neighborhood enrichment, cluster co-occurrence, Ripley's F/G/L statistics, Moran's I and Geary's C spatial autocorrelation, spatially variable gene analysis, ligand-receptor interaction testing, graph centrality measures and image-feature extraction. The framework also connects molecular observations with microscopy-derived features such as intensity, texture, segmentation-object counts and morphology. It is built on Scanpy and AnnData and is designed to interoperate with the wider Python single-cell ecosystem.
+
+sample_data_text:
+The Squidpy documentation provides example datasets and tutorials for Visium, seqFISH, MERFISH, Slide-seq and other spatial molecular modalities. A representative workflow uses a mouse brain Visium dataset with hematoxylin and eosin imaging and spatial gene-expression measurements.
+
+sample_data_url: https://squidpy.readthedocs.io/en/stable/notebooks/tutorial_visium_hne.html
+
+tutorial_intro:
+This tutorial demonstrates a general Squidpy workflow for a spatial transcriptomics dataset: install the package, load an AnnData object, inspect the spatial coordinates, construct a spatial neighborhood graph, visualize clusters, test neighborhood enrichment, identify spatially variable genes and optionally connect molecular data with tissue-image features. The workflow is modular: you can stop after graph-based spatial statistics or extend it with image processing, segmentation and ligand-receptor analysis. The current Squidpy documentation recommends using napari-spatialdata for interactive visualization in the SpatialData ecosystem rather than the deprecated original Squidpy napari plugin.
+
+tutorial_steps:
+Install Squidpy in an isolated Python environment. The current repository recommends Python 3.12 or newer on Linux or macOS, with Windows supported through WSL. Run <code>python -m venv squidpy-env</code>, activate the environment, and then run <code>python -m pip install --upgrade pip</code> followed by <code>pip install squidpy</code>. Alternatively, use <code>conda install -c conda-forge squidpy</code>.
+
+Import the main packages with <code>import scanpy as sc</code> and <code>import squidpy as sq</code>. Squidpy uses AnnData, so molecular measurements should be stored in <code>adata.X</code>, observation metadata in <code>adata.obs</code>, gene or protein metadata in <code>adata.var</code>, spatial coordinates in <code>adata.obsm</code> and images in the associated image container.
+
+Load a dataset from the Squidpy example-data registry or from your own experiment. For a Visium dataset, use <code>adata = sq.datasets.visium_hne_adata()</code>. For custom data, load an AnnData or Visium object with Scanpy and verify that spatial coordinates are available before performing graph-based analyses.
+
+Inspect the object and its annotations with <code>adata</code>, <code>adata.obs.head()</code>, <code>adata.obsm.keys()</code> and <code>sc.pl.spatial(adata, color='clusters')</code>. Replace <code>clusters</code> with the name of the cell-type or cluster annotation in your own dataset.
+
+Construct the spatial neighborhood graph. For grid-like Visium data, use <code>sq.gr.spatial_neighbors(adata, coord_type='grid', n_rings=1)</code>. For generic cell coordinates, use <code>sq.gr.spatial_neighbors(adata, coord_type='generic', n_neigh=6)</code>. If interactions are expected within a physical distance, use <code>sq.gr.spatial_neighbors(adata, coord_type='generic', radius=50)</code>, adjusting the radius to the coordinate units of the assay.
+
+Quantify neighborhood enrichment between annotated cell types or clusters. Run <code>sq.gr.nhood_enrichment(adata, cluster_key='cell_type')</code> and visualize the result with <code>sq.pl.nhood_enrichment(adata, cluster_key='cell_type')</code>. Squidpy permutes cell-type labels while keeping the spatial graph fixed, then compares observed and randomized adjacency counts. Positive z-scores indicate over-represented neighboring cell-type pairs, whereas negative values indicate depletion.
+
+Measure spatial co-occurrence across increasing distances. Run <code>sq.gr.co_occurrence(adata, cluster_key='cell_type')</code> and plot the result with <code>sq.pl.co_occurrence(adata, cluster_key='cell_type')</code>. This analysis tests whether one cell type occurs near another more often than expected at different spatial radii.
+
+Identify globally clustered or dispersed cell types with Ripley's statistics. Run <code>sq.gr.ripley(adata, cluster_key='cell_type', mode='L')</code> and plot the result with <code>sq.pl.ripley(adata, cluster_key='cell_type', mode='L')</code>. The L, F and G functions quantify spatial organization across distance scales rather than at a single neighborhood radius.
+
+Identify spatially variable genes. Run <code>sq.gr.spatial_autocorr(adata, mode='moran')</code> and inspect the ranked results in <code>adata.uns['moranI']</code>. A high positive Moran's I indicates that similar expression values tend to occur near one another in the spatial graph. Visualize candidate genes with <code>sc.pl.spatial(adata, color=['gene_1', 'gene_2'])</code>.
+
+Analyze ligand-receptor interactions after defining cell-type annotations. Run <code>sq.gr.ligrec(adata, cluster_key='cell_type')</code> and inspect the results in <code>adata.uns['ligrec']</code>. Treat these results as candidate communication signals rather than direct evidence of physical or causal signaling, and interpret them together with spatial proximity and independent expression or protein measurements.
+
+If tissue images are available, connect image data to the AnnData observations using Squidpy's image functionality. Add the image layer and, where appropriate, a segmentation mask, then extract intensity, texture or segmentation-object features. These features can be aggregated at spot or cell level and compared with molecular clusters or marker expression.
+
+For interactive image exploration in the current software ecosystem, use napari-spatialdata rather than the deprecated original Squidpy napari plugin. This is useful when inspecting tissue boundaries, segmentation masks, cell-type annotations and molecular features in a common spatial coordinate system.
+
+Save the processed object and analysis results with <code>adata.write('squidpy_analysis.h5ad')</code>. Also save the figures, parameter settings and Python environment specification so that neighborhood definitions, permutation counts, gene filters and image-processing settings can be reproduced.
+
+tutorial_output:
+The workflow produces an AnnData object containing a spatial neighborhood graph in <code>adata.obsp</code>, spatial distances and connectivities, neighborhood-enrichment scores and permutation-based significance values, co-occurrence curves, Ripley's F/G/L statistics, spatial-autocorrelation results for genes, ligand-receptor interaction statistics and, when images are available, spot-level or cell-level morphology and intensity features. The main biological outputs are quantitative maps of tissue organization, enriched or depleted cellular neighborhoods, spatially variable molecular features and candidate cell-cell communication patterns.
+
+code:
+repo_url: https://github.com/scverse/squidpy
+platform: github
+
+extra_links:
+- label: Stable documentation
+  url: https://squidpy.readthedocs.io/en/stable/
+- label: API reference
+  url: https://squidpy.readthedocs.io/en/stable/api.html
+- label: Tutorials and examples
+  url: https://squidpy.readthedocs.io/en/stable/tutorials.html
+- label: Visium H&E tutorial
+  url: https://squidpy.readthedocs.io/en/stable/notebooks/tutorial_visium_hne.html
+- label: SpatialData framework
+  url: https://github.com/scverse/spatialdata
+- label: napari-spatialdata interactive visualization
+  url: https://github.com/scverse/napari-spatialdata
+- label: Scanpy
+  url: https://github.com/scverse/scanpy
+- label: AnnData
+  url: https://github.com/scverse/anndata
+
+related_ids:
+
+verified: true

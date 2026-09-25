@@ -1,0 +1,46 @@
+title: Cell Detection with Star-Convex Polygons
+authors: Schmidt U., Weigert M., Broaddus C., Myers G.
+journal: MICCAI 2018 (LNCS vol. 11071)
+year: 2018
+date: 2018-09-26
+doi: 10.1007/978-3-030-00934-2_30
+paper_url: https://link.springer.com/chapter/10.1007/978-3-030-00934-2_30
+github_url: https://github.com/stardist/stardist
+website_url: https://qupath.readthedocs.io/en/stable/docs/deep/stardist.html
+access_status: open_access
+category: image-analysis
+tags: cell segmentation, nuclei segmentation, star-convex polygons, instance segmentation, deep learning, U-Net, QuPath, napari, ImageJ, Fiji, KNIME, Icy, digital pathology, H&E, fluorescence microscopy, object detection, non-maximum suppression, bioimage analysis, MICCAI, StarDist
+data_acquisition: Fluorescence and brightfield (H&E) microscopy images of cell nuclei — 2D and 3D
+language: Python (core package); Groovy for the QuPath integration
+animal: Not applicable — general-purpose nuclei/cell segmentation, not species-specific
+difficulty: beginner
+citation_count: 2421
+added_date: 2026-09-24
+
+summary:
+StarDist detects and segments cell/nuclei instances in microscopy images by predicting a star-convex polygon per pixel, avoiding the merging and suppression errors common with per-pixel or bounding-box approaches in crowded images — available as a Python package with pretrained 2D/3D models, and as plugins for QuPath, napari, Fiji, Icy, and KNIME.
+
+abstract_long:
+The authors propose StarDist, a convolutional neural network (based on U-Net) that, for every pixel, predicts a star-convex polygon describing the boundary of the cell instance at that location, plus an object probability score. Non-maximum suppression over these overcomplete polygon candidates yields the final instance segmentation. Compared to per-pixel segmentation followed by connected-component grouping (which merges touching cells) or bounding-box-based detectors like Mask R-CNN (whose axis-aligned boxes overlap heavily and get wrongly suppressed for crowded, irregularly oriented nuclei), star-convex polygons are a much better shape prior for the roughly round shapes typical of cell nuclei. StarDist matches or exceeds Mask R-CNN on a challenging real fluorescence microscopy dataset (DSB2018) with an order of magnitude fewer parameters, and handles crowded/touching nuclei substantially better than pixel-classification baselines.
+
+extra_links:
+napari plugin | https://github.com/stardist/stardist-napari
+Icy plugin | https://github.com/stardist/stardist-icy
+QuPath annotation export script (build your own training data from QuPath annotations) | https://raw.githubusercontent.com/stardist/stardist/main/extras/qupath_export_annotations.groovy
+ImageJ/Fiji plugin docs | https://imagej.net/StarDist
+
+sample_data_text: A single test image ships with the Python package (stardist.data.test_image_nuclei_2d()); the training dataset behind the original 2D paper's model is on the GitHub releases page as a zip.
+sample_data_url: https://github.com/stardist/stardist/releases/download/0.1.0/dsb2018.zip
+
+tutorial_intro:
+There are two very different ways to use StarDist depending on whether you want a no-code GUI workflow or a scriptable Python pipeline. If you just want to run a pretrained model on your own microscopy images without writing code, the QuPath extension (linked above as the website/docs) is the easiest path — it's a common way to bring StarDist into digital pathology / histology workflows specifically. If you want to train a custom model, batch-process images programmatically, or work in 3D, use the core Python package directly.
+
+tutorial_steps:
+QuPath route (no coding): install QuPath, then install the StarDist extension by following the setup instructions on the linked docs page — this involves downloading a compatible pretrained model file (a .pb TensorFlow SavedModel) and pointing QuPath's Groovy script at its location. Once set up, you run nuclei detection directly on images already open in a QuPath project by running the provided detection script, adjusting parameters like pixel size and probability threshold to match your images.
+Python route — install: first install TensorFlow (TensorFlow 1 or 2 both work), then <code>pip install stardist</code> (or <code>pip install "stardist[tf1]"</code> if you're on TensorFlow 1). Pre-compiled wheels cover most Linux/Windows/macOS setups; if pip tries to compile from source, you'll need a working C++ compiler (see the repo's troubleshooting section for OS-specific instructions).
+Python route — run a pretrained model: <code>from stardist.models import StarDist2D; model = StarDist2D.from_pretrained('2D_versatile_fluo')</code> for fluorescence nuclear-marker images, or <code>'2D_versatile_he'</code> for brightfield H&E histology images. Then <code>labels, _ = model.predict_instances(normalize(img))</code> (using <code>csbdeep.utils.normalize</code>) gives you a labeled instance mask in one call — no training required if a pretrained model fits your image type.
+Python route — train your own model: if your images don't resemble the pretrained model types well, you'll need annotated training data — pairs of raw images and label images where every cell has a distinct integer ID. The repo recommends LabKit (via Fiji, works for 2D or 3D) or QuPath (2D only, using the provided Groovy export script to turn QuPath annotations into StarDist-ready image/mask pairs) for creating these annotations. Once you have annotated pairs, follow the example Jupyter notebooks in the repo's <code>examples/</code> folder for the full training workflow.
+For 3D volumes, the same overall approach extends to predicting star-convex polyhedra instead of 2D polygons (see the companion WACV 2020 paper) — the package and API are largely the same, just with 3D-shaped inputs and models.
+
+tutorial_output:
+A labeled instance segmentation: every detected cell/nucleus is assigned a unique integer ID in the output mask (0 for background), either as detection objects within your QuPath project (ready for QuPath's built-in measurements and downstream analysis) or as a numpy label array (from the Python API) you can use in your own pipeline. The package also includes a <code>stardist.matching</code> submodule for computing standard instance-segmentation metrics (precision, recall, F1, panoptic quality) between a predicted mask and ground truth, useful for validating a model — pretrained or custom — against your own annotated test images.

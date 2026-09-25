@@ -1,0 +1,46 @@
+title: Topographic structure and function of locus coeruleus noradrenaline neurons
+authors: Su Z., Kosillo P., Jung K., Chen S., Summers M.T., et al.
+journal: Nature
+year: 2026
+date: 2026-09-16
+doi: 10.1038/s41586-026-11026-0
+paper_url: https://www.nature.com/articles/s41586-026-11026-0
+github_url: https://github.com/AllenNeuralDynamics/locus_coeruleus_norepinephrine_neurons
+website_url: https://codeocean.allenneuraldynamics.org/collections/9cf044ce-93c7-4c7e-bfa1-5d8c37aa42ec
+access_status: open_access
+category: image-analysis, electrophysiology, brain-imaging
+tags: locus coeruleus, noradrenaline, norepinephrine, LC-NE, reward prediction error, dynamic foraging, Neuropixels, optogenetic tagging, whole-brain imaging, SPIM, light-sheet microscopy, single-neuron reconstruction, MAPseq, BARseq, snRNA-seq, axonal projection mapping, CCF, Allen Institute, fiber photometry, reinforcement learning
+data_acquisition: Multi-modal — whole-brain light-sheet imaging (ExA-SPIM) for single-neuron reconstruction, electrophysiology (Neuropixels probes/tetrodes) with optogenetic tagging, snRNA-seq, MAPseq/BARseq projection mapping, fiber photometry
+language: Python
+animal: Mouse
+difficulty: advanced
+citation_count:
+added_date: 2026-09-24
+
+summary:
+Multi-modal Allen Institute study linking locus coeruleus noradrenaline neuron morphology, gene expression, and electrophysiological activity along a dorsal-ventral topography, with dorsal cortex-projecting neurons encoding choice switches and reward-prediction errors during a reinforcement-learning task.
+
+abstract_long:
+Using whole-brain light-sheet imaging, the authors reconstructed complete axonal morphologies of individual locus coeruleus noradrenaline (LC-NE) neurons and found that projections are extensive but largely confined to specific brain regions, correlating with the dorsal-ventral position of the cell body. Single-nucleus RNA-seq showed gene expression is smoothly graded along the same axis. During a dynamic reward-learning task, electrophysiological recordings (with optogenetic tagging) showed that dorsal LC-NE neurons projecting to isocortex were preferentially active when mice switched choices and encoded reward-prediction-error signals, while ventral neurons showed higher background activity when mice ignored reward-predictive cues — linking anatomical, molecular, and functional topography in a major neuromodulatory system.
+
+extra_links:
+MAPseq data processing (barcoded projection mapping) | https://github.com/ZadorLaboratory/mapseq-processing
+SmartSPIM whole-brain imaging pipeline | https://github.com/AllenNeuralDynamics/aind-smartspim-pipeline
+Dynamic foraging behavioral models (RL agents used for choice/RPE analysis) | https://github.com/AllenNeuralDynamics/aind-dynamic-foraging-models
+
+sample_data_text: Electrophysiology and fiber photometry data from the dynamic foraging task, deposited on DANDI (Dandiset 001950).
+sample_data_url: https://dandiarchive.org/dandiset/001950
+
+tutorial_intro:
+This project spans several modalities (whole-brain anatomy, electrophysiology, transcriptomics, projection mapping, behavior), so the code is deliberately split across the main repo (linked above) plus a few supporting infrastructure repos rather than one single pipeline you install and run end-to-end. The CodeOcean capsule collection (linked as the website above) has containerized, reproducible versions of the analyses if you want to rerun a specific figure without setting up each modality's environment yourself from scratch.
+
+tutorial_steps:
+Start from the CodeOcean capsule collection (linked above) if your goal is to reproduce a specific figure without installing dependencies — each capsule bundles the code, environment, and (where feasible) the data for one part of the analysis, so you can launch it and inspect the outputs without local setup.
+For the main repo, clone <code>AllenNeuralDynamics/locus_coeruleus_norepinephrine_neurons</code> and check its own README for the specific analysis scripts, since the repo is organized by modality (anatomy/morphology, electrophysiology, and behavior each have their own subdirectories with separate environments).
+If your interest is specifically in projection mapping via barcoded RNA sequencing (MAPseq/BARseq), that step is handled by a standalone tool rather than the main repo: <code>ZadorLaboratory/mapseq-processing</code> takes the raw paired-end FASTQ output from a MAPseq/BARseq run and produces barcode-to-brain-region projection matrices — useful independently of this specific paper if you're running your own barcoded projection-mapping experiment.
+If you're after the whole-brain light-sheet image registration and stitching pipeline used for the single-neuron reconstructions, that's <code>AllenNeuralDynamics/aind-smartspim-pipeline</code> — it handles registering ExA-SPIM whole-brain volumes to the Allen Common Coordinate Framework (CCFv3), which is the anatomical reference space all the projection and soma-location results in this paper are expressed in.
+For the reinforcement-learning models fit to mouse choice behavior during the dynamic-foraging task (the source of the reward-prediction-error estimates correlated with LC-NE activity), see <code>AllenNeuralDynamics/aind-dynamic-foraging-models</code> — it implements several RL agent classes (Q-learning, loss-counting, win-stay-lose-switch variants) that can be fit to any dataset following the same trial-structure convention, not just this paper's sessions.
+Electrophysiology and fiber photometry data underlying the reward-related findings are on DANDI (linked under Sample data) in NWB format, which is a reasonable starting point if you want to explore the raw recordings without regenerating them yourself.
+
+tutorial_output:
+Output format varies substantially by module, reflecting the different modalities: the anatomical pipeline outputs registered whole-brain image volumes and individual neuron reconstructions in SWC format (a standard neuron-morphology file format compatible with most morphology analysis tools); the MAPseq/BARseq pipeline outputs barcode-by-brain-region count matrices representing each labeled neuron's projection pattern; and the behavioral models output fitted reinforcement-learning parameters (learning rates, choice-kernel weights) plus trial-by-trial reward-prediction-error estimates that can be correlated against neural recordings, as done in the paper's main electrophysiology analysis.

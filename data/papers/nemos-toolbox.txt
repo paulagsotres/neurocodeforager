@@ -1,0 +1,42 @@
+title: NeMoS (NEural MOdelS) — a JAX-powered statistical modeling framework for systems neuroscience
+authors: Balzani E., NeMoS Developers (Flatiron Institute Center for Computational Neuroscience)
+journal: Software (Zenodo)
+year: 2024
+doi: 10.5281/zenodo.17553286
+paper_url: https://doi.org/10.5281/zenodo.17553286
+github_url: https://github.com/flatironinstitute/nemos
+website_url: https://nemos-neuro.org/en/latest/
+access_status: open_access
+category: statistical-analysis
+tags: GLM, generalized linear model, JAX, GPU-accelerated, spike train modeling, basis functions, splines, B-spline, M-spline, raised cosine basis, regularization, Ridge, Lasso, ElasticNet, GroupLasso, Poisson regression, population GLM, PopulationGLM, feature engineering, systems neuroscience, Flatiron Institute, pynapple
+data_acquisition: Not applicable — general-purpose statistical modeling toolbox for any spike-count or continuous time-series data (works with whatever neurophysiology or behavioral recordings you already have)
+language: Python (GPU-accelerated via JAX)
+animal: Not applicable — general-purpose framework, not species- or acquisition-specific
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-25
+
+summary:
+NeMoS is a JAX-powered, GPU-accelerated Python toolbox for fitting generalized linear models (GLMs) to neural spike-count or continuous time-series data, with a composable basis-function module for feature engineering (splines, raised-cosine bases, convolutional filters) and multiple regularization schemes (Ridge, Lasso, GroupLasso, ElasticNet).
+
+abstract_long:
+Unlike most entries here, NeMoS isn't tied to a single research paper — it's a general-purpose, actively maintained statistical modeling library from the Flatiron Institute's Center for Computational Neuroscience, cited via its Zenodo software record rather than a journal article. It has two core modules: a "basis" module that turns raw covariate time series (stimuli, position, head direction, LFP phase, spike counts, etc.) into model features, either through non-linear basis expansions (B-splines, M-splines, raised-cosine bases) or through convolution with a bank of temporal filters; and a "glm" module that fits single-neuron (GLM) or population-wide (PopulationGLM) generalized linear models to those features, with a choice of observation model (Poisson, Negative Binomial, Gamma, Gaussian, Bernoulli) and regularizer (Ridge, Lasso, GroupLasso, ElasticNet). It's designed to pair naturally with pynapple for upstream data handling, and its GPU acceleration via JAX makes it practical to fit these models at population scale.
+
+extra_links:
+Quickstart guide | https://nemos-neuro.org/en/latest/quickstart.html
+Tutorials (fully worked examples) | https://nemos-neuro.org/en/latest/tutorials/README.html
+pynapple (companion package for data handling and preprocessing) | https://github.com/pynapple-org/pynapple
+
+tutorial_intro:
+NeMoS is a general-purpose Python package rather than a tool built around one specific file format — it works on whatever time-series arrays you already have (typically spike counts as the response variable, and behavioral/stimulus covariates as predictors), as plain numpy arrays or as pynapple time-series objects if your recording has natural epoch boundaries (separate trials or sessions with gaps).
+
+tutorial_steps:
+Install: <code>pip install nemos</code> (macOS/Linux) or <code>python -m pip install nemos</code> (Windows).
+Turn your raw covariates into model features using a basis object. For a smooth non-linear mapping use something like <code>nmo.basis.MSplineEval(n_basis_funcs=5)</code>; for capturing temporal dynamics via a filter bank, use a convolutional basis like <code>nmo.basis.RaisedCosineLogConv(n_basis_funcs, window_size=...)</code>. Basis objects are composable — you can combine several with <code>*</code> (multiplicative interaction) and <code>+</code> (additive) to build a compound feature set from multiple covariates.
+Call <code>.compute_features(...)</code> on your (possibly compound) basis object, passing in your raw input time series (stimulus, position, LFP phase, population spike counts, etc.), to get the design matrix X.
+Fit a GLM: <code>nmo.glm.GLM().fit(X, y)</code> for a single neuron's spike-count series y, or <code>nmo.glm.PopulationGLM().fit(X, spike_counts)</code> to jointly fit an entire simultaneously-recorded population. Optionally specify an observation model (Poisson is the default; also Negative Binomial, Gamma, Gaussian, Bernoulli) and a regularizer (Ridge, Lasso, GroupLasso, ElasticNet) when instantiating the GLM.
+Inspect the fit via <code>glm.coef_</code> and <code>glm.intercept_</code> (the learned weights), <code>glm.predict(X)</code> (predicted firing rate), and <code>glm.score(X, y)</code> (log-likelihood) — the standard building blocks for interpreting an encoding model or comparing model variants.
+If your data has natural epoch boundaries (separate trials or sessions with gaps between them), format it as a pynapple time-series first — the basis module's convolution step then runs epoch-by-epoch automatically, avoiding artifacts from those gaps.
+
+tutorial_output:
+Fitted GLM coefficients and an intercept describing each feature's contribution to firing rate, a predicted firing-rate time series from <code>predict()</code>, and a log-likelihood score from <code>score()</code> — the standard outputs of a statistical encoding model, from which you'd typically derive tuning curves, compare nested models, or evaluate goodness of fit.

@@ -1,0 +1,28 @@
+name: Rebuild index from data/papers
+
+on:
+  push:
+    paths:
+      - 'data/papers/**'
+  workflow_dispatch: {}
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Rebuild data/entries.json from data/papers/*.txt
+        run: python scripts/build_index.py
+
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/entries.json
+          git diff --cached --quiet || git commit -m "Rebuild index from data/papers/"
+          git push

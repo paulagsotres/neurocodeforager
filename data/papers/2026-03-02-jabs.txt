@@ -1,0 +1,49 @@
+title: JAX Animal Behavior System (JABS), a genetics-informed, end-to-end advanced behavioral phenotyping platform for the laboratory mouse
+authors: Choudhary A., Geuther B.Q., Sproule T.J., Beane G., Kohar V., Trapszo J., Kumar V.
+journal: eLife
+year: 2026
+date: 2026-03-02
+doi: 10.7554/eLife.107259
+paper_url: https://elifesciences.org/articles/107259
+github_url: https://github.com/KumarLabJax/JABS-behavior-classifier
+website_url: https://jabs-tutorial.readthedocs.io/en/latest/JABS_user_guide.html
+access_status: open_access
+category: automated-behavioral-tracking
+tags: behavior phenotyping, open field, pose estimation, keypoints, active learning, behavior classifier, grooming, gait, posture, ethogram, ethograph, GWAS, heritability, genetic correlation, strain survey, JAABA, Random Forest, XGBoost, mouse genetics, computational ethology, video phenotyping
+data_acquisition: Top-down IR video, custom open-field arena (Basler acA1300-75gm camera, 800x800px/30fps)
+language: Python
+animal: Mouse
+gpu_required: no
+difficulty: intermediate
+citation_count: 2
+added_date: 2026-09-24
+
+subjects_count: single
+subjects_strains: multiple
+subjects_notes: Only single-animal tracking is released; GitHub repo states the multi-mouse pose model is not out yet, so it's unclear if a future multi-animal mode will need distinct strains for identity.
+
+summary:
+End-to-end platform for mouse behavior phenotyping: standardized video hardware, an active-learning GUI for training pose-based behavior classifiers, and a web app for classifier sharing plus heritability/genetic-correlation analysis across 168 strains.
+
+abstract_long:
+JABS integrates three components into a single open-source ecosystem for behavioral neurogenetics. JABS-DA provides standardized 3D-printable hardware and software for uniform day/night video collection. JABS-AL is a Python GUI for annotating behaviors and training pose-based classifiers (Random Forest / XGBoost), including a new graph-based method ("ethograph") for comparing classifiers bout-by-bout instead of frame-by-frame, which better captures inter-annotator agreement. JABS-AI is a web application where users upload trained classifiers, run them against three public strain-survey datasets (JABS600, JABS1200, JABS-BxD; 168 strains total), and receive heritability and genetic-correlation results automatically. The authors benchmark JABS-AL against a prior 3D-CNN grooming classifier, reaching comparable accuracy (0.936 vs 0.937) with roughly 10x less labeled data, and demonstrate the ethograph approach on left/right-turn classifiers built by two different annotators.
+
+extra_links:
+GitHub (hardware/DA) | https://github.com/KumarLabJax/JABS-data-pipeline
+GitHub (pose pipeline) | https://github.com/KumarLabJax/mouse-tracking-runtime
+
+sample_data_text: Public strain-survey datasets (JABS600, JABS1200, JABS-BxD) with matching keypoint files, hosted on Harvard Dataverse.
+sample_data_url: https://doi.org/10.7910/DVN/SAPNJG
+
+tutorial_intro:
+Input data: a project folder of videos with matching pose files (HDF5, v2-v4) produced by the companion mouse-tracking-runtime pipeline. JABS itself doesn't run pose estimation — it assumes keypoints already exist for every video in the project, one pose file per video, following the naming convention the tracking pipeline outputs. Raw video is only needed for the manual labeling step, since features for classification are computed from the pose data, not pixels.
+
+tutorial_steps:
+Install the classifier package: <code>pipx install jabs-behavior-classifier</code> (or <code>uv tool install jabs-behavior-classifier</code> if you prefer uv's tool manager). Both install JABS as an isolated CLI/GUI application rather than into your active Python environment, which avoids dependency conflicts with other pose/behavior tools you might have installed.
+Point JABS at your project folder, which should contain your videos alongside their matching pose HDF5 files. Before labeling anything, it's worth pre-computing features for the whole project in parallel: <code>jabs-init project_dir -p 8</code> (the <code>-p</code> flag sets how many videos to process concurrently). This computes the same per-frame feature set the classifier will train on — distances, angles, and kinematic descriptors derived from the keypoints — up front, which is considerably faster than letting the GUI compute them lazily the first time you hit Train.
+Open the project in the JABS GUI and define a new behavior (give it a name — this becomes the label for the classifier you're about to train). Label bouts by scrubbing through a video with the arrow keys and marking frames with three keys: <code>z</code> for "behavior is occurring," <code>c</code> for "behavior is not occurring," and <code>x</code> to clear a mislabeled frame. JABS uses an active-learning loop, so you don't need to exhaustively label an entire video — the GUI will suggest which additional frames would be most informative to label next as your classifier improves.
+Once you've reached the minimum labeling threshold (100 labeled frames spread across at least 2 different videos), the Train button becomes available. Choose a classifier type — Random Forest, Gradient Boosting, or XGBoost — and use the built-in cross-validation slider to check how well the classifier generalizes to held-out labeled frames before trusting it on new data. If accuracy looks poor, the usual fix is adding more labels, particularly for behavior variants or camera angles that were underrepresented in your initial labeling pass.
+Once you're satisfied with classifier performance, export the behavior definition for safekeeping or sharing via File → Export Training Data, which writes a <code>&lt;behavior&gt;_training_&lt;timestamp&gt;.h5</code> file containing the trained model plus the labels used to build it. To apply the trained classifier to new, unlabeled videos in bulk rather than one at a time in the GUI, use the command-line interface: <code>jabs-classify classify --training TRAINING.h5 --input-pose POSE.h5 --out-dir OUT_DIR</code>, which is the more practical route once you're scoring many videos.
+
+tutorial_output:
+Two kinds of output: a portable <code>*_training_&lt;timestamp&gt;.h5</code> file that fully defines your trained classifier (shareable with collaborators, or re-usable later without re-labeling), and per-video HDF5 inference files produced by <code>jabs-classify</code> containing, per frame, the <code>predicted_class</code> (behavior present/absent), a <code>probabilities</code> score reflecting classifier confidence, and <code>identity_to_track</code> mapping predictions back to a specific animal in multi-animal videos. These per-video files are what you'd feed into downstream ethogram analysis, or upload to the JABS-AI web app if you want automatic heritability and genetic-correlation results against the public strain-survey datasets.

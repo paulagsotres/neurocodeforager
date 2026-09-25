@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My toolkit — NeuroCodeForager</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Ccircle cx='20' cy='20' r='2.6' fill='%231B1D16'/%3E%3Cpath d='M20 20 C 14 16, 9 15, 5 10' stroke='%231B1D16' stroke-width='1.4' stroke-linecap='round' fill='none'/%3E%3Cpath d='M20 20 C 12 21, 8 25, 6 31' stroke='%231B1D16' stroke-width='1.4' stroke-linecap='round' fill='none'/%3E%3Cpath d='M20 20 C 26 15, 30 9, 29 4' stroke='%231B1D16' stroke-width='1.4' stroke-linecap='round' fill='none'/%3E%3Cpath d='M20 20 C 27 23, 33 22, 37 17' stroke='%231B8C82' stroke-width='1.6' stroke-linecap='round' fill='none'/%3E%3Ccircle cx='5' cy='10' r='1.8' fill='%231B1D16'/%3E%3Ccircle cx='6' cy='31' r='1.8' fill='%231B1D16'/%3E%3Ccircle cx='29' cy='4' r='1.8' fill='%231B1D16'/%3E%3Ccircle cx='37' cy='17' r='2.2' fill='%231B8C82'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Text:ital,wght@0,400;0,500;0,600&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/style.css">
+</head>
+<body>
+
+<nav class="site-nav" id="site-nav"></nav>
+
+<section class="cat-header">
+  <a class="back" href="index.html">&larr; home</a>
+  <h1>My toolkit</h1>
+  <p>Tools you've saved on this device — stored locally in your browser, not shared or synced anywhere.</p>
+</section>
+
+<section class="results">
+  <div class="results-list" id="toolkit-list"></div>
+</section>
+
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="assets/icons.js"></script>
+<script src="assets/categories.js"></script>
+<script src="assets/layout.js"></script>
+<script src="assets/app.js"></script>
+<script>
+  async function initToolkit(){
+    const entries = await loadEntries();
+    const saved = getSavedIds();
+    const list = document.getElementById('toolkit-list');
+    const mine = entries.filter(e => saved.includes(e.id));
+    if (mine.length){
+      renderCards(list, mine);
+    } else {
+      list.innerHTML = `<div class="empty-state">Nothing saved yet — click "Save" on any card to keep it here for later.</div>`;
+    }
+  }
+  document.addEventListener('DOMContentLoaded', initToolkit);
+</script>
+</body>
+</html>

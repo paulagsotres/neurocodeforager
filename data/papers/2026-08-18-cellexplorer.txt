@@ -1,0 +1,34 @@
+title: CellExplorer: A framework for visualizing and characterizing single neurons
+authors: Petersen P.C., Siegle J.H., Steinmetz N.A., Mahallati S., Buzsáki G.
+journal: Neuron
+year: 2021
+doi: 10.1016/j.neuron.2021.09.002
+paper_url: https://doi.org/10.1016/j.neuron.2021.09.002
+github_url: https://github.com/petersenpeter/CellExplorer
+access_status: open_access
+category: electrophysiology
+tags: waveform, spike sorting, single-unit, neuron classification, cell type, pyramidal cell, interneuron, monosynaptic connectivity, Neuropixels, silicon probe, extracellular recording, MATLAB
+data_acquisition: Extracellular electrophysiology — silicon probes / Neuropixels (IMEC)
+language: MATLAB
+animal: Mouse, rat
+difficulty: intermediate
+citation_count:
+added_date: 2026-08-18
+
+summary:
+Turns spike-sorted extracellular recordings into standardized physiological metrics and helps classify units into cell types (e.g. pyramidal cells, interneurons) via a MATLAB GUI.
+
+tutorial_intro:
+CellExplorer expects data you've already spike-sorted with a tool like KiloSort followed by manual curation in Phy. Organize each recording session in its own folder named after the session ("basepath"), containing the raw .dat file, the spike times/cluster ID outputs from your sorter, and the probe/channel-map metadata for that session. If you're working with several sessions from the same animal, keep each in its own basepath folder rather than combining them.
+
+tutorial_steps:
+Add CellExplorer to your MATLAB path (clone or download the repo, then <code>addpath(genpath('CellExplorer'))</code>). CellExplorer builds on functions from Buzcode/Neurosuite-style pipelines, so make sure your sorted data follows that basic session structure before continuing.
+Generate the session metadata file: <code>session = sessionTemplate(basepath, 'showGUI', true)</code>. This opens a small GUI where you confirm details CellExplorer needs to interpret your recording correctly — probe geometry/channel map, sampling rate, and basic experiment metadata (animal, date, epochs if the session has multiple behavioral epochs). Getting this step right matters: an incorrect channel map will make waveform-based metrics meaningless downstream.
+Run the main processing pipeline: <code>cell_metrics = ProcessCellMetrics('session', session)</code>. This is the computational core of the tool — for every sorted unit it computes the mean waveform and derived shape metrics (trough-to-peak time, waveform asymmetry), firing-rate statistics (mean rate, burstiness, ISI distribution), the autocorrelogram, and putative monosynaptic connections to other units in the same session based on cross-correlogram features. Processing time scales with the number of units and session length — expect anywhere from a couple of minutes for a small session to tens of minutes for large multi-shank recordings.
+Launch the interactive GUI to inspect and curate the results: <code>cell_metrics = CellExplorer('metrics', cell_metrics)</code>. The GUI shows, per unit, the waveform, autocorrelogram, firing-rate stability over the session, and its position in a low-dimensional feature space alongside other units. CellExplorer proposes an initial cell-type label (for example, Pyramidal Cell, Narrow Interneuron, Wide Interneuron) based on waveform and firing statistics, which you can accept or manually override — useful when you have independent evidence (for example, optogenetic tagging) that overrides the automatic call.
+If you're working across multiple sessions from the same study, load them together for batch curation instead of one at a time: <code>cell_metrics = loadCellMetricsBatch('basepaths', {basepath1, basepath2, ...})</code>. This lets you browse and classify units from all sessions in a single GUI session and keeps your classification criteria consistent across the dataset.
+Optionally, compare your units against CellExplorer's shared reference database of previously characterized neurons from other labs — useful as a sanity check on whether your waveform/firing metrics fall within expected ranges for a given cell type, and for benchmarking an unusual-looking unit against known examples.
+
+tutorial_output:
+The main output is a cell_metrics.mat file (or one per session, plus a combined batch object) containing, per unit: waveform shape features, firing-rate and ISI statistics, autocorrelogram-derived features, putative monosynaptic connection partners, and a final cell-type label (pyramidal cell, narrow interneuron, or wide interneuron, refined into further subtypes in later CellExplorer versions) that you confirmed or edited in the GUI. The GUI also lets you export publication-ready waveform, ACG, and connectivity figures directly, and you can save your manual classification decisions back into the cell_metrics structure so they persist for downstream analysis scripts.
+

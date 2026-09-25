@@ -1,0 +1,39 @@
+title: Brain states govern the spatio-temporal dynamics of resting-state functional connectivity
+authors: Aedo-Jury F., Schwalm M., Hamzehpour L., Stroh A.
+journal: eLife
+year: 2020
+date: 2020-06-22
+doi: 10.7554/eLife.53186
+paper_url: https://elifesciences.org/articles/53186
+github_url: https://github.com/Strohlab/connectivityelife
+access_status: open_access
+category: brain-imaging, statistical-analysis
+tags: resting-state fMRI, functional connectivity, BOLD, slow wave activity, persistent activity, independent component analysis, ICA, graph theory, small-world network, fALFF, fiber photometry, calcium imaging, down-up transitions, rat, default mode network, anesthesia
+data_acquisition: Simultaneous rat resting-state fMRI (BOLD, 9.4T) and optic-fiber-based calcium photometry recordings, under isoflurane (slow wave activity) or medetomidine (persistent activity) conditions
+language: MATLAB
+animal: Rat
+difficulty: intermediate
+citation_count: 40
+added_date: 2026-09-24
+
+summary:
+Combining simultaneous fMRI and fiber-photometry calcium recordings in rats, this paper shows that resting-state functional connectivity depends on the brain's current activity state — a compartmentalized, small-world network during persistent activity versus a cortex-wide, randomly connected network during slow wave activity, driven by population down-up transitions — with the full MATLAB connectivity-analysis pipeline (ICA, graph theory, fALFF) released alongside it.
+
+abstract_long:
+The authors compared two distinct rat cortical activity states — persistent activity and slow wave activity — using simultaneous fMRI and calcium fiber-photometry recordings. Independent component analysis revealed well-compartmentalized resting-state networks (e.g. a default-mode-like network) during persistent activity, but a single cortex-wide component during slow wave activity. Graph-theory analysis showed persistent activity has small-world network properties (high modularity, high clustering), while slow wave activity behaves more like a randomly connected network. This distinction held regardless of which anesthetic agent was used, ruling out an anesthesia-specific confound. Using the pan-cortical slow-wave component as a covariate, and directly correlating fiber-photometry-measured population down-up transitions with BOLD connectivity, the authors show that these transitions are the specific driver of the cortex-wide connectivity increase seen during slow wave activity — arguing that resting-state fMRI studies should account for the brain's underlying activity state rather than treating "rest" as a single condition.
+
+sample_data_text: All source data underlying the figures are on Dryad.
+sample_data_url: https://doi.org/10.5061/dryad.vmcvdncqk
+
+tutorial_intro:
+This is a set of custom MATLAB scripts for the specific connectivity analyses in this paper (ICA-based network identification, cortical-parcellation functional connectivity, graph theory metrics, fALFF, and matrix similarity) rather than a general-purpose installable toolbox — expect to adapt the scripts to your own rs-fMRI + physiology dataset rather than run them unmodified. The ICA step itself depends on a separate, well-established third-party tool (GIFT).
+
+tutorial_steps:
+Preprocessing (motion correction, smoothing, alignment to an anatomical template) was done in Brain Voyager, a commercial package — you'll need equivalent preprocessing done in whatever software you use (e.g. SPM, AFNI) before these scripts apply, since the repo picks up after that step.
+Independent component analysis was run using GIFT (Group ICA of fMRI Toolbox), a free, separately maintained MATLAB toolbox — install that first if you want to reproduce the ICA-based network identification specifically.
+The core connectivity analysis parcellates the cortex into regions of interest (this paper used the Valdes-Hernandez rat atlas), extracts the mean BOLD time course per region, and computes a partial-correlation matrix using ventricle/white-matter signal and breathing rate as covariates — adapt the atlas and covariate choices to your own species/setup.
+Graph theory metrics (modularity, global/local efficiency, clustering coefficient, characteristic path length) are computed on the resulting adjacency matrices using the Brain Connectivity Toolbox (an established, separately available MATLAB toolbox for network analysis) — check the repo's scripts for how thresholding via FDR correction was applied before computing these metrics.
+For relating a physiological "down-up transition" signal (from fiber photometry or any other population-activity readout) to functional connectivity, see the covariate-based analysis and the direct correlation/permutation-test approach described in the Methods — this is the piece most reusable if you have your own dual-modality (imaging + population activity) dataset and want to test whether a specific physiological event type is driving connectivity in the way this paper shows for slow-wave down-up transitions.
+
+tutorial_output:
+Per-subject functional connectivity matrices (regions × regions), graph-theory metric values (modularity, efficiency, clustering coefficient, path length) per activity state, fALFF power distributions, and matrix-similarity (Frobenius norm) scores for comparing connectivity patterns across conditions — the same building blocks used to generate every figure in the paper.

@@ -1,0 +1,47 @@
+title: Single-cell atlas of transcriptomic vulnerability across brain disorders
+authors: Lee D., Koutrouli M., Masse N.Y., Hoffman G.E., Kinrot S., et al.
+journal: Nature
+year: 2026
+date: 2026-09-23
+doi: 10.1038/s41586-025-09573-z
+paper_url: https://www.nature.com/articles/s41586-025-09573-z
+github_url: https://github.com/DiseaseNeuroGenomics/PsychADxD
+website_url: https://psych-ad.org/
+access_status: open_access
+category: gene-protein-analysis
+tags: single-cell RNA-seq, snRNA-seq, single-nucleus, transcriptomics, Alzheimer's disease, Parkinson's disease, schizophrenia, bipolar disorder, dorsolateral prefrontal cortex, DLPFC, cell type composition, differential expression, dreamlet, crumblr, GWAS, heritability, disease trajectory, PsychAD, cross-disorder, pseudobulk
+data_acquisition: Single-nucleus RNA sequencing (snRNA-seq) — 10x Genomics Chromium, postmortem human DLPFC
+language: R, Python
+animal: Not applicable (human postmortem tissue)
+difficulty: advanced
+citation_count:
+added_date: 2026-09-24
+
+subjects_count: 1,494 unique donors
+subjects_notes: Includes neurotypical controls and donors with Alzheimer's disease, diffuse Lewy body disease, vascular dementia, Parkinson's disease, tauopathy, frontotemporal dementia, schizophrenia, and bipolar disorder.
+
+summary:
+A population-scale single-nucleus RNA-seq atlas of 1,494 human DLPFC donors spanning eight neurodegenerative and neuropsychiatric disorders, with code for cell-type composition, differential expression (dreamlet), and disease-trajectory analyses.
+
+abstract_long:
+The authors generated a single-nucleus transcriptomic atlas of the human dorsolateral prefrontal cortex from 1,494 donors (over 6.3 million nuclei), covering neurotypical controls plus eight brain disorders: Alzheimer's disease, diffuse Lewy body disease, vascular dementia, Parkinson's disease, tauopathy, frontotemporal dementia, schizophrenia, and bipolar disorder. They quantify how much of the transcriptomic variation comes from cell type versus interindividual differences, identify gene expression signatures shared across disorders versus disease-specific ones, show that shared transcriptomic vulnerability tracks with genetic co-heritability between disorders, and model nonlinear gene-expression trajectories across Alzheimer's disease progression using neural networks trained on pathology and cognitive-decline measures.
+
+extra_links:
+dreamlet (core differential expression method, reusable on your own data) | https://github.com/GabrielHoffman/dreamlet
+crumblr (compositional variation analysis) | https://github.com/DiseaseNeuroGenomics/crumblr
+
+sample_data_text: Full processed snRNA-seq data for the PsychAD cohort, hosted on Zenodo.
+sample_data_url: https://doi.org/10.5281/zenodo.14606776
+
+tutorial_intro:
+This repo is analysis code for reproducing the paper's own figures rather than a general-purpose tool you install and point at arbitrary data — it's organized into 9 numbered folders mirroring the paper's result sections in order, from raw metadata through to spatial validation. If your goal is to apply the paper's core statistical method to your own single-cell cohort rather than reproduce this specific paper, the reusable engine is the separate dreamlet R package (linked above), which is worth understanding on its own before diving into the paper-specific code.
+
+tutorial_steps:
+Clone the repo. The 9 numbered folders correspond, in order, to: (1) metadata harmonization for the donor cohort, (2) preprocessing and hierarchical cellular taxonomy assignment from the raw snRNA-seq libraries, (3) partitioning transcriptomic variance into cell-type, donor, and technical sources, (4) compositional variation analysis across the eight disorders using the crumblr method, (5) differential gene expression across disorders using dreamlet's pseudobulk approach, (6) compositional and expression analysis specific to Alzheimer's disease pathology staging, (7) the neural-network-based disease trajectory modeling, (8) heritability analysis linking transcriptomic and genetic similarity between disorders, and (9) validation against spatial transcriptomics (MERFISH) data.
+Set up your environment before running anything: R scripts require Bioconductor ≥3.17 with R ≥4.3.0, and Python scripts require Python ≥3.8. Each numbered folder has its own dependency list (typically at the top of the main script or in a folder-level README) — install per-folder rather than assuming one environment covers everything, since the R/Bioconductor and Python requirements differ meaningfully between the taxonomy/expression folders and the trajectory-modeling folder.
+If you want to reuse the core differential-expression approach on your own pseudobulked single-cell dataset rather than reproducing this paper's specific disease comparisons, install dreamlet directly instead of going through this repo: <code>devtools::install_github("DiseaseNeurogenomics/dreamlet")</code>, then follow dreamlet's own documentation for fitting precision-weighted linear mixed models to your cohort. This is the more practical route if your actual goal is "run this kind of analysis on my data" rather than "reproduce this exact paper."
+To reproduce a specific figure without starting from raw sequencing data, download the processed PsychAD count matrices and metadata from Zenodo (linked above under Sample data) and point the relevant numbered folder's scripts at your local copy — check that folder's script for the expected file paths/structure, since input conventions can differ slightly between folders given they were developed for different stages of the analysis.
+For the compositional analysis specifically (folders 4 and 6), note that the paper uses centered-log-ratio (CLR) transformed cell-type fractions via crumblr rather than raw proportions, which matters if you're trying to match their exact statistics rather than just get a qualitative sense of compositional shifts.
+
+tutorial_output:
+Each numbered folder reproduces one part of the paper rather than a single unified output: folder 2 outputs cell-type taxonomy assignments (class/subclass/subtype labels per nucleus); folders 3-4 output variance-partitioning tables and compositional fold-change statistics per cell subclass; folder 5 outputs differential expression gene lists (with effect sizes and posterior probabilities from the multivariate Bayesian meta-analysis) per disorder and cell type; folder 7 outputs the trained disease-trajectory neural network models along with per-gene trajectory module assignments (early/late-increasing/decreasing); and folder 8 outputs the heritability-transcriptome concordance statistics. Check the relevant subfolder's own scripts/README for exact file formats, since this varies by module.

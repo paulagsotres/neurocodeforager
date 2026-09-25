@@ -1,0 +1,936 @@
+[
+  {
+    "id": "2018-09-26-stardist",
+    "title": "Cell Detection with Star-Convex Polygons",
+    "authors": "Schmidt U., Weigert M., Broaddus C., Myers G.",
+    "journal": "MICCAI 2018 (LNCS vol. 11071)",
+    "year": 2018,
+    "date": "2018-09-26",
+    "doi": "10.1007/978-3-030-00934-2_30",
+    "paper_url": "https://link.springer.com/chapter/10.1007/978-3-030-00934-2_30",
+    "website_url": "https://qupath.readthedocs.io/en/stable/docs/deep/stardist.html",
+    "access_status": "open_access",
+    "citation_count": 2421,
+    "category": "image-analysis",
+    "categories": [
+      "image-analysis"
+    ],
+    "tags": [
+      "cell segmentation",
+      "nuclei segmentation",
+      "star-convex polygons",
+      "instance segmentation",
+      "deep learning",
+      "U-Net",
+      "QuPath",
+      "napari",
+      "ImageJ",
+      "Fiji",
+      "KNIME",
+      "Icy",
+      "digital pathology",
+      "H&E",
+      "fluorescence microscopy",
+      "object detection",
+      "non-maximum suppression",
+      "bioimage analysis",
+      "MICCAI",
+      "StarDist"
+    ],
+    "summary": "StarDist detects and segments cell/nuclei instances in microscopy images by predicting a star-convex polygon per pixel, avoiding the merging and suppression errors common with per-pixel or bounding-box approaches in crowded images — available as a Python package with pretrained 2D/3D models, and as plugins for QuPath, napari, Fiji, Icy, and KNIME.",
+    "abstract_long": "The authors propose StarDist, a convolutional neural network (based on U-Net) that, for every pixel, predicts a star-convex polygon describing the boundary of the cell instance at that location, plus an object probability score. Non-maximum suppression over these overcomplete polygon candidates yields the final instance segmentation. Compared to per-pixel segmentation followed by connected-component grouping (which merges touching cells) or bounding-box-based detectors like Mask R-CNN (whose axis-aligned boxes overlap heavily and get wrongly suppressed for crowded, irregularly oriented nuclei), star-convex polygons are a much better shape prior for the roughly round shapes typical of cell nuclei. StarDist matches or exceeds Mask R-CNN on a challenging real fluorescence microscopy dataset (DSB2018) with an order of magnitude fewer parameters, and handles crowded/touching nuclei substantially better than pixel-classification baselines.",
+    "data_acquisition": "Fluorescence and brightfield (H&E) microscopy images of cell nuclei — 2D and 3D",
+    "language": "Python (core package); Groovy for the QuPath integration",
+    "animal": "Not applicable — general-purpose nuclei/cell segmentation, not species-specific",
+    "gpu_required": "",
+    "difficulty": "beginner",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "There are two very different ways to use StarDist depending on whether you want a no-code GUI workflow or a scriptable Python pipeline. If you just want to run a pretrained model on your own microscopy images without writing code, the QuPath extension (linked above as the website/docs) is the easiest path — it's a common way to bring StarDist into digital pathology / histology workflows specifically. If you want to train a custom model, batch-process images programmatically, or work in 3D, use the core Python package directly.",
+    "tutorial_steps": [
+      "QuPath route (no coding): install QuPath, then install the StarDist extension by following the setup instructions on the linked docs page — this involves downloading a compatible pretrained model file (a .pb TensorFlow SavedModel) and pointing QuPath's Groovy script at its location. Once set up, you run nuclei detection directly on images already open in a QuPath project by running the provided detection script, adjusting parameters like pixel size and probability threshold to match your images.",
+      "Python route — install: first install TensorFlow (TensorFlow 1 or 2 both work), then <code>pip install stardist</code> (or <code>pip install \"stardist[tf1]\"</code> if you're on TensorFlow 1). Pre-compiled wheels cover most Linux/Windows/macOS setups; if pip tries to compile from source, you'll need a working C++ compiler (see the repo's troubleshooting section for OS-specific instructions).",
+      "Python route — run a pretrained model: <code>from stardist.models import StarDist2D; model = StarDist2D.from_pretrained('2D_versatile_fluo')</code> for fluorescence nuclear-marker images, or <code>'2D_versatile_he'</code> for brightfield H&E histology images. Then <code>labels, _ = model.predict_instances(normalize(img))</code> (using <code>csbdeep.utils.normalize</code>) gives you a labeled instance mask in one call — no training required if a pretrained model fits your image type.",
+      "Python route — train your own model: if your images don't resemble the pretrained model types well, you'll need annotated training data — pairs of raw images and label images where every cell has a distinct integer ID. The repo recommends LabKit (via Fiji, works for 2D or 3D) or QuPath (2D only, using the provided Groovy export script to turn QuPath annotations into StarDist-ready image/mask pairs) for creating these annotations. Once you have annotated pairs, follow the example Jupyter notebooks in the repo's <code>examples/</code> folder for the full training workflow.",
+      "For 3D volumes, the same overall approach extends to predicting star-convex polyhedra instead of 2D polygons (see the companion WACV 2020 paper) — the package and API are largely the same, just with 3D-shaped inputs and models."
+    ],
+    "tutorial_output": "A labeled instance segmentation: every detected cell/nucleus is assigned a unique integer ID in the output mask (0 for background), either as detection objects within your QuPath project (ready for QuPath's built-in measurements and downstream analysis) or as a numpy label array (from the Python API) you can use in your own pipeline. The package also includes a <code>stardist.matching</code> submodule for computing standard instance-segmentation metrics (precision, recall, F1, panoptic quality) between a predicted mask and ground truth, useful for validating a model — pretrained or custom — against your own annotated test images.",
+    "sample_data": {
+      "text": "A single test image ships with the Python package (stardist.data.test_image_nuclei_2d()); the training dataset behind the original 2D paper's model is on the GitHub releases page as a zip.",
+      "url": "https://github.com/stardist/stardist/releases/download/0.1.0/dsb2018.zip"
+    },
+    "code": {
+      "repo_url": "https://github.com/stardist/stardist",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "napari plugin",
+        "url": "https://github.com/stardist/stardist-napari"
+      },
+      {
+        "label": "Icy plugin",
+        "url": "https://github.com/stardist/stardist-icy"
+      },
+      {
+        "label": "QuPath annotation export script (build your own training data from QuPath annotations)",
+        "url": "https://raw.githubusercontent.com/stardist/stardist/main/extras/qupath_export_annotations.groovy"
+      },
+      {
+        "label": "ImageJ/Fiji plugin docs",
+        "url": "https://imagej.net/StarDist"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2020-01-22-hnn",
+    "title": "Human Neocortical Neurosolver (HNN), a new software tool for interpreting the cellular and network origin of human MEG/EEG data",
+    "authors": "Neymotin S.A., Daniels D.S., Caldwell B., McDougal R.A., Carnevale N.T., Jas M., Moore C.I., Hines M.L., Hämäläinen M., Jones S.R.",
+    "journal": "eLife",
+    "year": 2020,
+    "date": "2020-01-22",
+    "doi": "10.7554/eLife.51214",
+    "paper_url": "https://elifesciences.org/articles/51214",
+    "website_url": "https://hnn.brown.edu",
+    "access_status": "open_access",
+    "citation_count": 103,
+    "category": "electrophysiology",
+    "categories": [
+      "electrophysiology",
+      "brain-imaging"
+    ],
+    "tags": [
+      "MEG",
+      "EEG",
+      "ECoG",
+      "current dipole",
+      "neocortical circuit model",
+      "biophysical modeling",
+      "NEURON simulator",
+      "ERP",
+      "alpha rhythm",
+      "beta rhythm",
+      "gamma rhythm",
+      "pyramidal neurons",
+      "thalamocortical",
+      "GUI",
+      "translational neuroscience",
+      "source localization",
+      "parameter optimization",
+      "hnn-core",
+      "computational neuroscience"
+    ],
+    "summary": "HNN is a GUI-based biophysical model of a canonical neocortical column that simulates the cellular/circuit origin of human MEG/EEG signals (evoked responses and alpha/beta/gamma rhythms), letting researchers without modeling experience directly compare simulated and recorded current-dipole waveforms to test circuit-level hypotheses.",
+    "abstract_long": "HNN's core is a model of a canonical layered neocortical column — pyramidal neurons and interneurons arranged across layers, driven by two known input pathways (proximal \"feedforward\" thalamic drive and distal \"feedback\" cortico-cortical drive). Because the model simulates the actual intracellular dendritic current flow that generates MEG/EEG signals, its output is in the same units (ampere-meters) as source-localized data, allowing direct one-to-one comparison. The GUI lets users load their own evoked-response or rhythm data, activate the network with user-defined drive parameters, run the simulation, and immediately inspect not just the resulting current dipole but the underlying single-cell spiking and layer-specific activity that produced it — turning parameter tuning into a hypothesis-testing loop. Built-in tutorials reproduce the group's own published findings on tactile evoked responses and alpha/beta/gamma rhythms, including a model-derived prediction about the laminar origin of transient beta events that was later confirmed with invasive recordings in mice and monkeys. Note: the original GUI repository described in this paper is now archived and unmaintained; it has been superseded by hnn-core, a modernized Python package (with its own GUI) that implements the same underlying model and is the version linked here.",
+    "data_acquisition": "Human non-invasive MEG/EEG (and intracranial ECoG) source-localized current-dipole recordings, compared against a biophysically detailed neocortical circuit simulation",
+    "language": "Python (built on the NEURON simulator)",
+    "animal": "Not applicable — models human MEG/EEG/ECoG; the circuit predictions it generates have separately been validated against laminar recordings in mice and monkeys",
+    "gpu_required": "",
+    "difficulty": "beginner",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "The tool in this paper (the original HNN GUI) is archived and no longer maintained — install hnn-core instead, which implements the same biophysical model with active support, more features (LFP/CSD simulation, parameter optimization), and its own GUI. The core workflow described below (load data, define network structure, \"activate\" it with drive parameters, compare to data, inspect microcircuit detail) carries over conceptually from the original paper to hnn-core.",
+    "tutorial_steps": [
+      "Install the Anaconda Python distribution if you don't have it, then create a dedicated environment: <code>conda create -y -q -n hnn-core-env python=3.12</code>, <code>conda activate hnn-core-env</code>, then <code>conda install hnn-core-all -c jonescompneurolab -c conda-forge</code>. (If you'd rather use pip, hnn-core supports Python 3.9 through 3.13 that way — see the Installation Guide linked above for details.)",
+      "Alternatively, try HNN in your browser with no local install via Google Colab notebooks or the Neuroscience Gateway Portal — both are linked from the Installation Guide, useful if you just want to explore before committing to a local setup.",
+      "Load your MEG/EEG/ECoG data (this step is optional — you can also just explore rhythm generation without comparing to real data) and the default canonical neocortical column network loads automatically; adjust its structure (cell counts, connectivity) if needed.",
+      "\"Activate\" the network by defining layer-specific exogenous drive — proximal drive represents feedforward thalamic input, distal drive represents feedback from higher-order cortex, and both can be single spikes, rhythmic bursts, or Poisson-distributed noisy drive depending on what signal you're trying to reproduce (evoked response vs. oscillation).",
+      "Run the simulation and compare the resulting current-dipole waveform to your loaded data (goodness of fit is reported via RMSE), then inspect the underlying layer-specific activity, individual cell spiking, and somatic voltages that produced it to understand the circuit-level story behind the signal.",
+      "Iterate: adjust drive timing/strength (by hand, or using HNN's built-in stepwise parameter optimization for evoked responses) to test different circuit hypotheses, and compare across simulated experimental conditions.",
+      "For a full click-by-click walkthrough (the original paper's tutorials on evoked responses and alpha/beta/gamma rhythms have modern equivalents), see the HNN Textbook linked above rather than the archived paper-era GUI screenshots."
+    ],
+    "tutorial_output": "The primary output is a simulated current-dipole waveform (in ampere-meters, directly comparable to source-localized MEG/EEG data) for whatever drive parameters you defined, alongside the full microcircuit detail that generated it: individual pyramidal neuron and interneuron spike times, somatic voltages, and layer-specific dipole contributions. For evoked-response fitting, HNN also reports a goodness-of-fit RMSE between simulated and recorded waveforms, and (with hnn-core) supports simulating LFP and current-source-density signals alongside the dipole.",
+    "sample_data": {
+      "text": "Example datasets from this paper (tactile evoked responses, spontaneous SI alpha/beta rhythms, and visual gamma rhythms) are bundled with the original software's data folder.",
+      "url": "https://github.com/jonescompneurolab/hnn/tree/master/data"
+    },
+    "code": {
+      "repo_url": "https://github.com/jonescompneurolab/hnn-core",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Original paper-exact GUI (archived, kept only for reproducing this paper)",
+        "url": "https://github.com/jonescompneurolab/hnn"
+      },
+      {
+        "label": "HNN Textbook (full documentation, tutorials, installation guide)",
+        "url": "https://jonescompneurolab.github.io/textbook/content/preface.html"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2020-06-22-brain-states-connectivity",
+    "title": "Brain states govern the spatio-temporal dynamics of resting-state functional connectivity",
+    "authors": "Aedo-Jury F., Schwalm M., Hamzehpour L., Stroh A.",
+    "journal": "eLife",
+    "year": 2020,
+    "date": "2020-06-22",
+    "doi": "10.7554/eLife.53186",
+    "paper_url": "https://elifesciences.org/articles/53186",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": 40,
+    "category": "brain-imaging",
+    "categories": [
+      "brain-imaging",
+      "statistical-analysis"
+    ],
+    "tags": [
+      "resting-state fMRI",
+      "functional connectivity",
+      "BOLD",
+      "slow wave activity",
+      "persistent activity",
+      "independent component analysis",
+      "ICA",
+      "graph theory",
+      "small-world network",
+      "fALFF",
+      "fiber photometry",
+      "calcium imaging",
+      "down-up transitions",
+      "rat",
+      "default mode network",
+      "anesthesia"
+    ],
+    "summary": "Combining simultaneous fMRI and fiber-photometry calcium recordings in rats, this paper shows that resting-state functional connectivity depends on the brain's current activity state — a compartmentalized, small-world network during persistent activity versus a cortex-wide, randomly connected network during slow wave activity, driven by population down-up transitions — with the full MATLAB connectivity-analysis pipeline (ICA, graph theory, fALFF) released alongside it.",
+    "abstract_long": "The authors compared two distinct rat cortical activity states — persistent activity and slow wave activity — using simultaneous fMRI and calcium fiber-photometry recordings. Independent component analysis revealed well-compartmentalized resting-state networks (e.g. a default-mode-like network) during persistent activity, but a single cortex-wide component during slow wave activity. Graph-theory analysis showed persistent activity has small-world network properties (high modularity, high clustering), while slow wave activity behaves more like a randomly connected network. This distinction held regardless of which anesthetic agent was used, ruling out an anesthesia-specific confound. Using the pan-cortical slow-wave component as a covariate, and directly correlating fiber-photometry-measured population down-up transitions with BOLD connectivity, the authors show that these transitions are the specific driver of the cortex-wide connectivity increase seen during slow wave activity — arguing that resting-state fMRI studies should account for the brain's underlying activity state rather than treating \"rest\" as a single condition.",
+    "data_acquisition": "Simultaneous rat resting-state fMRI (BOLD, 9.4T) and optic-fiber-based calcium photometry recordings, under isoflurane (slow wave activity) or medetomidine (persistent activity) conditions",
+    "language": "MATLAB",
+    "animal": "Rat",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "This is a set of custom MATLAB scripts for the specific connectivity analyses in this paper (ICA-based network identification, cortical-parcellation functional connectivity, graph theory metrics, fALFF, and matrix similarity) rather than a general-purpose installable toolbox — expect to adapt the scripts to your own rs-fMRI + physiology dataset rather than run them unmodified. The ICA step itself depends on a separate, well-established third-party tool (GIFT).",
+    "tutorial_steps": [
+      "Preprocessing (motion correction, smoothing, alignment to an anatomical template) was done in Brain Voyager, a commercial package — you'll need equivalent preprocessing done in whatever software you use (e.g. SPM, AFNI) before these scripts apply, since the repo picks up after that step.",
+      "Independent component analysis was run using GIFT (Group ICA of fMRI Toolbox), a free, separately maintained MATLAB toolbox — install that first if you want to reproduce the ICA-based network identification specifically.",
+      "The core connectivity analysis parcellates the cortex into regions of interest (this paper used the Valdes-Hernandez rat atlas), extracts the mean BOLD time course per region, and computes a partial-correlation matrix using ventricle/white-matter signal and breathing rate as covariates — adapt the atlas and covariate choices to your own species/setup.",
+      "Graph theory metrics (modularity, global/local efficiency, clustering coefficient, characteristic path length) are computed on the resulting adjacency matrices using the Brain Connectivity Toolbox (an established, separately available MATLAB toolbox for network analysis) — check the repo's scripts for how thresholding via FDR correction was applied before computing these metrics.",
+      "For relating a physiological \"down-up transition\" signal (from fiber photometry or any other population-activity readout) to functional connectivity, see the covariate-based analysis and the direct correlation/permutation-test approach described in the Methods — this is the piece most reusable if you have your own dual-modality (imaging + population activity) dataset and want to test whether a specific physiological event type is driving connectivity in the way this paper shows for slow-wave down-up transitions."
+    ],
+    "tutorial_output": "Per-subject functional connectivity matrices (regions × regions), graph-theory metric values (modularity, efficiency, clustering coefficient, path length) per activity state, fALFF power distributions, and matrix-similarity (Frobenius norm) scores for comparing connectivity patterns across conditions — the same building blocks used to generate every figure in the paper.",
+    "sample_data": {
+      "text": "All source data underlying the figures are on Dryad.",
+      "url": "https://doi.org/10.5061/dryad.vmcvdncqk"
+    },
+    "code": {
+      "repo_url": "https://github.com/Strohlab/connectivityelife",
+      "platform": "github"
+    },
+    "extra_links": [],
+    "related_ids": [],
+    "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2021-05-14-zi-investigatory-circuit",
+    "title": "A cell type-specific cortico-subcortical brain circuit for investigatory and novelty-seeking behavior",
+    "authors": "Ahmadlou M., Houba J.H.W., van Vierbergen J.F.M., Giannouli M., Gimenez G.-A., van Weeghel C., Darbanfouladi M., Shirazi M.Y., Dziubek J., Kacem M., de Winter F., Heimel J.A.",
+    "journal": "Science",
+    "year": 2021,
+    "date": "2021-05-14",
+    "doi": "10.1126/science.abe9681",
+    "paper_url": "https://www.science.org/doi/10.1126/science.abe9681",
+    "website_url": "",
+    "access_status": "paywall_restricted",
+    "citation_count": null,
+    "category": "automated-behavioral-tracking",
+    "categories": [
+      "automated-behavioral-tracking",
+      "statistical-analysis"
+    ],
+    "tags": [
+      "hidden Markov model",
+      "HMM",
+      "investigatory behavior",
+      "novelty seeking",
+      "zona incerta",
+      "periaqueductal gray",
+      "prelimbic cortex",
+      "optogenetics",
+      "fiber photometry",
+      "in situ hybridization",
+      "TAC1",
+      "GABAergic neurons",
+      "action sequence classification",
+      "mouse social behavior",
+      "curiosity",
+      "motivation",
+      "JAABA",
+      "behavior labeling"
+    ],
+    "summary": "Using a 3-state hidden Markov model fit to JAABA-labeled investigatory action sequences, this paper distinguishes \"deep\" from \"shallow\" investigation of novel objects/conspecifics, and identifies a prelimbic-cortex-to-zona-incerta-to-periaqueductal-gray circuit — with a TAC1+ inhibitory zona incerta subpopulation in particular — that drives this novelty-seeking, curiosity-motivated behavior.",
+    "abstract_long": "The authors found that inhibitory neurons in the medial zona incerta (ZIm), a subthalamic region, are essential for mice to initiate deep, sustained investigation of novel objects or conspecifics. ZIm neurons receive excitatory input from prelimbic cortex signaling the initiation of exploration, with the strength of this drive modulated by the animal's investigatory motivation. Behavior was labeled frame-by-frame with JAABA, then collapsed into a single ranked action per time step and fit with a 3-state hidden Markov model (idle, low-interest investigation, high-interest investigation) to characterize how action-sequence structure differs between novel and familiar objects/conspecifics. This let the authors define a continuous \"depth of investigation\" measure independent of raw interaction duration — for objects, whether a sniff is followed by a bite (deep) or not (shallow); for conspecifics, whether approach is followed by investigation with grabbing (deep) or without (shallow). Optogenetic activation of ZIm inhibitory neurons (particularly a TAC1-expressing subpopulation) increased positive arousal and investigatory depth by inhibiting the periaqueductal gray, establishing a prelimbic-cortex to ZIm to PAG circuit as a core substrate for curiosity-driven investigatory behavior.",
+    "data_acquisition": "Mouse behavioral video (frame-by-frame labeled with JAABA) during object/conspecific investigation, combined with fiber photometry calcium recordings and optogenetic manipulation of zona incerta (ZIm) neurons",
+    "language": "MATLAB (HMM fitting, behavior sequence analysis, photometry processing via InVivoTools); JAABA (Matlab/Java) for behavior labeling",
+    "animal": "Mouse",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "The pipeline has three distinct stages that each rely on a different tool: JAABA for frame-by-frame behavior labeling (a general-purpose, separately maintained open-source tool — reusable on its own for any mouse behavior video), custom MATLAB code in this repo for the HMM-based action-sequence analysis specifically, and InVivoTools for the fiber-photometry/physiology signal processing. There's no single \"install and run\" entry point — treat the repo as the reference implementation of the HMM analysis, to adapt to your own JAABA-labeled behavior data.",
+    "tutorial_steps": [
+      "Label your raw behavior videos frame-by-frame with JAABA. For object interaction, the relevant labeled behaviors were approach, sniff, carry, grab and bite; for social interaction, approach, investigation (body/facial/anogenital sniffing and grabbing), grab, avoid, defense, and the intruder's own approach/defense.",
+      "Import the JAABA labels into MATLAB and collapse them into one non-overlapping action per time step by ranking behaviors by investigatory importance and keeping only the highest-ranked action at each step. For object interaction the rank order (lowest to highest) was: non-investigatory, approach, sniff, carry, grab, bite. For social interaction: non-investigatory, intruder's approach, mouse's approach, investigation/grabbing (highest). Bite/grab were ranked highest because their transition probability from sniff/investigation differed most between novel and familiar conditions — this is the specific signal the model is built to detect.",
+      "Fit a 3-state hidden Markov model to each trial's action sequence using MATLAB's built-in <code>hmmtrain</code> (Baum-Welch parameter estimation) and <code>hmmviterbi</code> (most-likely state path decoding) functions. Initialize the transition matrix with equal probabilities across all transitions (since there's no prior expectation of state structure) and the emission matrix from the observed frequency of each labeled behavior. The 3 states the model recovers correspond to idle (no investigatory action), low-interest investigation, and high-interest investigation.",
+      "Use the fitted HMM's transition probabilities to classify each investigatory event as deep or shallow: for objects, an event starting with sniff is \"deep\" if continued by a bite, otherwise \"shallow\"; for social interaction, an event starting with approach is \"deep\" if continued by investigation-with-grab, otherwise \"shallow.\" An event ends once no investigatory action has occurred for at least 100 ms.",
+      "For fiber photometry signal processing (thresholding, artifact rejection) and pupil diameter extraction used to relate ZIm activity and arousal to these behavioral classifications, see InVivoTools (linked above) — a general-purpose physiology toolbox from the same lab, not specific to this paper."
+    ],
+    "tutorial_output": "Per-trial action sequences reduced to single ranked actions per time bin, a fitted 3-state HMM (transition and emission matrices) per condition (e.g. novel vs. familiar object/conspecific), and a deep-vs-shallow classification for every investigatory event — the behavioral measure that the paper then correlates with ZIm fiber-photometry activity and optogenetic manipulation effects.",
+    "sample_data": {
+      "text": "Processed data and analysis scripts are archived on Zenodo. Raw movies and additional scripts are on institutional storage, available from the authors on request.",
+      "url": "https://doi.org/10.5281/zenodo.4588941"
+    },
+    "code": {
+      "repo_url": "https://github.com/herseninstituut/Ahmadlou_etal_Science_2021",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "JAABA (frame-by-frame behavior labeling, used to generate the HMM's input sequences)",
+        "url": "https://github.com/kristinbranson/JAABA"
+      },
+      {
+        "label": "InVivoTools (fiber photometry and physiology signal processing, incl. pupil diameter extraction)",
+        "url": "https://github.com/heimel/InVivoTools"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2025-07-02-interbrain-dynamics",
+    "title": "Inter-brain neural dynamics in biological and artificial intelligence systems",
+    "authors": "Zhang X., Phi N., Li Q., Gorzek R., Zwingenberger N., Huang S., Zhou J.L., Kingsbury L., Raam T., Wu Y.E., Wei D., Kao J.C., Hong W.",
+    "journal": "Nature",
+    "year": 2025,
+    "date": "2025-07-02",
+    "doi": "10.1038/s41586-025-09196-4",
+    "paper_url": "https://doi.org/10.1038/s41586-025-09196-4",
+    "website_url": "",
+    "access_status": "paywall_restricted",
+    "citation_count": null,
+    "category": "brain-imaging",
+    "categories": [
+      "brain-imaging"
+    ],
+    "tags": [
+      "inter-brain neural dynamics",
+      "hyperscanning",
+      "social interaction",
+      "dorsomedial prefrontal cortex",
+      "dmPFC",
+      "calcium imaging",
+      "miniscope",
+      "microendoscope",
+      "GCaMP6f",
+      "GABAergic neurons",
+      "glutamatergic neurons",
+      "partial least squares correlation",
+      "PLSC",
+      "shared neural subspace",
+      "multi-agent reinforcement learning",
+      "MARL",
+      "SLEAP",
+      "pose tracking",
+      "CNMF-E",
+      "NoRMCorre",
+      "social neuroscience",
+      "artificial intelligence",
+      "cell assembly detection"
+    ],
+    "summary": "Using dual-mouse microendoscopic calcium imaging in the dmPFC plus multi-agent reinforcement learning, the authors show GABAergic neurons carry a much larger \"shared neural subspace\" across interacting individuals than glutamatergic neurons, and that disrupting the analogous shared dimensions in AI agents impairs their social behavior.",
+    "abstract_long": "The authors recorded calcium activity simultaneously from molecularly defined glutamatergic and GABAergic neurons in the dorsomedial prefrontal cortex (dmPFC) of pairs of freely interacting mice. Using partial least squares correlation (PLSC), they partitioned each mouse's neural activity into a \"shared neural subspace\" (dynamics correlated across the two brains) and a \"unique neural subspace\" (activity specific to one animal). GABAergic neurons — despite being a minority cell type — contained a substantially larger shared subspace than glutamatergic neurons, driven by both self- and partner-behavior representations, especially during mutual aggressive interactions. The authors then trained multi-agent reinforcement learning (MARL) agents in a simple chaser-explorer environment and found that shared neural dynamics analogous to those in mice emerged between interacting agents as social behavior developed; computationally removing the shared dimensions from an agent's recurrent network substantially reduced its social actions (collisions, keeping the partner in view), establishing a causal role for shared neural dynamics in driving social interaction.",
+    "data_acquisition": "In vivo microendoscopic calcium imaging (Miniscope V4, GRIN lens) — cell-type-specific GCaMP6f (CaMKII-GCaMP6f for glutamatergic, mDlx-GCaMP6f for GABAergic neurons) recorded simultaneously in two freely interacting mice in the dmPFC",
+    "language": "MATLAB, Python",
+    "animal": "Mouse",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "Like other multi-modal systems neuroscience papers, this isn't one installable tool but a set of separate repos, most under the hongw-lab GitHub account, each handling one stage of the pipeline (behavior annotation, pose tracking, calcium imaging preprocessing, ensemble detection, or the MARL environment). The repo linked above as the main one is specifically the analysis code for reproducing this paper's own figures (PLSC, shared/unique subspace analyses); the others are more general-purpose supporting tools.",
+    "tutorial_steps": [
+      "Raw calcium videos from paired Miniscopes are first motion-corrected with <code>NoRMCorre</code>, then run through <code>CNMF-E</code> (constrained non-negative matrix factorization tuned for the large, non-uniform background typical of endoscopic 1-photon imaging) to extract per-cell fluorescence traces — both are standalone MATLAB tools usable on any similar dataset, not specific to this paper.",
+      "Animal behavior was annotated two ways: manually, using the lab's own <code>behavior_annotator</code> tool (built on Piotr Dollar's MATLAB toolbox) for frame-by-frame labeling of a fixed behavior vocabulary (attack, sniff, approach, etc.), and automatically via posture tracking with <code>SLEAP</code>, a general-purpose multi-animal pose-tracking package — useful on its own if you just need tracking, independent of the manual annotation step.",
+      "Once you have per-cell calcium traces and behavior annotations for two simultaneously recorded animals, the paper-specific repo (linked above) implements the core PLSC (partial least squares correlation) analysis that partitions each animal's neural activity into shared and unique subspaces — this is the part you'd actually want to adapt if you're trying to reproduce or extend the paper's specific inter-brain analysis on your own two-animal calcium imaging dataset.",
+      "For identifying intra-brain neural ensembles (correlated groups of neurons within one animal), the repo uses a separate PCA-ICA-based cell assembly detection tool, linked above, which is also usable independently for single-brain ensemble analysis.",
+      "The multi-agent reinforcement learning side is a separate, self-contained pipeline: a chaser-explorer environment built on Ray/RLlib (linked above), trained with PPO. If you want to test whether \"shared neural dynamics\" emerge in your own multi-agent RL setup, you'd apply the same PLSC analysis (from the main repo) to the agents' RNN hidden-unit activations instead of calcium traces — the underlying math is identical, only the source of \"neural\" activity changes."
+    ],
+    "tutorial_output": "Depends on the stage: the imaging pipeline (NoRMCorre + CNMF-E) outputs per-cell calcium fluorescence traces per animal; the PLSC analysis outputs a set of \"shared neural dimensions\" (with per-dimension correlation/covariance across the two animals) and a complementary \"unique neural subspace\" per animal, plus the fraction of neural variance each accounts for; the MARL pipeline outputs trained agent policies and, when combined with the same PLSC analysis applied to RNN activations, the equivalent shared/unique dimension breakdown for artificial agents. The paper's own source data (underlying all figures) is provided as supplementary files alongside the publication rather than a separate code repository.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/hongw-lab/code_for_2024_zhang-phi",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Behavior annotator (custom manual annotation tool)",
+        "url": "https://github.com/hongw-lab/behavior_annotator"
+      },
+      {
+        "label": "Piotr Dollar's MATLAB toolbox (used for behavior annotation)",
+        "url": "https://github.com/pdollar/toolbox"
+      },
+      {
+        "label": "SLEAP (multi-animal pose tracking)",
+        "url": "https://github.com/talmolab/sleap"
+      },
+      {
+        "label": "MiniscopeAnalysis (1-photon calcium imaging pipeline)",
+        "url": "https://github.com/etterguillaume/MiniscopeAnalysis"
+      },
+      {
+        "label": "CNMF-E (constrained NMF for endoscopic data extraction)",
+        "url": "https://github.com/zhoupc/CNMF_E"
+      },
+      {
+        "label": "NoRMCorre (motion correction for calcium imaging)",
+        "url": "https://github.com/flatironinstitute/NoRMCorre"
+      },
+      {
+        "label": "Cell assembly / ensemble detection (PCA-ICA)",
+        "url": "https://github.com/tortlab/Cell-Assembly-Detection"
+      },
+      {
+        "label": "MARL chaser-explorer environment (Ray/RLlib)",
+        "url": "https://github.com/hongw-lab/MARL_Environment_Chase"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2026-03-02-jabs",
+    "title": "JAX Animal Behavior System (JABS), a genetics-informed, end-to-end advanced behavioral phenotyping platform for the laboratory mouse",
+    "authors": "Choudhary A., Geuther B.Q., Sproule T.J., Beane G., Kohar V., Trapszo J., Kumar V.",
+    "journal": "eLife",
+    "year": 2026,
+    "date": "2026-03-02",
+    "doi": "10.7554/eLife.107259",
+    "paper_url": "https://elifesciences.org/articles/107259",
+    "website_url": "https://jabs-tutorial.readthedocs.io/en/latest/JABS_user_guide.html",
+    "access_status": "open_access",
+    "citation_count": 2,
+    "category": "automated-behavioral-tracking",
+    "categories": [
+      "automated-behavioral-tracking"
+    ],
+    "tags": [
+      "behavior phenotyping",
+      "open field",
+      "pose estimation",
+      "keypoints",
+      "active learning",
+      "behavior classifier",
+      "grooming",
+      "gait",
+      "posture",
+      "ethogram",
+      "ethograph",
+      "GWAS",
+      "heritability",
+      "genetic correlation",
+      "strain survey",
+      "JAABA",
+      "Random Forest",
+      "XGBoost",
+      "mouse genetics",
+      "computational ethology",
+      "video phenotyping"
+    ],
+    "summary": "End-to-end platform for mouse behavior phenotyping: standardized video hardware, an active-learning GUI for training pose-based behavior classifiers, and a web app for classifier sharing plus heritability/genetic-correlation analysis across 168 strains.",
+    "abstract_long": "JABS integrates three components into a single open-source ecosystem for behavioral neurogenetics. JABS-DA provides standardized 3D-printable hardware and software for uniform day/night video collection. JABS-AL is a Python GUI for annotating behaviors and training pose-based classifiers (Random Forest / XGBoost), including a new graph-based method (\"ethograph\") for comparing classifiers bout-by-bout instead of frame-by-frame, which better captures inter-annotator agreement. JABS-AI is a web application where users upload trained classifiers, run them against three public strain-survey datasets (JABS600, JABS1200, JABS-BxD; 168 strains total), and receive heritability and genetic-correlation results automatically. The authors benchmark JABS-AL against a prior 3D-CNN grooming classifier, reaching comparable accuracy (0.936 vs 0.937) with roughly 10x less labeled data, and demonstrate the ethograph approach on left/right-turn classifiers built by two different annotators.",
+    "data_acquisition": "Top-down IR video, custom open-field arena (Basler acA1300-75gm camera, 800x800px/30fps)",
+    "language": "Python",
+    "animal": "Mouse",
+    "gpu_required": "no",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "single",
+      "strains": "multiple",
+      "notes": "Only single-animal tracking is released; GitHub repo states the multi-mouse pose model is not out yet, so it's unclear if a future multi-animal mode will need distinct strains for identity."
+    },
+    "tutorial": "",
+    "tutorial_intro": "Input data: a project folder of videos with matching pose files (HDF5, v2-v4) produced by the companion mouse-tracking-runtime pipeline. JABS itself doesn't run pose estimation — it assumes keypoints already exist for every video in the project, one pose file per video, following the naming convention the tracking pipeline outputs. Raw video is only needed for the manual labeling step, since features for classification are computed from the pose data, not pixels.",
+    "tutorial_steps": [
+      "Install the classifier package: <code>pipx install jabs-behavior-classifier</code> (or <code>uv tool install jabs-behavior-classifier</code> if you prefer uv's tool manager). Both install JABS as an isolated CLI/GUI application rather than into your active Python environment, which avoids dependency conflicts with other pose/behavior tools you might have installed.",
+      "Point JABS at your project folder, which should contain your videos alongside their matching pose HDF5 files. Before labeling anything, it's worth pre-computing features for the whole project in parallel: <code>jabs-init project_dir -p 8</code> (the <code>-p</code> flag sets how many videos to process concurrently). This computes the same per-frame feature set the classifier will train on — distances, angles, and kinematic descriptors derived from the keypoints — up front, which is considerably faster than letting the GUI compute them lazily the first time you hit Train.",
+      "Open the project in the JABS GUI and define a new behavior (give it a name — this becomes the label for the classifier you're about to train). Label bouts by scrubbing through a video with the arrow keys and marking frames with three keys: <code>z</code> for \"behavior is occurring,\" <code>c</code> for \"behavior is not occurring,\" and <code>x</code> to clear a mislabeled frame. JABS uses an active-learning loop, so you don't need to exhaustively label an entire video — the GUI will suggest which additional frames would be most informative to label next as your classifier improves.",
+      "Once you've reached the minimum labeling threshold (100 labeled frames spread across at least 2 different videos), the Train button becomes available. Choose a classifier type — Random Forest, Gradient Boosting, or XGBoost — and use the built-in cross-validation slider to check how well the classifier generalizes to held-out labeled frames before trusting it on new data. If accuracy looks poor, the usual fix is adding more labels, particularly for behavior variants or camera angles that were underrepresented in your initial labeling pass.",
+      "Once you're satisfied with classifier performance, export the behavior definition for safekeeping or sharing via File → Export Training Data, which writes a <code>&lt;behavior&gt;_training_&lt;timestamp&gt;.h5</code> file containing the trained model plus the labels used to build it. To apply the trained classifier to new, unlabeled videos in bulk rather than one at a time in the GUI, use the command-line interface: <code>jabs-classify classify --training TRAINING.h5 --input-pose POSE.h5 --out-dir OUT_DIR</code>, which is the more practical route once you're scoring many videos."
+    ],
+    "tutorial_output": "Two kinds of output: a portable <code>*_training_&lt;timestamp&gt;.h5</code> file that fully defines your trained classifier (shareable with collaborators, or re-usable later without re-labeling), and per-video HDF5 inference files produced by <code>jabs-classify</code> containing, per frame, the <code>predicted_class</code> (behavior present/absent), a <code>probabilities</code> score reflecting classifier confidence, and <code>identity_to_track</code> mapping predictions back to a specific animal in multi-animal videos. These per-video files are what you'd feed into downstream ethogram analysis, or upload to the JABS-AI web app if you want automatic heritability and genetic-correlation results against the public strain-survey datasets.",
+    "sample_data": {
+      "text": "Public strain-survey datasets (JABS600, JABS1200, JABS-BxD) with matching keypoint files, hosted on Harvard Dataverse.",
+      "url": "https://doi.org/10.7910/DVN/SAPNJG"
+    },
+    "code": {
+      "repo_url": "https://github.com/KumarLabJax/JABS-behavior-classifier",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "GitHub (hardware/DA)",
+        "url": "https://github.com/KumarLabJax/JABS-data-pipeline"
+      },
+      {
+        "label": "GitHub (pose pipeline)",
+        "url": "https://github.com/KumarLabJax/mouse-tracking-runtime"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2026-08-12-compositional-control",
+    "title": "Neural basis of compositional control",
+    "authors": "Chericoni A., Fine J.M., Ismail T.S., Delgado Salazar G., Franch M.C., et al.",
+    "journal": "Nature",
+    "year": 2026,
+    "date": "2026-08-12",
+    "doi": "10.1038/s41586-026-10896-8",
+    "paper_url": "https://www.nature.com/articles/s41586-026-10896-8",
+    "website_url": "",
+    "access_status": "paywall_restricted",
+    "citation_count": 1,
+    "category": "electrophysiology",
+    "categories": [
+      "electrophysiology"
+    ],
+    "tags": [
+      "prey pursuit",
+      "continuous decision-making",
+      "control theory",
+      "compositional control",
+      "meta-controller",
+      "intracranial recordings",
+      "sEEG",
+      "single-unit recordings",
+      "Behnke-Fried electrodes",
+      "WaveClus",
+      "spike sorting",
+      "anterior cingulate cortex",
+      "hippocampus",
+      "orbitofrontal cortex",
+      "dPCA",
+      "hierarchical control",
+      "human electrophysiology",
+      "joystick task",
+      "iELVis",
+      "RAVE",
+      "changes of mind",
+      "GAM",
+      "latent dynamical systems",
+      "LDS clustering"
+    ],
+    "summary": "Human intracranial recordings during a continuous prey-pursuit task, decomposed via a novel control-theoretic model into blended goal-specific policies, show ACC predicting policy-blend switches, hippocampus encoding and updating the latent policy state, and OFC signaling task value rather than driving the switching itself.",
+    "abstract_long": "The authors recorded single neurons from anterior cingulate cortex (ACC), hippocampus (HPC) and orbitofrontal cortex (OFC) via stereotactic EEG in 19 epilepsy patients performing a continuous, joystick-controlled prey-pursuit task, plus behavioral-only data from 50 healthy participants. They developed a control-theoretic decomposition that models pursuit behavior as a meta-controller dynamically blending several lower-level, goal-specific control policies (a continuous analogue of discrete choice). Fitting this model to behavior, they found ACC neurons predict upcoming major changes in the policy blend (akin to a \"change of mind\"), hippocampal neurons encode and update the latent policy-blend state supporting early planning, and OFC activity tracks the task's current value structure rather than the switching process itself — supporting a tripartite division of labor: hippocampus as state estimator, ACC as meta-controller, OFC as value-context signal.",
+    "data_acquisition": "Human single-neuron intracranial recordings — stereotactic EEG (sEEG) via AdTech Behnke-Fried microwire probes (~4 probes/patient, 8 microwires each), Blackrock Neuroport 512-channel system at 30 kHz, spike-sorted with WaveClus",
+    "language": "Python 3.11 (core pipeline); MATLAB (plotting)",
+    "animal": "Not applicable (human intracranial recordings in epilepsy patients)",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "Input data: for the behavioral controller-modeling step, per-trial joystick trajectories and prey positions; for the neural analyses (GAM tuning, dPCA, clustering), spike-sorted single-unit firing rates aligned to those same trials, organized per participant. The repo includes real example data for one participant plus synthetic data for the population-level demos, so you can run every step below without your own dataset first.",
+    "tutorial_steps": [
+      "Set up the environment: <code>conda env create -f environment.yml</code>, then <code>conda activate pac_control_env</code>, then <code>pip install --no-build-isolation \"ssm @ git+https://github.com/lindermanlab/ssm\"</code> (the ssm package needs to be installed separately via pip). On Windows you'll also need Visual Studio C++ Build Tools v14.0.0 or newer.",
+      "Run the behavioral controller-modeling pipeline: <code>python -m scripts.run_controller_modeling -c pv</code>, where <code>-c</code> selects a controller class (options: p, pv, pf, pvi, pif, pvf — pv was the best-fitting class in the paper). This fits the control-theoretic decomposition to a participant's trial-by-trial behavior and takes about 15 minutes to run.",
+      "For model recovery (checking whether the fitting procedure correctly recovers known ground-truth controller parameters from simulated data), see <code>demo/simulation_demo.ipynb</code> — full recovery runs are slow, so example results and MATLAB plotting scripts for this step are pre-computed under <code>plotting/simulation</code>.",
+      "For detecting behavioral \"changes of mind\" (major switches in the policy blend) from the fitted wt trajectories, use the functions in <code>ChangeOfMind/functions/processing.py</code>, demonstrated in <code>demo/plot_switch_detection.ipynb</code> — this runs directly on the output of the controller-modeling step above.",
+      "For relating neural firing to the fitted policy-blend variable (wt) via generalized additive models: <code>python -m scripts.run_glm_modeling -p YFD</code> (participant ID; optionally add <code>-m &lt;controller_class&gt;</code> to specify which fitted wt to use). Plot the proportion of tuned neurons, NNMF results, and Fisher information with <code>plotting/plot_nmf_fi.ipynb</code>.",
+      "For the demixed PCA (dPCA) population analysis (condition-based and wt-binned), the pipeline lives in <code>src/dPCA</code> via the <code>DPCAPipeline</code> class, demonstrated with synthetic data in <code>demo/dPCA_demo_Final.ipynb</code>; plotting scripts are in <code>plotting/MAIN_plot_dPCA_results.m</code> (MATLAB).",
+      "For clustering neurons by their ramping/dynamical behavior around switches, the LDS (linear dynamical system) + k-means pipeline is in <code>scripts/lds_cluster_pipeline.py</code>, demonstrated on single-subject data in <code>demo/run_lds_cluster_pipeline_demo.ipynb</code> — the full pipeline is designed to run on pseudopopulations pooled across subjects."
+    ],
+    "tutorial_output": "The controller-modeling step writes <code>model_fit_results.csv</code> (fitted controller weights and the model's evidence lower bound, ELBO) and <code>model_matrices.mat</code> (the trial-wise wt — policy-blend — time series) into <code>example_data/&lt;participant&gt;/&lt;controller&gt;/</code>. Downstream steps consume these: the switch-detection step outputs detected change-of-mind events per trial; the GAM modeling step outputs per-neuron tuning statistics to wt; the dPCA step outputs low-dimensional population components capturing how neural activity varies with time and policy-blend state; and the LDS+k-means step outputs cluster assignments describing distinct classes of single-neuron ramping dynamics around switches.",
+    "sample_data": {
+      "text": "The repo ships with real example behavioral + neural data from one participant, plus synthetic pseudopopulation datasets, so the full pipeline can be run end to end without needing your own recordings first.",
+      "url": "https://github.com/BCM-Neurosurgery/PreyPursuit/tree/main/example_data"
+    },
+    "code": {
+      "repo_url": "https://github.com/BCM-Neurosurgery/PreyPursuit",
+      "platform": "github"
+    },
+    "extra_links": [],
+    "related_ids": [],
+    "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2026-08-18-cellexplorer",
+    "title": "CellExplorer: A framework for visualizing and characterizing single neurons",
+    "authors": "Petersen P.C., Siegle J.H., Steinmetz N.A., Mahallati S., Buzsáki G.",
+    "journal": "Neuron",
+    "year": 2021,
+    "date": "",
+    "doi": "10.1016/j.neuron.2021.09.002",
+    "paper_url": "https://doi.org/10.1016/j.neuron.2021.09.002",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "electrophysiology",
+    "categories": [
+      "electrophysiology"
+    ],
+    "tags": [
+      "waveform",
+      "spike sorting",
+      "single-unit",
+      "neuron classification",
+      "cell type",
+      "pyramidal cell",
+      "interneuron",
+      "monosynaptic connectivity",
+      "Neuropixels",
+      "silicon probe",
+      "extracellular recording",
+      "MATLAB"
+    ],
+    "summary": "Turns spike-sorted extracellular recordings into standardized physiological metrics and helps classify units into cell types (e.g. pyramidal cells, interneurons) via a MATLAB GUI.",
+    "abstract_long": "",
+    "data_acquisition": "Extracellular electrophysiology — silicon probes / Neuropixels (IMEC)",
+    "language": "MATLAB",
+    "animal": "Mouse, rat",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "CellExplorer expects data you've already spike-sorted with a tool like KiloSort followed by manual curation in Phy. Organize each recording session in its own folder named after the session (\"basepath\"), containing the raw .dat file, the spike times/cluster ID outputs from your sorter, and the probe/channel-map metadata for that session. If you're working with several sessions from the same animal, keep each in its own basepath folder rather than combining them.",
+    "tutorial_steps": [
+      "Add CellExplorer to your MATLAB path (clone or download the repo, then <code>addpath(genpath('CellExplorer'))</code>). CellExplorer builds on functions from Buzcode/Neurosuite-style pipelines, so make sure your sorted data follows that basic session structure before continuing.",
+      "Generate the session metadata file: <code>session = sessionTemplate(basepath, 'showGUI', true)</code>. This opens a small GUI where you confirm details CellExplorer needs to interpret your recording correctly — probe geometry/channel map, sampling rate, and basic experiment metadata (animal, date, epochs if the session has multiple behavioral epochs). Getting this step right matters: an incorrect channel map will make waveform-based metrics meaningless downstream.",
+      "Run the main processing pipeline: <code>cell_metrics = ProcessCellMetrics('session', session)</code>. This is the computational core of the tool — for every sorted unit it computes the mean waveform and derived shape metrics (trough-to-peak time, waveform asymmetry), firing-rate statistics (mean rate, burstiness, ISI distribution), the autocorrelogram, and putative monosynaptic connections to other units in the same session based on cross-correlogram features. Processing time scales with the number of units and session length — expect anywhere from a couple of minutes for a small session to tens of minutes for large multi-shank recordings.",
+      "Launch the interactive GUI to inspect and curate the results: <code>cell_metrics = CellExplorer('metrics', cell_metrics)</code>. The GUI shows, per unit, the waveform, autocorrelogram, firing-rate stability over the session, and its position in a low-dimensional feature space alongside other units. CellExplorer proposes an initial cell-type label (for example, Pyramidal Cell, Narrow Interneuron, Wide Interneuron) based on waveform and firing statistics, which you can accept or manually override — useful when you have independent evidence (for example, optogenetic tagging) that overrides the automatic call.",
+      "If you're working across multiple sessions from the same study, load them together for batch curation instead of one at a time: <code>cell_metrics = loadCellMetricsBatch('basepaths', {basepath1, basepath2, ...})</code>. This lets you browse and classify units from all sessions in a single GUI session and keeps your classification criteria consistent across the dataset.",
+      "Optionally, compare your units against CellExplorer's shared reference database of previously characterized neurons from other labs — useful as a sanity check on whether your waveform/firing metrics fall within expected ranges for a given cell type, and for benchmarking an unusual-looking unit against known examples."
+    ],
+    "tutorial_output": "The main output is a cell_metrics.mat file (or one per session, plus a combined batch object) containing, per unit: waveform shape features, firing-rate and ISI statistics, autocorrelogram-derived features, putative monosynaptic connection partners, and a final cell-type label (pyramidal cell, narrow interneuron, or wide interneuron, refined into further subtypes in later CellExplorer versions) that you confirmed or edited in the GUI. The GUI also lets you export publication-ready waveform, ACG, and connectivity figures directly, and you can save your manual classification decisions back into the cell_metrics structure so they persist for downstream analysis scripts.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/petersenpeter/CellExplorer",
+      "platform": "github"
+    },
+    "extra_links": [],
+    "related_ids": [],
+    "added_date": "2026-08-18",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2026-09-09-wholistic",
+    "title": "Imaging cellular activity across all organs reveals body-wide circuits",
+    "authors": "Ruetten V.M.S., Zheng W., Siwanowicz I., Mensh B.D., Eddison M., et al.",
+    "journal": "Nature",
+    "year": 2026,
+    "date": "2026-09-09",
+    "doi": "10.1038/s41586-026-10979-6",
+    "paper_url": "https://www.nature.com/articles/s41586-026-10979-6",
+    "website_url": "https://wholistic.janelia.org/",
+    "access_status": "open_access",
+    "citation_count": 1,
+    "category": "image-analysis",
+    "categories": [
+      "image-analysis"
+    ],
+    "tags": [
+      "whole-body imaging",
+      "WHOLISTIC",
+      "calcium imaging",
+      "GCaMP",
+      "GCaMP7f",
+      "zebrafish",
+      "Danionella cerebrum",
+      "spinning-disk confocal",
+      "volumetric imaging",
+      "motion correction",
+      "image registration",
+      "optical flow",
+      "cell segmentation",
+      "Voluseg",
+      "spectral clustering",
+      "coherence clustering",
+      "expansion microscopy",
+      "PhotoMap",
+      "optogenetics",
+      "body-wide circuits",
+      "systems physiology",
+      "hypoxia",
+      "sympathetic ganglion",
+      "Janelia"
+    ],
+    "summary": "WHOLISTIC is a whole-body live-imaging platform recording second-timescale calcium activity across nearly every cell type in a transparent vertebrate, paired with a registration/segmentation/clustering computational pipeline and whole-body expansion microscopy for anatomical follow-up.",
+    "abstract_long": "The authors built a pancellular calcium-imaging platform (WHOLISTIC) combining a transgenic zebrafish line expressing GCaMP7f in essentially all cells, high-speed volumetric spinning-disk confocal microscopy, and a computational pipeline that corrects for the large, non-rigid tissue motion caused by muscle contractions before segmenting and clustering cells into \"functional tissue ensembles.\" Applying this across the body revealed previously unknown biology at multiple scales: chondrocyte responses to cold, meningeal responses to ketamine, rhythmic traveling calcium waves along the kidney nephron, an independent \"cervical epaxial\" muscle group, motor-quiescence-linked ultraslow oscillations traced to a previously uncharacterized population of long-projecting ependymal cells, and — combining WHOLISTIC with optogenetics — a causal brainstem-to-gut circuit that redirects blood flow away from the viscera during hypoxia. A new whole-body expansion microscopy protocol (WB-ExM) was developed alongside WHOLISTIC to validate cell identities and resolve fine anatomy that live imaging alone couldn't.",
+    "data_acquisition": "Volumetric fluorescence imaging — dual-color spinning-disk confocal microscopy (pancellular GCaMP7f/jRGECO1b calcium indicators plus an anatomical reference channel), ~0.3 Hz volumetric rate",
+    "language": "Python",
+    "animal": "Zebrafish (larval), Danionella cerebrum (adult)",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "This is a suite of separate, focused tools rather than one installable package — each repo under the vruetten GitHub account handles one stage of the WHOLISTIC pipeline and is released with its own versioned Zenodo archive. Expect to read each repo's own README for exact usage, since a general-purpose whole-body imaging pipeline hasn't been formally published in one interface yet.",
+    "tutorial_steps": [
+      "Start with <code>wholistic_registration</code> if your problem is non-rigid motion correction in volumetric fluorescence data — it corrects for tissue displacement caused by muscle contraction using patch-wise iterative optical flow with a multi-resolution image pyramid, and is designed to be GPU-parallelizable. It expects a \"template\" reference channel (something relatively stable, like an anatomical marker) alongside your signal channel of interest (for example, calcium), since the registration is computed on the stable channel and then applied to align the dynamic one.",
+      "Once your data is registered, cell-level signals are extracted with <code>voluseg</code>, a volumetric segmentation pipeline based on constrained non-negative matrix factorization — it takes registered volumetric time-series data and outputs per-cell fluorescence traces, tuned conservatively in this paper to over-segment rather than risk merging distinct cells.",
+      "To go from cellular calcium traces to interpretable \"functional tissue ensembles,\" the paper uses coherence-based spectral clustering rather than plain correlation — grouping cells with temporally structured, possibly phase-lagged activity (like traveling waves) that correlation-based methods would miss. This part of the analysis isn't broken out as a standalone package in the code availability statement, so expect to implement the coherence-clustering step yourself following the Methods section if you want to reproduce it exactly.",
+      "If your goal is validating cell identities or resolving fine anatomical structures underlying a functional signal (as the ependymal-cell finding in this paper required), the whole-body expansion microscopy protocol and its <code>PhotoMap</code> tool are the relevant pieces — PhotoMap quantifies the physical deformation field introduced by the tissue-expansion process itself, using a photobleached reference grid, so you can assess whether expansion was uniform before trusting downstream measurements.",
+      "For a purely anatomical starting point (for example, if you want a labeled 3D reference to register your own zebrafish data against, independent of building it yourself), the <code>wholebodymodel</code> repo provides the 3D geometric model of the young zebrafish body built from this paper's WB-ExM data."
+    ],
+    "tutorial_output": "Output depends on which stage you use: <code>wholistic_registration</code> outputs a motion-corrected version of your volumetric time-series data plus the estimated per-frame displacement field; <code>voluseg</code> outputs per-cell fluorescence time series (and their spatial footprints) extracted from registered data; and <code>PhotoMap</code> outputs a quantified 3D deformation field describing how much and how uniformly a sample expanded, useful as a quality-control step before trusting expansion-microscopy-based measurements. Note: a specific raw-imaging-data repository wasn't identified in this indexing pass beyond the code releases above — check the paper's own Data Availability statement if you need the underlying imaging datasets rather than just the analysis code.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/vruetten/wholistic_registration",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Voluseg (volumetric cell segmentation pipeline)",
+        "url": "https://github.com/vruetten/voluseg"
+      },
+      {
+        "label": "PhotoMap (expansion microscopy deformation-field mapping)",
+        "url": "https://github.com/vruetten/PhotoMap"
+      },
+      {
+        "label": "Whole-body 3D geometric model from WB-ExM data",
+        "url": "https://github.com/vruetten/wholebodymodel"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2026-09-16-lc-ne-topography",
+    "title": "Topographic structure and function of locus coeruleus noradrenaline neurons",
+    "authors": "Su Z., Kosillo P., Jung K., Chen S., Summers M.T., et al.",
+    "journal": "Nature",
+    "year": 2026,
+    "date": "2026-09-16",
+    "doi": "10.1038/s41586-026-11026-0",
+    "paper_url": "https://www.nature.com/articles/s41586-026-11026-0",
+    "website_url": "https://codeocean.allenneuraldynamics.org/collections/9cf044ce-93c7-4c7e-bfa1-5d8c37aa42ec",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "image-analysis",
+    "categories": [
+      "image-analysis",
+      "electrophysiology",
+      "brain-imaging"
+    ],
+    "tags": [
+      "locus coeruleus",
+      "noradrenaline",
+      "norepinephrine",
+      "LC-NE",
+      "reward prediction error",
+      "dynamic foraging",
+      "Neuropixels",
+      "optogenetic tagging",
+      "whole-brain imaging",
+      "SPIM",
+      "light-sheet microscopy",
+      "single-neuron reconstruction",
+      "MAPseq",
+      "BARseq",
+      "snRNA-seq",
+      "axonal projection mapping",
+      "CCF",
+      "Allen Institute",
+      "fiber photometry",
+      "reinforcement learning"
+    ],
+    "summary": "Multi-modal Allen Institute study linking locus coeruleus noradrenaline neuron morphology, gene expression, and electrophysiological activity along a dorsal-ventral topography, with dorsal cortex-projecting neurons encoding choice switches and reward-prediction errors during a reinforcement-learning task.",
+    "abstract_long": "Using whole-brain light-sheet imaging, the authors reconstructed complete axonal morphologies of individual locus coeruleus noradrenaline (LC-NE) neurons and found that projections are extensive but largely confined to specific brain regions, correlating with the dorsal-ventral position of the cell body. Single-nucleus RNA-seq showed gene expression is smoothly graded along the same axis. During a dynamic reward-learning task, electrophysiological recordings (with optogenetic tagging) showed that dorsal LC-NE neurons projecting to isocortex were preferentially active when mice switched choices and encoded reward-prediction-error signals, while ventral neurons showed higher background activity when mice ignored reward-predictive cues — linking anatomical, molecular, and functional topography in a major neuromodulatory system.",
+    "data_acquisition": "Multi-modal — whole-brain light-sheet imaging (ExA-SPIM) for single-neuron reconstruction, electrophysiology (Neuropixels probes/tetrodes) with optogenetic tagging, snRNA-seq, MAPseq/BARseq projection mapping, fiber photometry",
+    "language": "Python",
+    "animal": "Mouse",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "This project spans several modalities (whole-brain anatomy, electrophysiology, transcriptomics, projection mapping, behavior), so the code is deliberately split across the main repo (linked above) plus a few supporting infrastructure repos rather than one single pipeline you install and run end-to-end. The CodeOcean capsule collection (linked as the website above) has containerized, reproducible versions of the analyses if you want to rerun a specific figure without setting up each modality's environment yourself from scratch.",
+    "tutorial_steps": [
+      "Start from the CodeOcean capsule collection (linked above) if your goal is to reproduce a specific figure without installing dependencies — each capsule bundles the code, environment, and (where feasible) the data for one part of the analysis, so you can launch it and inspect the outputs without local setup.",
+      "For the main repo, clone <code>AllenNeuralDynamics/locus_coeruleus_norepinephrine_neurons</code> and check its own README for the specific analysis scripts, since the repo is organized by modality (anatomy/morphology, electrophysiology, and behavior each have their own subdirectories with separate environments).",
+      "If your interest is specifically in projection mapping via barcoded RNA sequencing (MAPseq/BARseq), that step is handled by a standalone tool rather than the main repo: <code>ZadorLaboratory/mapseq-processing</code> takes the raw paired-end FASTQ output from a MAPseq/BARseq run and produces barcode-to-brain-region projection matrices — useful independently of this specific paper if you're running your own barcoded projection-mapping experiment.",
+      "If you're after the whole-brain light-sheet image registration and stitching pipeline used for the single-neuron reconstructions, that's <code>AllenNeuralDynamics/aind-smartspim-pipeline</code> — it handles registering ExA-SPIM whole-brain volumes to the Allen Common Coordinate Framework (CCFv3), which is the anatomical reference space all the projection and soma-location results in this paper are expressed in.",
+      "For the reinforcement-learning models fit to mouse choice behavior during the dynamic-foraging task (the source of the reward-prediction-error estimates correlated with LC-NE activity), see <code>AllenNeuralDynamics/aind-dynamic-foraging-models</code> — it implements several RL agent classes (Q-learning, loss-counting, win-stay-lose-switch variants) that can be fit to any dataset following the same trial-structure convention, not just this paper's sessions.",
+      "Electrophysiology and fiber photometry data underlying the reward-related findings are on DANDI (linked under Sample data) in NWB format, which is a reasonable starting point if you want to explore the raw recordings without regenerating them yourself."
+    ],
+    "tutorial_output": "Output format varies substantially by module, reflecting the different modalities: the anatomical pipeline outputs registered whole-brain image volumes and individual neuron reconstructions in SWC format (a standard neuron-morphology file format compatible with most morphology analysis tools); the MAPseq/BARseq pipeline outputs barcode-by-brain-region count matrices representing each labeled neuron's projection pattern; and the behavioral models output fitted reinforcement-learning parameters (learning rates, choice-kernel weights) plus trial-by-trial reward-prediction-error estimates that can be correlated against neural recordings, as done in the paper's main electrophysiology analysis.",
+    "sample_data": {
+      "text": "Electrophysiology and fiber photometry data from the dynamic foraging task, deposited on DANDI (Dandiset 001950).",
+      "url": "https://dandiarchive.org/dandiset/001950"
+    },
+    "code": {
+      "repo_url": "https://github.com/AllenNeuralDynamics/locus_coeruleus_norepinephrine_neurons",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "MAPseq data processing (barcoded projection mapping)",
+        "url": "https://github.com/ZadorLaboratory/mapseq-processing"
+      },
+      {
+        "label": "SmartSPIM whole-brain imaging pipeline",
+        "url": "https://github.com/AllenNeuralDynamics/aind-smartspim-pipeline"
+      },
+      {
+        "label": "Dynamic foraging behavioral models (RL agents used for choice/RPE analysis)",
+        "url": "https://github.com/AllenNeuralDynamics/aind-dynamic-foraging-models"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2026-09-23-psychad-atlas",
+    "title": "Single-cell atlas of transcriptomic vulnerability across brain disorders",
+    "authors": "Lee D., Koutrouli M., Masse N.Y., Hoffman G.E., Kinrot S., et al.",
+    "journal": "Nature",
+    "year": 2026,
+    "date": "2026-09-23",
+    "doi": "10.1038/s41586-025-09573-z",
+    "paper_url": "https://www.nature.com/articles/s41586-025-09573-z",
+    "website_url": "https://psych-ad.org/",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "gene-protein-analysis",
+    "categories": [
+      "gene-protein-analysis"
+    ],
+    "tags": [
+      "single-cell RNA-seq",
+      "snRNA-seq",
+      "single-nucleus",
+      "transcriptomics",
+      "Alzheimer's disease",
+      "Parkinson's disease",
+      "schizophrenia",
+      "bipolar disorder",
+      "dorsolateral prefrontal cortex",
+      "DLPFC",
+      "cell type composition",
+      "differential expression",
+      "dreamlet",
+      "crumblr",
+      "GWAS",
+      "heritability",
+      "disease trajectory",
+      "PsychAD",
+      "cross-disorder",
+      "pseudobulk"
+    ],
+    "summary": "A population-scale single-nucleus RNA-seq atlas of 1,494 human DLPFC donors spanning eight neurodegenerative and neuropsychiatric disorders, with code for cell-type composition, differential expression (dreamlet), and disease-trajectory analyses.",
+    "abstract_long": "The authors generated a single-nucleus transcriptomic atlas of the human dorsolateral prefrontal cortex from 1,494 donors (over 6.3 million nuclei), covering neurotypical controls plus eight brain disorders: Alzheimer's disease, diffuse Lewy body disease, vascular dementia, Parkinson's disease, tauopathy, frontotemporal dementia, schizophrenia, and bipolar disorder. They quantify how much of the transcriptomic variation comes from cell type versus interindividual differences, identify gene expression signatures shared across disorders versus disease-specific ones, show that shared transcriptomic vulnerability tracks with genetic co-heritability between disorders, and model nonlinear gene-expression trajectories across Alzheimer's disease progression using neural networks trained on pathology and cognitive-decline measures.",
+    "data_acquisition": "Single-nucleus RNA sequencing (snRNA-seq) — 10x Genomics Chromium, postmortem human DLPFC",
+    "language": "R, Python",
+    "animal": "Not applicable (human postmortem tissue)",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "1,494 unique donors",
+      "strains": "",
+      "notes": "Includes neurotypical controls and donors with Alzheimer's disease, diffuse Lewy body disease, vascular dementia, Parkinson's disease, tauopathy, frontotemporal dementia, schizophrenia, and bipolar disorder."
+    },
+    "tutorial": "",
+    "tutorial_intro": "This repo is analysis code for reproducing the paper's own figures rather than a general-purpose tool you install and point at arbitrary data — it's organized into 9 numbered folders mirroring the paper's result sections in order, from raw metadata through to spatial validation. If your goal is to apply the paper's core statistical method to your own single-cell cohort rather than reproduce this specific paper, the reusable engine is the separate dreamlet R package (linked above), which is worth understanding on its own before diving into the paper-specific code.",
+    "tutorial_steps": [
+      "Clone the repo. The 9 numbered folders correspond, in order, to: (1) metadata harmonization for the donor cohort, (2) preprocessing and hierarchical cellular taxonomy assignment from the raw snRNA-seq libraries, (3) partitioning transcriptomic variance into cell-type, donor, and technical sources, (4) compositional variation analysis across the eight disorders using the crumblr method, (5) differential gene expression across disorders using dreamlet's pseudobulk approach, (6) compositional and expression analysis specific to Alzheimer's disease pathology staging, (7) the neural-network-based disease trajectory modeling, (8) heritability analysis linking transcriptomic and genetic similarity between disorders, and (9) validation against spatial transcriptomics (MERFISH) data.",
+      "Set up your environment before running anything: R scripts require Bioconductor ≥3.17 with R ≥4.3.0, and Python scripts require Python ≥3.8. Each numbered folder has its own dependency list (typically at the top of the main script or in a folder-level README) — install per-folder rather than assuming one environment covers everything, since the R/Bioconductor and Python requirements differ meaningfully between the taxonomy/expression folders and the trajectory-modeling folder.",
+      "If you want to reuse the core differential-expression approach on your own pseudobulked single-cell dataset rather than reproducing this paper's specific disease comparisons, install dreamlet directly instead of going through this repo: <code>devtools::install_github(\"DiseaseNeurogenomics/dreamlet\")</code>, then follow dreamlet's own documentation for fitting precision-weighted linear mixed models to your cohort. This is the more practical route if your actual goal is \"run this kind of analysis on my data\" rather than \"reproduce this exact paper.\"",
+      "To reproduce a specific figure without starting from raw sequencing data, download the processed PsychAD count matrices and metadata from Zenodo (linked above under Sample data) and point the relevant numbered folder's scripts at your local copy — check that folder's script for the expected file paths/structure, since input conventions can differ slightly between folders given they were developed for different stages of the analysis.",
+      "For the compositional analysis specifically (folders 4 and 6), note that the paper uses centered-log-ratio (CLR) transformed cell-type fractions via crumblr rather than raw proportions, which matters if you're trying to match their exact statistics rather than just get a qualitative sense of compositional shifts."
+    ],
+    "tutorial_output": "Each numbered folder reproduces one part of the paper rather than a single unified output: folder 2 outputs cell-type taxonomy assignments (class/subclass/subtype labels per nucleus); folders 3-4 output variance-partitioning tables and compositional fold-change statistics per cell subclass; folder 5 outputs differential expression gene lists (with effect sizes and posterior probabilities from the multivariate Bayesian meta-analysis) per disorder and cell type; folder 7 outputs the trained disease-trajectory neural network models along with per-gene trajectory module assignments (early/late-increasing/decreasing); and folder 8 outputs the heritability-transcriptome concordance statistics. Check the relevant subfolder's own scripts/README for exact file formats, since this varies by module.",
+    "sample_data": {
+      "text": "Full processed snRNA-seq data for the PsychAD cohort, hosted on Zenodo.",
+      "url": "https://doi.org/10.5281/zenodo.14606776"
+    },
+    "code": {
+      "repo_url": "https://github.com/DiseaseNeuroGenomics/PsychADxD",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "dreamlet (core differential expression method, reusable on your own data)",
+        "url": "https://github.com/GabrielHoffman/dreamlet"
+      },
+      {
+        "label": "crumblr (compositional variation analysis)",
+        "url": "https://github.com/DiseaseNeuroGenomics/crumblr"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  }
+]
