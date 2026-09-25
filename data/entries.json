@@ -2030,17 +2030,13 @@
       "notes": "164 recording sessions averaging 6.7 ± 1.9 h each; 7532 units across five neuronal classes"
     },
     "tutorial": "",
-    "tutorial_intro": "The HippoCookBook repository contains the MATLAB code used in this paper for spike sorting, interneuron classification, place field analysis, functional coupling (MI and GLM), brain state scoring, and optogenetic response quantification. The classifier (cell_type_classification subfolder) can be applied to any extracellular CA1 dataset without optogenetic ground truth. Important prerequisites and limitations: (1) the classifier reads the cell metrics structure produced by CellExplorer (petersenpeter/CellExplorer) — you need to run CellExplorer on your sorted data first to extract waveform and spike-train features in the expected format; (2) the full classifier (including the CA1-specific LFP features: theta modulation, SPW-R response, gamma phase preferences) only works for hippocampal CA1 neurons, as it relies on hippocampal oscillatory landmarks and layer geometry; the version trained on intrinsic features alone (Fig. 1 of the paper) can generalize to neocortex but will not resolve subfamilies as cleanly.",
+    "tutorial_intro": "The core reusable output of this paper is the interneuron family classifier in <a href=\"https://github.com/valegarman/HippoCookBook/tree/main/analysis/cell_type_classification\">HippoCookBook/analysis/cell_type_classification</a>. Given any sorted CA1 hippocampal dataset, it assigns each unit to one of five families: Pvalb, Sst, Id2, Vip, or CaMK2α. Important constraints: (1) the classifier reads the <code>cell_metrics</code> struct produced by CellExplorer — this is a hard dependency, CellExplorer must be run first; (2) the full classifier only works for hippocampal CA1 neurons, as the CA1-specific LFP features (theta modulation, SPW-R response, gamma phase locking) depend on hippocampal oscillatory landmarks that do not exist in neocortex.",
     "tutorial_steps": [
-      "Perform extracellular recordings and spike sort with KiloSort (<a href=\"https://github.com/cortex-lab/KiloSort\">cortex-lab/KiloSort</a>) using the KilosortWrapper pipeline, followed by manual curation in Phy — standard parameters are provided in the paper's Methods and in the HippoCookBook repo.",
-      "Run CellExplorer (<a href=\"https://github.com/petersenpeter/CellExplorer\">petersenpeter/CellExplorer</a>) on your sorted data to extract the standard cell metrics structure (<code>cell_metrics</code>): this computes waveform features (spike width, asymmetry), spike-train statistics (CV2, ACG and its rise time), firing rates across brain states, and anatomical location from CSD landmarks — the HippoCookBook classifier reads this structure directly, so this step is required before classification.",
-      "Pass the <code>cell_metrics</code> struct to the pretrained decision tree classifier in <code>HippoCookBook/tree/main/analysis/cell_type_classification/</code> to assign each unit to one of five families: Pvalb, Sst, Id2, Vip, CaMK2α. For CA1 recordings, the classifier additionally uses LFP-derived features (theta modulation, SPW-R response, gamma phase preferences) computed by HippoCookBook's LFP analysis functions, boosting accuracy to 97.8% — these features are hippocampus-specific and should not be used for neocortical data.",
-      "Validate the classification: check that the predicted family proportions match histology- or gene-expression-based expectations; cross-validate phase preferences of opto-tagged vs predicted neurons against hippocampal oscillation patterns.",
-      "Run place field analysis using functions in HippoCookBook: bin spikes into 2.2-cm spatial bins, compute rate maps separately for left and right trials, define place fields at >20% of peak rate, and quantify stability (correlation first vs second half), selectivity (peak/mean ratio), context generalization (left vs right correlation), and space-rate MI.",
-      "For position decoding, apply CEBRA (<a href=\"https://cebra.ai\">cebra.ai</a>) to the predicted-family spike trains: bin spikes in 30-ms windows, train on 80% of maze sessions, test on 20%, and compare decoding error across family subsets — the paper provides this analysis in the CEBRA section of HippoCookBook.",
-      "Estimate functional coupling between neuron pairs using mutual information (Neuroscience Information Theory Toolbox) or GLMs fit to 10-ms binned spike trains — the HippoCookBook repo provides both implementations, and the resulting adjacency matrix can be compared to opto-evoked synaptic response matrices as a validation."
+      "Run CellExplorer (<a href=\"https://github.com/petersenpeter/CellExplorer\">petersenpeter/CellExplorer</a>) on your KiloSort-sorted CA1 data. CellExplorer outputs a <code>cell_metrics</code> struct (saved as <code>session.cell_metrics.cellinfo.mat</code>) containing the waveform and spike-train features the classifier needs: <code>cell_metrics.waveforms</code> (spike width, asymmetry), <code>cell_metrics.acg</code> (autocorrelogram and rise time), <code>cell_metrics.firingRate</code>, <code>cell_metrics.cv2</code>, and <code>cell_metrics.general.chanCoords</code> (anatomical location). This struct is the required input format.",
+      "Run the LFP feature extraction functions in HippoCookBook to add CA1-specific features to <code>cell_metrics</code>: theta phase modulation (<code>computePhaseModulation.m</code>), SPW-R response (<code>rippleMasterDetector.m</code> + PSTH), and slow/mid/fast gamma phase preferences. These are computed from the raw LFP alongside the spike data and appended to <code>cell_metrics</code> before classification.",
+      "Call the classifier: load the pretrained model from <code>cell_type_classification/</code> and pass your <code>cell_metrics</code> struct. The classifier returns a predicted family label (Pvalb / Sst / Id2 / Vip / CaMK2α) and a confidence score per unit. A classification cutoff of ≥95% confidence per family is recommended (as used in the paper)."
     ],
-    "tutorial_output": "Per-unit family labels (Pvalb/Sst/Id2/Vip/CaMK2α) with classification confidence; per-cell place field metrics (stability, selectivity, generalization, space-rate MI); functional coupling adjacency matrix across predicted families; CEBRA decoding error (cm) as a function of interneuron family composition — all reproducing the main figures of Valero et al. 2025.",
+    "tutorial_output": "A per-unit table of predicted interneuron family labels and confidence scores, ready to use as cell-type annotations for any downstream analysis (place fields, functional coupling, population decoding). The classifier achieves >89% accuracy per family (>97% for CA1 with LFP features) in 10-fold cross-validation against opto-tagged ground truth.",
     "sample_data": {
       "text": "All data are publicly available in the Buzsaki Lab Databank.",
       "url": "https://buzsakilab.com/wp/database/"
@@ -2073,6 +2069,103 @@
     ],
     "related_ids": [
       "2023-05-03-cebra"
+    ],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2022-02-04-valero-subthreshold-optogenetics",
+    "title": "Probing subthreshold dynamics of hippocampal neurons by pulsed optogenetics",
+    "authors": "Valero M., Zutshi I., Yoon E., Buzsáki G.",
+    "journal": "Science",
+    "year": 2022,
+    "date": "2022-02-04",
+    "doi": "10.1126/science.abm1891",
+    "paper_url": "https://www.science.org/doi/10.1126/science.abm1891",
+    "github_url": "https://github.com/buzsakilab/buzcode",
+    "website_url": "https://buzsakilab.com/wp/public-data/",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "neural-circuits",
+    "categories": [
+      "neural-circuits",
+      "electrophysiology"
+    ],
+    "tags": [
+      "hippocampus",
+      "CA1",
+      "place cells",
+      "place fields",
+      "subthreshold dynamics",
+      "excitability",
+      "E/I balance",
+      "excitation-inhibition",
+      "sharp-wave ripples",
+      "SPW-R",
+      "theta oscillations",
+      "optogenetics",
+      "μLED",
+      "micro-LED",
+      "pulsed optogenetics",
+      "ghost fields",
+      "unmasked place fields",
+      "non-place cells",
+      "cell assemblies",
+      "ICA",
+      "neural decoding",
+      "Bayesian decoding",
+      "membrane potential",
+      "CaMKIIα",
+      "freely moving",
+      "mouse",
+      "MATLAB"
+    ],
+    "summary": "Valero et al. use brief optogenetic depolarizing pulses delivered via μLED probes to probe the subthreshold excitability of large CA1 pyramidal neuron populations in freely moving mice, without disrupting their normal spiking. During SPW-Rs excitability decreases (balanced E/I model), during theta and within place fields it increases (reciprocal model); critically, optogenetic unmasking reveals stable latent place fields in 69% of apparent non-place cells, implying the fraction of CA1 neurons with a place representation is far higher than classical firing-threshold criteria suggest.",
+    "abstract_long": "The paper develops a population-scale, non-invasive proxy for membrane potential dynamics by delivering brief (20 ms), low-power μLED pulses to CA1 pyramidal neurons at random intervals while monitoring their spike responses. The magnitude of the evoked firing-rate change (ΔRate = μLED response − control) serves as a readout of the neuron's instantaneous excitability (Vm). Three main findings emerge. First, during SPW-Rs individual pyramidal neurons decrease their light-evoked responses (negative gain, balanced E/I model), even though population firing increases — resolving an apparent paradox between population and single-cell excitability. Second, during theta oscillations and within place fields, light-evoked responses are enhanced (reciprocal/disinhibition model), consistent with place cells receiving reduced inhibition inside their fields. Third — the most striking result — optogenetic depolarization unmasks stable, spatially selective ghost place fields in 69% of neurons classified as non-place cells under normal conditions; these latent fields are spatially correlated with the sparse spontaneous spikes of the same cells, are as stable as real place fields, and their SPW-R cofiring patterns predict their spatial overlap on the track, just as for real place cells. The implication is that essentially the entire CA1 pyramidal population carries a spatial representation, with most cells held below firing threshold by inhibition under normal conditions.",
+    "data_acquisition": "Extracellular electrophysiology with 4-shank μLED probes (3 μLEDs per shank, Neurolight) implanted in CA1 of freely moving CaMKIIα-Cre::Ai32 mice; 20-ms light pulses (0.02–0.1 μW) delivered at random 0.3–0.6 s intervals to depolarize pyramidal neurons while recording spiking responses; animal position tracked on a linear track",
+    "language": "MATLAB (custom scripts, buzcode toolbox)",
+    "animal": "Mouse (CaMKIIα-Cre::Ai32, C57BL/6 background; 4 mice, 822 CA1 pyramidal neurons, 43.3 ± 8.37 neurons per session)",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "4 mice",
+      "strains": "CaMKIIα-Cre::Ai32",
+      "notes": "822 CA1 pyramidal neurons total; 611 light-responsive; 43.3 ± 8.37 per session"
+    },
+    "tutorial": "",
+    "tutorial_intro": "The analysis code lives in <a href=\"https://github.com/buzsakilab/buzcode\">buzcode</a> and <a href=\"https://github.com/valegarman/HippoCookBook\">HippoCookBook</a> (MATLAB). The key analysis concept is DeltaRate: for each neuron, subtract the firing rate during matched no-light control windows from the firing rate during light-pulse windows. This single number -- computed per brain state, per theta phase bin, or per spatial position bin -- is the excitability proxy that drives all the paper's analyses. The required input is a standard buzcode/HippoCookBook session struct with spike times, light pulse times (stored as events), LFP, and animal position.",
+    "tutorial_steps": [
+      "Classify light-responsive units using <code>getOptogeneticResponse.m</code> (HippoCookBook): it computes the cross-correlogram between each unit's spikes and the pulse times, then applies four statistical tests (mean DeltaRate > 2 SD, P < 1e-3 vs shuffled pulses, bootstrap, SALT latency jitter). Returns a per-unit <code>optogeneticResponse</code> struct with <code>.isResponsive</code>, <code>.deltaRate</code> per intensity level, and response PSTHs. Only responsive units are used as the excitability proxy.",
+      "Compute DeltaRate across brain states with <code>getAveragedPeriEventResponses.m</code>: pass spike times, light pulse event times, and a brain state vector (from <code>SleepScoreMaster.m</code>) to get mean DeltaRate separately for Run, Quiet, NREM, and REM. For SPW-R-aligned analysis, pass SPW-R peak times (from <code>rippleMasterDetector.m</code>) as the reference event to get DeltaRate as a function of time relative to ripple onset -- this produces the negative gain during SPW-R result.",
+      "Compute DeltaRate as a function of spatial position: bin the animal's track position into 2.2-cm bins and compute mean DeltaRate per bin per neuron using <code>getSpikesReturnPlaceFields.m</code>. Comparing in-field vs out-of-field DeltaRate (using place field boundaries from control epochs) gives the within-field excitability gain. The same function run on light-stimulation epochs for non-place cells identifies unmasked (ghost) fields as spatial bins with significantly elevated DeltaRate that are stable across trial halves.",
+      "For population assembly analysis, run <code>getAssemblies.m</code> (buzcode) on the z-scored spike matrix of all pyramidal neurons during home-cage SPW-Rs to extract ICA assembly membership weights. Then correlate assembly membership with pairwise spatial overlap using <code>getSpikesReturnPlaceFields.m</code> output. To test replay, run <code>replayDetect.m</code> (buzcode) with and without unmasked place field spikes included in the sequence template, and compare the fraction of SPW-R events with significant Bayesian trajectory probabilities."
+    ],
+    "tutorial_output": "Per-unit <code>optogeneticResponse</code> struct (DeltaRate per intensity, brain state, and spatial bin); place field maps for control and light epochs with ghost field flags; ICA assembly weight matrix; pairwise spatial-vs-ripple cofiring correlation matrices; replay trajectory significance fractions with and without unmasked fields included.",
+    "sample_data": {
+      "text": "All data publicly available in the Buzsaki Lab Databank.",
+      "url": "https://buzsakilab.com/wp/public-data/"
+    },
+    "code": {
+      "repo_url": "https://github.com/buzsakilab/buzcode",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "buzcode (Buzsaki lab MATLAB toolbox, used for all analyses)",
+        "url": "https://github.com/buzsakilab/buzcode"
+      },
+      {
+        "label": "HippoCookBook (Valero lab toolbox, extends buzcode with place field and cell-type analysis)",
+        "url": "https://github.com/valegarman/HippoCookBook"
+      },
+      {
+        "label": "Buzsaki Lab public data repository",
+        "url": "https://buzsakilab.com/wp/public-data/"
+      }
+    ],
+    "related_ids": [
+      "2025-09-04-valero-interneurons-hippocampal-spatial-code"
     ],
     "added_date": "2026-09-25",
     "added_by": "manual",
