@@ -1,0 +1,46 @@
+title: Cooperative actions of interneuron families support the hippocampal spatial code
+authors: Valero M., Abad-Perez P., Gallardo A., Picco M., García-Hernandez R., Brotons J., Martínez-Félix A., Machold R., Rudy B., Buzsáki G.
+journal: Science
+year: 2025
+date: 2025-09-04
+doi: 10.1126/science.adv5638
+paper_url: https://www.science.org/doi/10.1126/science.adv5638
+github_url: https://github.com/valegarman/HippoCookBook
+website_url: https://buzsakilab.com/wp/database/
+access_status: open_access
+category: neural-circuits
+tags: hippocampus, interneurons, place cells, place fields, spatial coding, cognitive map, Pvalb, Sst, Vip, Id2, GABAergic, optogenetics, opto-tagging, silicon probe, extracellular electrophysiology, spike sorting, KiloSort, interneuron classification, decision tree classifier, machine learning, physiological fingerprinting, sharp-wave ripples, SPW-R, theta oscillations, gamma oscillations, CEBRA, neural decoding, CA1, mouse, freely moving, delayed alternation task, MATLAB, Python
+data_acquisition: Extracellular electrophysiology with 64-site, 5-shank silicon probes (or 32-site 4-shank μLED probes) implanted in CA1 of freely moving mice; optogenetic identification via ChR2 expressed selectively in each interneuron family through Cre/Flp mouse lines; animal position tracked with a Basler camera at 30 Hz
+language: MATLAB (primary analysis, KiloSort spike sorting, SleepScoreMaster, HippoCookBook toolbox); Python (CEBRA for decoding)
+animal: Mouse (C57BL/6 background, 12–32 weeks; transgenic lines: Pvalb-Cre::Ai32, Sst-Flip::Ai80F, Id2-CreER/Dlx5-Flpe::Ai80, Vip-Flip::Ai80F, CaMK2α-Cre::Ai32)
+difficulty: advanced
+citation_count:
+added_date: 2026-09-25
+
+summary:
+This paper shows that the four major hippocampal GABAergic interneuron families (Pvalb, Sst, Vip, Id2) can be reliably identified in large-scale extracellular recordings using only physiological features — spike width, firing irregularity, ACG rise time, waveform asymmetry, theta modulation — trained on opto-tagged ground-truth data, and that these families cooperate to differentially shape the spatial features (stability, selectivity, generalization, place-field amplitude) of CA1 pyramidal place cells.
+
+abstract_long:
+Valero et al. combined silicon probe recordings with optogenetic identification (ChR2 in Pvalb, Sst, Vip, Id2, and CaMK2α lines) to collect ground-truth physiological fingerprints for all major interneuron families in freely moving mice, across both the hippocampus and neocortex. A decision tree classifier trained on six physiological features (CV2, ACG rise time, spike width, anatomical location, waveform asymmetry, firing rate) achieved >89% accuracy per family in 10-fold cross-validation and was then applied to large-scale, unlabeled recordings (5276 CA1 units from 155 sessions, 30 mice), whose predicted family fractions matched gene-expression-based fractions. The study then examined how the four interneuron families cooperatively shape pyramidal place cell spatial coding: Pvalb suppressed the first half of place fields, while Sst and Id2 suppressed the second half; Vip disinhibited CaMK2α neurons via Sst suppression and increased place-field amplitude. CEBRA-based decoding showed that interneurons alone (at matched cell counts) decode spatial position as accurately as pyramidal cells, and leaving out any single family increased decoding error. The physiological fingerprinting strategy is paradigm-independent and applicable to datasets from different labs and species.
+
+extra_links:
+CellExplorer (prerequisite: computes the cell metrics that the classifier reads) | https://github.com/petersenpeter/CellExplorer
+HippoCookBook Arduino circuits and software for optogenetic control during behavior | https://github.com/valegarman/HippoPlayground
+CEBRA toolbox (used for position decoding from interneuron ensembles) | https://cebra.ai
+KiloSort spike sorter | https://github.com/cortex-lab/KiloSort
+Neuroscience Information Theory Toolbox (MI-based coupling) | https://github.com/nmtimme/NeuroscienceInformationTheoryToolbox
+
+tutorial_intro:
+The HippoCookBook repository contains the MATLAB code used in this paper for spike sorting, interneuron classification, place field analysis, functional coupling (MI and GLM), brain state scoring, and optogenetic response quantification. The classifier (cell_type_classification subfolder) can be applied to any extracellular CA1 dataset without optogenetic ground truth. Important prerequisites and limitations: (1) the classifier reads the cell metrics structure produced by CellExplorer (petersenpeter/CellExplorer) — you need to run CellExplorer on your sorted data first to extract waveform and spike-train features in the expected format; (2) the full classifier (including the CA1-specific LFP features: theta modulation, SPW-R response, gamma phase preferences) only works for hippocampal CA1 neurons, as it relies on hippocampal oscillatory landmarks and layer geometry; the version trained on intrinsic features alone (Fig. 1 of the paper) can generalize to neocortex but will not resolve subfamilies as cleanly.
+
+tutorial_steps:
+Perform extracellular recordings and spike sort with KiloSort (https://github.com/cortex-lab/KiloSort) using the KilosortWrapper pipeline, followed by manual curation in Phy — standard parameters are provided in the paper's Methods and in the HippoCookBook repo.
+Run CellExplorer (https://github.com/petersenpeter/CellExplorer) on your sorted data to extract the standard cell metrics structure (<code>cell_metrics</code>): this computes waveform features (spike width, asymmetry), spike-train statistics (CV2, ACG and its rise time), firing rates across brain states, and anatomical location from CSD landmarks — the HippoCookBook classifier reads this structure directly, so this step is required before classification.
+Pass the <code>cell_metrics</code> struct to the pretrained decision tree classifier in <code>HippoCookBook/tree/main/analysis/cell_type_classification/</code> to assign each unit to one of five families: Pvalb, Sst, Id2, Vip, CaMK2α. For CA1 recordings, the classifier additionally uses LFP-derived features (theta modulation, SPW-R response, gamma phase preferences) computed by HippoCookBook's LFP analysis functions, boosting accuracy to 97.8% — these features are hippocampus-specific and should not be used for neocortical data.
+Validate the classification: check that the predicted family proportions match histology- or gene-expression-based expectations; cross-validate phase preferences of opto-tagged vs predicted neurons against hippocampal oscillation patterns.
+Run place field analysis using functions in HippoCookBook: bin spikes into 2.2-cm spatial bins, compute rate maps separately for left and right trials, define place fields at >20% of peak rate, and quantify stability (correlation first vs second half), selectivity (peak/mean ratio), context generalization (left vs right correlation), and space-rate MI.
+For position decoding, apply CEBRA (https://cebra.ai) to the predicted-family spike trains: bin spikes in 30-ms windows, train on 80% of maze sessions, test on 20%, and compare decoding error across family subsets — the paper provides this analysis in the CEBRA section of HippoCookBook.
+Estimate functional coupling between neuron pairs using mutual information (Neuroscience Information Theory Toolbox) or GLMs fit to 10-ms binned spike trains — the HippoCookBook repo provides both implementations, and the resulting adjacency matrix can be compared to opto-evoked synaptic response matrices as a validation.
+
+tutorial_output:
+Per-unit family labels (Pvalb/Sst/Id2/Vip/CaMK2α) with classification confidence; per-cell place field metrics (stability, selectivity, generalization, space-rate MI); functional coupling adjacency matrix across predicted families; CEBRA decoding error (cm) as a function of interneuron family composition — all reproducing the main figures of Valero et al. 2025.
