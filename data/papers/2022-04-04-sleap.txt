@@ -1,0 +1,44 @@
+title: SLEAP: A deep learning system for multi-animal pose tracking
+authors: Pereira T.D., Tabris N., Matsliah A., Turner D.M., Li J., Ravindranath S., Papadoyannis E.S., Normand E., Deutsch D.S., Wang Z.Y., McKenzie-Smith G.C., Mitelut C.C., Diez Castro M., D'Uva J., Kislin M., Sanes D.H., Kocher S.D., Wang S.S.-H., Falkner A.L., Shaevitz J.W., Murthy M.
+journal: Nature Methods
+year: 2022
+date: 2022-04-04
+doi: 10.1038/s41592-022-01426-1
+paper_url: https://www.nature.com/articles/s41592-022-01426-1
+github_url: https://github.com/talmolab/sleap
+website_url: https://sleap.ai
+access_status: open_access
+category: automated-behavioral-tracking
+tags: multi-animal pose tracking, pose estimation, top-down, bottom-up, part affinity fields, PAF, identity tracking, optical flow, appearance model, real-time tracking, closed-loop, optogenetics, Drosophila, bumblebee, gerbil, mouse, GUI, UNet, transfer learning
+data_acquisition: Video of one or more freely-moving or interacting animals of any species, from top-down or side camera angles
+language: Python (TensorFlow)
+animal: Fruit flies, bumblebees, mice, gerbils (general-purpose, demonstrated across species)
+difficulty: beginner
+citation_count: 973
+added_date: 2026-09-25
+
+summary:
+SLEAP is a general-purpose deep learning framework for tracking the pose and identity of multiple interacting animals from video, offering both bottom-up and top-down pose-estimation strategies, two identity-tracking approaches (temporal and appearance-based), an accessible GUI requiring no coding, and real-time inference fast enough for closed-loop optogenetic experiments.
+
+abstract_long:
+SLEAP (Social LEAP Estimates Animal Poses) is the multi-animal successor to LEAP, built as a complete, general-purpose pose-tracking system covering labeling, training, inference, and proofreading. It implements both bottom-up (detect all body parts, then group them into animals via part affinity fields) and top-down (detect each animal first, then find its body parts within a crop) strategies, over 30 configurable neural network architectures built around a modular UNet, and two identity-tracking approaches — temporal (optical-flow-based, propagating identities frame to frame) and appearance-based (classifying identity directly from learned visual features, immune to error propagation over long recordings). Evaluated across seven datasets spanning flies, bees, mice, and gerbils, SLEAP matches or exceeds prior single-animal tools in accuracy while running 2-5x faster, achieves 90% peak accuracy with as few as 200 labeled frames, and reaches inference speeds over 800 frames per second with latencies under 3.5 ms at full 1,024x1,024 resolution — fast enough that the authors demonstrate closed-loop optogenetic control of one fly's behavior triggered in real time by a detected social interaction with another fly.
+
+extra_links:
+Conda packages for core dependencies (TensorFlow, NumPy, OpenCV, PySide2) | https://github.com/talmo/conda_packages
+
+sample_data_text: All seven benchmark datasets (7,636 labeled images, 15,441 animal instances across flies, bees, mice, and gerbils) plus over 300 trained models (~90 GB) are publicly archived.
+sample_data_url: https://doi.org/10.17605/OSF.IO/36HAR
+
+tutorial_intro:
+SLEAP can be used entirely through its GUI with no programming required, or scripted via its Python API for custom pipelines and batch processing. It works on raw video or image arrays, and can also import existing annotations from other pose-tracking tools (DeepLabCut, DeepPoseKit) or standard formats (COCO).
+
+tutorial_steps:
+Install SLEAP via pip or conda (conda distributions include automatic GPU support on Windows/Linux); it runs on Windows, Linux, or macOS with or without a GPU, though a GPU is strongly recommended for training and fast inference.
+Label training data using SLEAP's GUI: define a skeleton (the set of body parts and their connections) appropriate for your animal, then annotate a representative set of frames — the paper found 90% peak accuracy achievable with as few as 200 labeled frames for both flies and mice.
+Choose an approach and configure the model: bottom-up (single-pass, scales efficiently with many animals) or top-down (typically faster with few animals, but scales linearly with animal count); pick a network architecture (the default modular UNet, or one of 30+ alternatives with optional ImageNet-pretrained backbones for transfer learning) and receptive-field size via the GUI's configuration system, which serializes every setting to a reproducible JSON config.
+Train the model from the GUI (which monitors loss curves and lets you issue manual early stopping) or via the CLI/API for remote/batch training — SLEAP can also train and run inference in a Google Colab notebook with GPU support after exporting a self-contained "training package" from your local installation.
+If you need to track identity across frames, choose between the two tracking modes: flow-shift (temporal, optical-flow-based, needs no extra labeling but can propagate rare ID-switch errors over time) or an appearance-based ID model (requires labeling each training instance with its identity class, but eliminates error propagation — recommended for long recordings or animals with subtle but consistent individual differences, such as the gerbil dataset in the paper).
+Run inference on new video via the CLI, high-level Python API, or GUI; results (including confidence-scored predictions) can be reopened in the GUI for proofreading, and raw positional data can be exported in formats convenient for downstream analysis or for use with other tools such as SimBA or B-SOiD.
+
+tutorial_output:
+Per-frame, per-animal body-part coordinates with confidence scores, plus (if tracking is enabled) a consistent identity/track assignment across frames — exportable as SLEAP's own portable file format (which can include the source images) or as raw positional arrays for downstream analysis in your own pipeline or in third-party behavior-classification tools.

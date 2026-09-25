@@ -329,6 +329,492 @@
     "verified": true
   },
   {
+    "id": "2022-04-04-sleap",
+    "title": "SLEAP: A deep learning system for multi-animal pose tracking",
+    "authors": "Pereira T.D., Tabris N., Matsliah A., Turner D.M., Li J., Ravindranath S., Papadoyannis E.S., Normand E., Deutsch D.S., Wang Z.Y., McKenzie-Smith G.C., Mitelut C.C., Diez Castro M., D'Uva J., Kislin M., Sanes D.H., Kocher S.D., Wang S.S.-H., Falkner A.L., Shaevitz J.W., Murthy M.",
+    "journal": "Nature Methods",
+    "year": 2022,
+    "date": "2022-04-04",
+    "doi": "10.1038/s41592-022-01426-1",
+    "paper_url": "https://www.nature.com/articles/s41592-022-01426-1",
+    "website_url": "https://sleap.ai",
+    "access_status": "open_access",
+    "citation_count": 973,
+    "category": "automated-behavioral-tracking",
+    "categories": [
+      "automated-behavioral-tracking"
+    ],
+    "tags": [
+      "multi-animal pose tracking",
+      "pose estimation",
+      "top-down",
+      "bottom-up",
+      "part affinity fields",
+      "PAF",
+      "identity tracking",
+      "optical flow",
+      "appearance model",
+      "real-time tracking",
+      "closed-loop",
+      "optogenetics",
+      "Drosophila",
+      "bumblebee",
+      "gerbil",
+      "mouse",
+      "GUI",
+      "UNet",
+      "transfer learning"
+    ],
+    "summary": "SLEAP is a general-purpose deep learning framework for tracking the pose and identity of multiple interacting animals from video, offering both bottom-up and top-down pose-estimation strategies, two identity-tracking approaches (temporal and appearance-based), an accessible GUI requiring no coding, and real-time inference fast enough for closed-loop optogenetic experiments.",
+    "abstract_long": "SLEAP (Social LEAP Estimates Animal Poses) is the multi-animal successor to LEAP, built as a complete, general-purpose pose-tracking system covering labeling, training, inference, and proofreading. It implements both bottom-up (detect all body parts, then group them into animals via part affinity fields) and top-down (detect each animal first, then find its body parts within a crop) strategies, over 30 configurable neural network architectures built around a modular UNet, and two identity-tracking approaches — temporal (optical-flow-based, propagating identities frame to frame) and appearance-based (classifying identity directly from learned visual features, immune to error propagation over long recordings). Evaluated across seven datasets spanning flies, bees, mice, and gerbils, SLEAP matches or exceeds prior single-animal tools in accuracy while running 2-5x faster, achieves 90% peak accuracy with as few as 200 labeled frames, and reaches inference speeds over 800 frames per second with latencies under 3.5 ms at full 1,024x1,024 resolution — fast enough that the authors demonstrate closed-loop optogenetic control of one fly's behavior triggered in real time by a detected social interaction with another fly.",
+    "data_acquisition": "Video of one or more freely-moving or interacting animals of any species, from top-down or side camera angles",
+    "language": "Python (TensorFlow)",
+    "animal": "Fruit flies, bumblebees, mice, gerbils (general-purpose, demonstrated across species)",
+    "gpu_required": "",
+    "difficulty": "beginner",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "SLEAP can be used entirely through its GUI with no programming required, or scripted via its Python API for custom pipelines and batch processing. It works on raw video or image arrays, and can also import existing annotations from other pose-tracking tools (DeepLabCut, DeepPoseKit) or standard formats (COCO).",
+    "tutorial_steps": [
+      "Install SLEAP via pip or conda (conda distributions include automatic GPU support on Windows/Linux); it runs on Windows, Linux, or macOS with or without a GPU, though a GPU is strongly recommended for training and fast inference.",
+      "Label training data using SLEAP's GUI: define a skeleton (the set of body parts and their connections) appropriate for your animal, then annotate a representative set of frames — the paper found 90% peak accuracy achievable with as few as 200 labeled frames for both flies and mice.",
+      "Choose an approach and configure the model: bottom-up (single-pass, scales efficiently with many animals) or top-down (typically faster with few animals, but scales linearly with animal count); pick a network architecture (the default modular UNet, or one of 30+ alternatives with optional ImageNet-pretrained backbones for transfer learning) and receptive-field size via the GUI's configuration system, which serializes every setting to a reproducible JSON config.",
+      "Train the model from the GUI (which monitors loss curves and lets you issue manual early stopping) or via the CLI/API for remote/batch training — SLEAP can also train and run inference in a Google Colab notebook with GPU support after exporting a self-contained \"training package\" from your local installation.",
+      "If you need to track identity across frames, choose between the two tracking modes: flow-shift (temporal, optical-flow-based, needs no extra labeling but can propagate rare ID-switch errors over time) or an appearance-based ID model (requires labeling each training instance with its identity class, but eliminates error propagation — recommended for long recordings or animals with subtle but consistent individual differences, such as the gerbil dataset in the paper).",
+      "Run inference on new video via the CLI, high-level Python API, or GUI; results (including confidence-scored predictions) can be reopened in the GUI for proofreading, and raw positional data can be exported in formats convenient for downstream analysis or for use with other tools such as SimBA or B-SOiD."
+    ],
+    "tutorial_output": "Per-frame, per-animal body-part coordinates with confidence scores, plus (if tracking is enabled) a consistent identity/track assignment across frames — exportable as SLEAP's own portable file format (which can include the source images) or as raw positional arrays for downstream analysis in your own pipeline or in third-party behavior-classification tools.",
+    "sample_data": {
+      "text": "All seven benchmark datasets (7,636 labeled images, 15,441 animal instances across flies, bees, mice, and gerbils) plus over 300 trained models (~90 GB) are publicly archived.",
+      "url": "https://doi.org/10.17605/OSF.IO/36HAR"
+    },
+    "code": {
+      "repo_url": "https://github.com/talmolab/sleap",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Conda packages for core dependencies (TensorFlow, NumPy, OpenCV, PySide2)",
+        "url": "https://github.com/talmo/conda_packages"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2023-05-30-alphatracker",
+    "title": "AlphaTracker: a multi-animal tracking and behavioral analysis tool",
+    "authors": "Chen Z., Zhang R., Fang H.-S., Zhang Y.E., Bal A., Zhou H., Rock R.R., Padilla-Coreano N., Keyes L.R., Zhu H., Li Y.-L., Komiyama T., Tye K.M., Lu C.",
+    "journal": "Frontiers in Behavioral Neuroscience",
+    "year": 2023,
+    "date": "2023-05-30",
+    "doi": "10.3389/fnbeh.2023.1111908",
+    "paper_url": "https://www.frontiersin.org/journals/behavioral-neuroscience/articles/10.3389/fnbeh.2023.1111908/full",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "automated-behavioral-tracking",
+    "categories": [
+      "automated-behavioral-tracking"
+    ],
+    "tags": [
+      "multi-animal tracking",
+      "pose estimation",
+      "YOLOv3",
+      "SENet",
+      "identity tracking",
+      "Kalman filter",
+      "behavioral clustering",
+      "hierarchical clustering",
+      "social behavior",
+      "mouse",
+      "markerless tracking",
+      "GUI",
+      "Google Colab",
+      "AlphaPose",
+      "Adjusted Rand Index"
+    ],
+    "summary": "AlphaTracker is a markerless multi-animal pose-tracking and behavioral-clustering pipeline (built on AlphaPose/YOLOv3) with a GUI or command-line workflow that outperforms SLEAP and DeepLabCut on identity tracking of near-identical mice, plus an unsupervised hierarchical-clustering module for discovering individual and social behavioral motifs from the tracked poses.",
+    "abstract_long": "AlphaTracker's tracking pipeline has three steps: YOLOv3 detects each animal's bounding box, a Squeeze-and-Excitation Network (SENet) estimates keypoints within each box, and a custom identity-tracking method (comparing hierarchical position/orientation descriptors via intersection-over-union, refined with Kalman filtering) maintains consistent animal identities across frames — important because same-strain animals look nearly identical. On benchmark datasets (two mice in a home cage; four mice in an operant chamber), AlphaTracker outperformed both DeepLabCut and SLEAP on keypoint accuracy (mAP) and tracking consistency (MOTA/MOTP), including with as few as 50 training frames. A separate behavioral-clustering module groups 15-frame (500 ms) pose clips via agglomerative hierarchical clustering into individual behaviors (walking, digging, sniffing, rearing, turning, grooming) and, for interacting dyads, social behaviors (following, chasing, anogenital/face sniffing, social rearing) — validated against human annotation with an Adjusted Rand Index well above chance. Everything is usable via a code-free GUI or the command line, with a Google Colab option for users without local GPU access.",
+    "data_acquisition": "Standard top-down video of multiple unmarked animals — works with low-cost webcams (tested down to 540p), no specialized hardware or markers required",
+    "language": "Python (PyTorch)",
+    "animal": "Mouse (demonstrated); adaptable to other species with retraining on new annotated data",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "AlphaTracker offers both a code-free GUI and a command-line workflow; either way it expects either your own annotated training frames (to train a custom model) or just a raw video (to use the bundled pretrained demo model). Windows users should check out the repo's \"windows\" branch before installing, since the default build relies on a Linux-only C-based YOLO toolbox.",
+    "tutorial_steps": [
+      "Install: <code>git clone https://github.com/MVIG-SJTU/AlphaTracker.git</code>, then <code>cd AlphaTracker</code> and <code>bash scripts/install.sh</code> (Windows users first run <code>git checkout windows</code>). This sets up an Anaconda environment with all dependencies. Alternatively, skip local installation entirely using the Colab notebooks linked above.",
+      "(Optional — skip if using the bundled pretrained demo model) Annotate your own training frames with the included Sloth-based annotation tool under <code>./Tracking/TheAnnotationTool/</code>: draw a bounding box plus your chosen keypoints (the paper used snout, left ear, right ear, tail base) for at least ~200 representative frames, keeping the same labeling order for every animal in every frame.",
+      "Train the tracking model, either via the GUI's \"Train\" button or by setting paths and parameters (image/annotation folders, number of animals, number of keypoints) in <code>./Tracking/AlphaTracker/setting.py</code> and running <code>python train.py</code>. In the paper, 600 annotated frames were enough to outperform DeepLabCut and SLEAP on identity-tracking accuracy; even 50 frames reached an mAP above 0.7.",
+      "Run tracking on a new video via the GUI or <code>python track.py</code>, after setting the video path, frame range, and expected number of animals in <code>setting.py</code> — or set <code>exp_name=demo</code> to use the bundled pretrained model without training your own.",
+      "Inspect and correct tracking errors with the browser-based curation UI (<code>python setup.py</code> inside the <code>UI/</code> folder). Large jitter in the keypoint timeline usually means the pose model needs more training data; individual misidentified animals or mislabeled keypoints can be corrected frame-by-frame.",
+      "Run behavioral clustering on the tracked poses with <code>python fft_main_sep_twoMiceInteract.py</code>, after configuring feature weights in <code>./BehavioralClustering/setting.py</code> (set social-feature weights to 0 if you only want individual-behavior clustering). This groups 15-frame (500 ms) pose clips — matching the sub-second timescale of mouse behavior — via agglomerative hierarchical clustering.",
+      "Inspect clustering quality with the provided Jupyter notebook (dendrograms, feature heatmaps, UMAP, mutual-information plots) to choose a good distance threshold, then review, merge, or rename clusters in the browser-based clustering UI."
+    ],
+    "tutorial_output": "Per-frame keypoint coordinates and consistent animal identities for every tracked animal (exportable as JSON), plus — from the clustering step — a set of individual behavior clusters (walking, digging, sniffing, rearing, grooming, etc.) and, for multi-animal videos, social behavior clusters (following, chasing, anogenital/face sniffing, social rearing), each represented by a characteristic average pose trajectory.",
+    "sample_data": {
+      "text": "A demo training dataset (600 annotated frames of two unmarked mice interacting in a home cage) and a bundled demo video are provided for a quick first run.",
+      "url": "https://drive.google.com/file/d/1TYIXYYIkDDQQ6KRPqforrup_rtS0YetR/view?usp=sharing"
+    },
+    "code": {
+      "repo_url": "https://github.com/MVIG-SJTU/AlphaTracker",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "AlphaTracker2 (Windows-friendlier sister version with lighter-weight backbones for real-time tracking)",
+        "url": "https://github.com/Tyelab/AlphaTracker2"
+      },
+      {
+        "label": "Quick-test Colab notebook (pretrained model, no local install)",
+        "url": "https://colab.research.google.com/drive/1wYBAj3kjLMe6uir3TJVfWRAJNHtjCaPG"
+      },
+      {
+        "label": "Training Colab notebook (train on your own annotated data)",
+        "url": "https://colab.research.google.com/drive/1bGUo3eMWIfzXiFWCvNrNiTOzhSsTsVHV"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2024-03-20-spatialdata",
+    "title": "SpatialData: an open and universal data framework for spatial omics",
+    "authors": "Marconato L., Palla G., Yamauchi K.A., Virshup I., Heidari E., Treis T., Vierdag W.-M., Toth M., Stockhaus S., Shrestha R.B., Rombaut B., Pollaris L., Lehner L., Vöhringer H., Kats I., Saeys Y., Saka S.K., Huber W., Gerstung M., Moore J., Theis F.J., Stegle O.",
+    "journal": "Nature Methods",
+    "year": 2024,
+    "date": "2024-03-20",
+    "doi": "10.1038/s41592-024-02212-x",
+    "paper_url": "https://www.nature.com/articles/s41592-024-02212-x",
+    "website_url": "https://spatialdata.scverse.org",
+    "access_status": "open_access",
+    "citation_count": 272,
+    "category": "spatial-omics",
+    "categories": [
+      "spatial-omics",
+      "image-analysis"
+    ],
+    "tags": [
+      "spatial omics",
+      "Zarr",
+      "OME-NGFF",
+      "common coordinate system",
+      "Xenium",
+      "Visium",
+      "MERFISH",
+      "CosMx",
+      "MIBI-TOF",
+      "imaging mass cytometry",
+      "CyCIF",
+      "napari",
+      "scverse",
+      "Scanpy",
+      "Squidpy",
+      "cell2location",
+      "deconvolution",
+      "multimodal integration",
+      "breast cancer",
+      "lazy loading",
+      "PyTorch dataset"
+    ],
+    "summary": "SpatialData is a Python framework and file format (built on Zarr/OME-NGFF) for storing, aligning, querying, and jointly analyzing spatial omics datasets across technologies (Xenium, Visium, MERFISH, CosMx, MIBI-TOF, imaging mass cytometry, CyCIF), letting you register multiple modalities to a common coordinate system and aggregate data across them for integrative analysis.",
+    "abstract_long": "SpatialData represents any spatial omics dataset using five primitive elements — Images, Labels (segmentation masks), Points (molecule detections), Shapes (regions/capture locations), and Tables (quantifications/annotations) — serialized to a technology-agnostic Zarr store built on the OME-NGFF specification, so data from different platforms and vendors share one programmatic interface. The Python library supports lazy loading of larger-than-memory datasets, coordinate transformations for aligning multiple datasets to a common coordinate system, and query/aggregation operators for transferring annotations (cell types, regions of interest, gene expression) across modalities and spatial scales. The authors demonstrate this on a breast cancer study combining Xenium (in situ sequencing) and Visium (spot-based) data: aligning replicate slides via interactively-selected landmarks, transferring histology-derived regions of interest and copy-number-based clonal annotations across datasets, and comparing cell-type-fraction estimates from Xenium counts versus Visium deconvolution (cell2location). SpatialData interoperates with the broader scverse ecosystem (Scanpy, Squidpy, scvi-tools) and provides a PyTorch Dataset class for training deep learning models directly from spatial data tiles.",
+    "data_acquisition": "Not applicable — a general-purpose data framework compatible with all major spatial omics technologies (imaging-based and sequencing-based), not tied to one acquisition modality",
+    "language": "Python",
+    "animal": "Not applicable — works on human or any species' spatial omics data",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "SpatialData is a general-purpose framework rather than a single-analysis tool — it standardizes how you load, align, and query spatial omics data, and you then plug in your preferred downstream analysis packages (Scanpy, Squidpy, cell2location, etc.). It's a pure Python package (3.9+), installable via pip, with satellite packages for visualization (napari-spatialdata), format-specific readers (spatialdata-io), and static plotting (spatialdata-plot).",
+    "tutorial_steps": [
+      "Install with pip (the core spatialdata package plus whichever satellite packages you need: napari-spatialdata for interactive viewing/annotation, spatialdata-io for vendor-format readers, spatialdata-plot for static figures).",
+      "Load your data using the appropriate spatialdata-io reader for your technology (for example, the 10x Xenium or Visium readers) — this parses vendor-specific output into the five standard SpatialData element types (Images, Labels, Points, Shapes, Tables) automatically.",
+      "If you have multiple datasets to integrate (for example, replicate sections or paired modalities), use napari-spatialdata to interactively select corresponding landmark points across images, then align them into a shared common coordinate system with SpatialData's landmark-based alignment function — this is what makes cross-modality queries and aggregation possible afterward.",
+      "Use SpatialData's query interface to extract a specific spatial region (as a bounding box or arbitrary polygon) across all aligned modalities at once, and its aggregation interface (<code>aggregate</code>, with <code>fractions=True</code> for compositional fractions) to transfer quantifications — such as summing molecule counts, or computing cell-type fractions — from one modality's elements (for example, individual Xenium cells) into another's (for example, Visium capture-location circles).",
+      "For downstream analysis, hand off the resulting SpatialData object (or its component AnnData tables) to standard scverse tools — Scanpy for expression analysis, Squidpy for spatial statistics, or cell2location for deconvolution — since SpatialData is designed to interoperate with these rather than replace them.",
+      "If you're training a deep learning model on spatial data, use SpatialData's built-in PyTorch Dataset class to generate training tiles (for example, image patches centered on cells) directly from a SpatialData object, avoiding a separate data-export step."
+    ],
+    "tutorial_output": "A SpatialData object (backed by a single Zarr store on disk) containing your aligned, queryable multi-modal dataset — from this you extract whatever your downstream analysis needs: aligned images, per-cell or per-region gene expression tables, transferred annotations (cell types, ROIs, clonal labels) across modalities, or ready-to-train PyTorch tile datasets.",
+    "sample_data": {
+      "text": "More than 40 example datasets across 8 spatial omics technologies (CosMx, Xenium, Visium, CyCIF, MERFISH, MIBI-TOF, imaging mass cytometry) are provided pre-converted to the SpatialData format, downloadable in full or accessible directly from cloud (S3) storage.",
+      "url": "https://spatialdata.scverse.org/en/latest/tutorials/notebooks/datasets/README.html"
+    },
+    "code": {
+      "repo_url": "https://github.com/scverse/spatialdata",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "napari-spatialdata (interactive visualization and annotation plugin)",
+        "url": "https://github.com/scverse/napari-spatialdata"
+      },
+      {
+        "label": "spatialdata-io (readers for vendor-specific formats)",
+        "url": "https://github.com/scverse/spatialdata-io"
+      },
+      {
+        "label": "spatialdata-plot (static plotting library)",
+        "url": "https://github.com/scverse/spatialdata-plot"
+      },
+      {
+        "label": "Paper reproducibility notebooks",
+        "url": "https://github.com/scverse/spatialdata-notebooks/tree/main/notebooks/paper_reproducibility"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2024-04-08-kilosort4",
+    "title": "Spike sorting with Kilosort4",
+    "authors": "Pachitariu M., Sridhar S., Pennington J., Stringer C.",
+    "journal": "Nature Methods",
+    "year": 2024,
+    "date": "2024-04-08",
+    "doi": "10.1038/s41592-024-02232-7",
+    "paper_url": "https://www.nature.com/articles/s41592-024-02232-7",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": 523,
+    "category": "electrophysiology",
+    "categories": [
+      "electrophysiology"
+    ],
+    "tags": [
+      "spike sorting",
+      "Kilosort",
+      "Neuropixels",
+      "drift correction",
+      "graph-based clustering",
+      "modularity optimization",
+      "template matching",
+      "matching pursuit",
+      "extracellular electrophysiology",
+      "Phy",
+      "SpikeInterface",
+      "IBL",
+      "high-density probes"
+    ],
+    "summary": "Kilosort4 is a spike-sorting algorithm that extracts single-neuron firing times from extracellular electrophysiology recordings, introducing a graph-based clustering approach (built around modularity optimization and a hierarchical merging tree) that outperformed all prior algorithms — including earlier Kilosort versions — across a range of realistic drift simulations.",
+    "abstract_long": "Spike sorting must contend with two hard problems: nonstationary spike waveforms (caused mainly by probe drift) and overlapping electrical fields between nearby neurons. Kilosort4 keeps the \"template deconvolution\" approach from earlier Kilosort versions (detecting spikes, including overlapping ones, via iterative matching pursuit against learned waveform templates, then extracting background-corrected spike features), but replaces the final clustering step with a new graph-based algorithm: an iterative neighbor-reassignment procedure (based on modularity optimization) that intentionally oversplits data into many small clusters, followed by a hierarchical \"merging tree\" that uses two criteria long favored by human curators — bimodality of the spike-projection distribution, and refractoriness of the cross-correlogram — to decide which clusters should be merged back together. To benchmark performance, the authors built realistic simulations using densely sampled electrical fields and drift patterns drawn from real Neuropixels recordings (including the International Brain Laboratory's public dataset). Kilosort4 outperformed all other tested algorithms (including SpyKING CIRCUS, MountainSort4, IronClust, and earlier Kilosort versions) across every drift condition tested, correctly identifying 80-90% of ground-truth units even under high drift, without an increase in false positives.",
+    "data_acquisition": "Extracellular electrophysiology recordings from high-density probes (Neuropixels 1.0/2.0 and similar), stored as raw binary data",
+    "language": "Python (PyTorch); GUI via pyqtgraph",
+    "animal": "Not applicable — general-purpose spike-sorting algorithm, validated on mouse Neuropixels recordings from the International Brain Laboratory (IBL)",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "Kilosort4 expects a flat binary data file (default int16) as input. If your recording is in a different format (NWB, Open Ephys, Blackrock, Neuralynx, Intan, etc.), convert it first using SpikeInterface (preferred, for compatibility with the downstream curation tool Phy) or use Kilosort's own SpikeInterface wrapper to load it without a separate conversion step.",
+    "tutorial_steps": [
+      "Install Kilosort4 (a Python/PyTorch package) — GPU strongly recommended for anything beyond small test recordings, though PyTorch's CPU backend works for testing.",
+      "Set up your run via the GUI (built with pyqtgraph, replicating the earlier MATLAB GUI) or the Python API: point it at your binary data file, specify or construct a probe/channel-map configuration, and set the key parameters. The GUI displays a short data segment up front, which is the fastest way to catch configuration mistakes (misconfigured channel count shows as diagonal \"streaking\"; wrong channel order shows single-channel but no multi-channel waveforms).",
+      "Preprocessing runs automatically in this order: common average referencing, temporal high-pass filtering (300 Hz default), channel whitening (in local neighborhoods of ~32 channels), and drift correction — all computed on demand per data batch rather than as a separate precomputation pass, unlike earlier Kilosort versions.",
+      "The core algorithm then runs template deconvolution (detecting spikes, including overlapping ones, via matching pursuit against learned waveform templates) followed by graph-based clustering (oversplitting via iterative modularity-based reassignment, then merging via the hierarchical merging tree using bimodality and refractory-period criteria) — this all runs without manual intervention, though default parameters can be adjusted for probes with unusual geometry (tetrodes, single electrodes, ultra-dense arrays) or very long/chronic recordings.",
+      "Review and curate the output in Phy, the companion visualization tool that all Kilosort versions are designed to export to — even with Kilosort4's substantially reduced need for manual curation compared to earlier versions, the authors recommend continuing to check output quality there."
+    ],
+    "tutorial_output": "A set of \".npy\" files describing every detected unit — spike times, cluster assignments, and waveform templates — directly loadable in Phy for visualization and manual curation, plus diagnostic plots (drift traces, spike-rate summaries) generated during the run to help assess recording and sorting quality.",
+    "sample_data": {
+      "text": "All benchmark simulations draw drift patterns and waveforms from more than 500 publicly available Neuropixels recordings from the International Brain Laboratory (IBL).",
+      "url": "https://www.internationalbrainlab.com/data"
+    },
+    "code": {
+      "repo_url": "https://github.com/MouseLand/Kilosort",
+      "platform": "github"
+    },
+    "extra_links": [],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2024-07-12-keypoint-moseq",
+    "title": "Keypoint-MoSeq: parsing behavior by linking point tracking to pose dynamics",
+    "authors": "Weinreb C., Pearl J.E., Lin S., Osman M.A.M., Zhang L., Annapragada S., Conlin E., Hoffmann R., Makowska S., Gillis W.F., Jay M., Ye S., Mathis A., Mathis M.W., Pereira T., Linderman S.W., Datta S.R.",
+    "journal": "Nature Methods",
+    "year": 2024,
+    "date": "2024-07-12",
+    "doi": "10.1038/s41592-024-02318-2",
+    "paper_url": "https://www.nature.com/articles/s41592-024-02318-2",
+    "website_url": "https://keypoint-moseq.readthedocs.io/en/latest/",
+    "access_status": "open_access",
+    "citation_count": 267,
+    "category": "automated-behavioral-tracking",
+    "categories": [
+      "automated-behavioral-tracking",
+      "statistical-analysis"
+    ],
+    "tags": [
+      "keypoint tracking",
+      "pose estimation",
+      "behavior segmentation",
+      "unsupervised learning",
+      "MoSeq",
+      "syllables",
+      "switching linear dynamical system",
+      "SLDS",
+      "AR-HMM",
+      "SLEAP",
+      "DeepLabCut",
+      "mouse",
+      "rat",
+      "fruit fly",
+      "Drosophila",
+      "dopamine",
+      "striatum",
+      "jitter correction",
+      "ethogram",
+      "computational ethology"
+    ],
+    "summary": "Keypoint-MoSeq is an unsupervised behavior-segmentation algorithm that fits a switching linear dynamical system to keypoint tracking data (from SLEAP, DeepLabCut, etc.), simultaneously denoising keypoint jitter and identifying discrete behavioral \"syllables,\" outperforming prior clustering methods (B-SOiD, VAME, MotionMapper) at capturing true behavioral transitions across mice, rats and flies.",
+    "abstract_long": "Traditional MoSeq requires 3D depth video and fails when applied directly to 2D/3D keypoint data, because high-frequency tracking jitter gets mistaken for behavioral transitions. The authors rebuilt MoSeq as a switching linear dynamical system (keypoint-MoSeq) with three hierarchical levels — a discrete syllable sequence, a low-dimensional pose trajectory, and per-keypoint noise estimates — so the model can attribute an implausible single-keypoint jump to noise while preserving a smooth underlying pose trajectory. Validated against accelerometry, striatal dopamine photometry, and expert behavior labels, keypoint-MoSeq produces syllables (median duration ~400 ms) that align far better with true behavioral transitions than B-SOiD, VAME, or MotionMapper, and generalizes across species (mice, rats, fruit flies) and timescales (from ~35 ms sniff-aligned head movements to multi-second syllables). Note: the code is free for academic and non-commercial research use under a Harvard University license (see the repo's LICENSE) — not a standard permissive open-source license, so commercial use requires separate arrangement.",
+    "data_acquisition": "2D or 3D keypoint tracking data from an existing pose-estimation pipeline (SLEAP, DeepLabCut, anipose, etc.), optionally paired with depth video, accelerometry or neural recordings for validation",
+    "language": "Python (JAX-accelerated)",
+    "animal": "Mouse, rat, fruit fly (Drosophila) — demonstrated to generalize across species",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "Keypoint-MoSeq takes keypoint tracking data you've already generated with a separate pose-estimation tool — it doesn't do the initial tracking itself. It loads directly from several common formats (SLEAP, DeepLabCut, anipose, sleap-anipose, or NWB). A GPU is strongly recommended given its JAX backend; see the docs for exact installation and CUDA setup, which is OS/driver-dependent.",
+    "tutorial_steps": [
+      "Load your keypoints with <code>kpms.load_keypoints(keypoint_data_path, format)</code>, where format is one of <code>'sleap'</code>, <code>'deeplabcut'</code>, <code>'anipose'</code>, <code>'sleap-anipose'</code>, or <code>'nwb'</code>.",
+      "Configure two key hyperparameters in the project config: <code>latent_dimension</code> (a good heuristic is the number of PCs needed to explain 90% of variance, or 10 — whichever is lower) and <code>kappa</code> (the \"stickiness\" hyperparameter that sets the target syllable timescale — higher values give longer, coarser syllables; lower values give shorter, finer-grained ones).",
+      "Fitting happens in two phases: first an AR-HMM is fit to a fixed pose trajectory derived from PCA of egocentrically-aligned keypoints (this is what the paper calls \"MoSeq applied to keypoints,\" useful as a diagnostic baseline), then the full keypoint-MoSeq model is initialized from that AR-HMM and fit via Gibbs sampling — around 500 iterations, which took 30-60 minutes on a consumer GPU for about 5 hours of data in the paper (compute time scales roughly linearly with dataset size).",
+      "Because fitting is stochastic, results differ slightly across random seeds. Fit several models (the paper used ~20) and rank them with the \"expected marginal likelihood\" score described in the paper to select — or build a consensus from — the best-fitting run, rather than trusting a single fit.",
+      "For downstream analysis, the package's built-in analysis pipeline covers syllable transition graphs, grid movies of each syllable, and group comparisons (for example a Kruskal-Wallis test for syllables that differ significantly in frequency between conditions) — see the \"analysis\" section of the docs linked above."
+    ],
+    "tutorial_output": "Per-frame syllable labels (the discrete behavioral state active at each timepoint, typically ~25-50 distinct syllables for a standard open-field session), a denoised/inferred pose trajectory that's robust to keypoint jitter and brief occlusions, and model diagnostics (the fitted transition matrix and per-syllable duration distribution) — each syllable corresponds to a recognizable, sub-second-to-second movement motif such as a rear, turn, or grooming bout.",
+    "sample_data": {
+      "text": "The paper benchmarks against the public CalMS21 mouse social-behavior dataset (keypoints plus human-annotated social behaviors: mounting, investigation, attack).",
+      "url": "https://doi.org/10.22002/D1.1991"
+    },
+    "code": {
+      "repo_url": "https://github.com/dattalab/keypoint-moseq",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "MoSeq project website (tutorials, resources)",
+        "url": "http://www.moseq4all.org/"
+      },
+      {
+        "label": "Google Colab quickstart notebook",
+        "url": "https://colab.research.google.com/github/dattalab/keypoint-moseq/blob/main/docs/keypoint_moseq_colab.ipynb"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2025-07-01-projection-tags",
+    "title": "Projection-TAGs enable multiplex projection tracing and multi-modal profiling of projection neurons",
+    "authors": "Yang L., Liu F., Hahm H., Okuda T., Li X., Zhang Y., Kalyanaraman V., Heitmeier M.R., Samineni V.K.",
+    "journal": "Nature Communications",
+    "year": 2025,
+    "date": "2025-07-01",
+    "doi": "10.1038/s41467-025-60360-w",
+    "paper_url": "https://www.nature.com/articles/s41467-025-60360-w",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": 3,
+    "category": "gene-protein-analysis",
+    "categories": [
+      "gene-protein-analysis",
+      "spatial-omics"
+    ],
+    "tags": [
+      "retrograde AAV",
+      "RNA barcode",
+      "projection tracing",
+      "projection neurons",
+      "snRNA-seq",
+      "snATAC-seq",
+      "multiplexed FISH",
+      "cortical projection neurons",
+      "cis-regulatory elements",
+      "genomic regulatory elements",
+      "enhancers",
+      "silencers",
+      "cellranger",
+      "Sun1-GFP",
+      "multiplex tracing",
+      "axonal collaterals",
+      "primary motor cortex",
+      "somatosensory cortex",
+      "Act-seq"
+    ],
+    "summary": "Projection-TAGs is a retrograde AAV platform that tags projection neurons with unique RNA barcodes so that multiple projections can be traced simultaneously and profiled with commercial single-cell/spatial assays (snRNA-seq, snATAC-seq, multiplexed FISH), letting researchers build multi-modal maps of projection neuron transcriptomes, chromatin accessibility, and spatial organization without specialized sequencing instruments.",
+    "abstract_long": "The authors engineered a set of retrograde AAV2-retro vectors, each expressing a unique 100-nt RNA barcode (\"Projection-TAG\") fused to Sun1-GFP, so that injecting a different barcoded virus into each of several downstream target regions retrogradely labels neurons in the source region according to which target(s) they project to — detectable via standard commercial assays (snRNA-seq, snATAC-seq, multiplexed FISH) rather than custom sequencing pipelines. Applied to seven projection targets of mouse motor and somatosensory cortex, Projection-TAGs revealed the spatial distribution of distinct projection populations, extensive axonal collaterals (30.6% of labeled neurons expressed more than one TAG), and — by integrating snRNA-seq with snATAC-seq — thousands of putative cell-type-specific and projection-specific enhancers and silencers. The authors also show Projection-TAGs can capture activity-dependent recruitment of specific projections (via Act-seq) following an acute visceral-pain stimulus.",
+    "data_acquisition": "Retrograde AAV2-retro RNA-barcode labeling (custom \"Projection-TAG\" plasmids) combined with single-nucleus RNA-seq, single-nucleus ATAC-seq, and multiplexed FISH",
+    "language": "R (regulatory-element analysis); command-line tools (cellranger-based read mapping)",
+    "animal": "Mouse",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "This repo is analysis code for reproducing the paper's own bioinformatic pipeline (barcode read mapping and regulatory-element identification) rather than the wet-lab protocol itself — the actual \"tool\" is largely a set of AAV plasmids (available from Addgene) plus a detection workflow using standard commercial single-cell/spatial assays. Expect to design your own retrograde-tracing experiment (choosing target regions, TAGs, and downstream assay) and use this repo's scripts for the sequencing-analysis side.",
+    "tutorial_steps": [
+      "For Projection-TAG read mapping: generate a custom cellranger reference genome that includes the Projection-TAG sequences as additional \"genes,\" then map your snRNA-seq/snATAC-seq reads to this custom reference using cellranger as normal — this lets you read out each cell's Projection-TAG expression exactly like any other gene in your standard single-cell analysis pipeline.",
+      "Determine which cells are positive for each projection by thresholding Projection-TAG UMI counts per nucleus (the paper used an FDR cutoff of 0.34%, estimated from the false-detection rate observed in empty droplets and non-neuronal cells in their own data — recompute this threshold for your own dataset rather than assuming it transfers directly).",
+      "For identifying putative genomic regulatory elements (GREs): using paired snRNA-seq (gene expression) and snATAC-seq (chromatin accessibility) data from the same cell populations, follow the repo's R scripts to (1) get expression/accessibility values for differentially expressed genes and differentially accessible peaks per cell type or projection, (2) calculate the Pearson correlation between every gene-peak pair within a 5 Mbp window on the same chromosome, and (3) classify strongly positively correlated pairs (r > 0.75) as putative enhancer-gene pairs and strongly negatively correlated pairs (r < -0.75) as putative silencer-gene pairs.",
+      "If you're designing your own multiplex tracing experiment rather than reanalyzing this paper's data, note the practical considerations the authors report: Projection-TAG detection is efficient but not exhaustive in snRNA-seq (a substantial false-negative rate — a cell lacking TAG expression does not necessarily lack that projection), transduction efficiency isn't perfectly uniform across projection pathways, and multiplexed FISH gives higher per-cell detection sensitivity than sequencing at the cost of being far more labor-intensive to scale."
+    ],
+    "tutorial_output": "Per-nucleus Projection-TAG expression calls (which of your labeled projection targets, if any, that cell projects to) integrated into a standard snRNA-seq/snATAC-seq analysis, and — from the regulatory-element pipeline — tables of putative cell-type-specific and projection-specific enhancer-gene and silencer-gene pairs with their supporting correlation statistics.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/Samineni-Lab/Projection-TAGs",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Addgene plasmid collection (Projection-TAG AAV constructs)",
+        "url": "https://www.addgene.org/browse/article/28247961/"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2025-07-02-interbrain-dynamics",
     "title": "Inter-brain neural dynamics in biological and artificial intelligence systems",
     "authors": "Zhang X., Phi N., Li Q., Gorzek R., Zwingenberger N., Huang S., Zhou J.L., Kingsbury L., Raam T., Wu Y.E., Wei D., Kao J.C., Hong W.",
@@ -930,6 +1416,96 @@
     ],
     "related_ids": [],
     "added_date": "2026-09-24",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "nemos-toolbox",
+    "title": "NeMoS (NEural MOdelS) — a JAX-powered statistical modeling framework for systems neuroscience",
+    "authors": "Balzani E., NeMoS Developers (Flatiron Institute Center for Computational Neuroscience)",
+    "journal": "Software (Zenodo)",
+    "year": 2024,
+    "date": "",
+    "doi": "10.5281/zenodo.17553286",
+    "paper_url": "https://doi.org/10.5281/zenodo.17553286",
+    "website_url": "https://nemos-neuro.org/en/latest/",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "statistical-analysis",
+    "categories": [
+      "statistical-analysis"
+    ],
+    "tags": [
+      "GLM",
+      "generalized linear model",
+      "JAX",
+      "GPU-accelerated",
+      "spike train modeling",
+      "basis functions",
+      "splines",
+      "B-spline",
+      "M-spline",
+      "raised cosine basis",
+      "regularization",
+      "Ridge",
+      "Lasso",
+      "ElasticNet",
+      "GroupLasso",
+      "Poisson regression",
+      "population GLM",
+      "PopulationGLM",
+      "feature engineering",
+      "systems neuroscience",
+      "Flatiron Institute",
+      "pynapple"
+    ],
+    "summary": "NeMoS is a JAX-powered, GPU-accelerated Python toolbox for fitting generalized linear models (GLMs) to neural spike-count or continuous time-series data, with a composable basis-function module for feature engineering (splines, raised-cosine bases, convolutional filters) and multiple regularization schemes (Ridge, Lasso, GroupLasso, ElasticNet).",
+    "abstract_long": "Unlike most entries here, NeMoS isn't tied to a single research paper — it's a general-purpose, actively maintained statistical modeling library from the Flatiron Institute's Center for Computational Neuroscience, cited via its Zenodo software record rather than a journal article. It has two core modules: a \"basis\" module that turns raw covariate time series (stimuli, position, head direction, LFP phase, spike counts, etc.) into model features, either through non-linear basis expansions (B-splines, M-splines, raised-cosine bases) or through convolution with a bank of temporal filters; and a \"glm\" module that fits single-neuron (GLM) or population-wide (PopulationGLM) generalized linear models to those features, with a choice of observation model (Poisson, Negative Binomial, Gamma, Gaussian, Bernoulli) and regularizer (Ridge, Lasso, GroupLasso, ElasticNet). It's designed to pair naturally with pynapple for upstream data handling, and its GPU acceleration via JAX makes it practical to fit these models at population scale.",
+    "data_acquisition": "Not applicable — general-purpose statistical modeling toolbox for any spike-count or continuous time-series data (works with whatever neurophysiology or behavioral recordings you already have)",
+    "language": "Python (GPU-accelerated via JAX)",
+    "animal": "Not applicable — general-purpose framework, not species- or acquisition-specific",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "NeMoS is a general-purpose Python package rather than a tool built around one specific file format — it works on whatever time-series arrays you already have (typically spike counts as the response variable, and behavioral/stimulus covariates as predictors), as plain numpy arrays or as pynapple time-series objects if your recording has natural epoch boundaries (separate trials or sessions with gaps).",
+    "tutorial_steps": [
+      "Install: <code>pip install nemos</code> (macOS/Linux) or <code>python -m pip install nemos</code> (Windows).",
+      "Turn your raw covariates into model features using a basis object. For a smooth non-linear mapping use something like <code>nmo.basis.MSplineEval(n_basis_funcs=5)</code>; for capturing temporal dynamics via a filter bank, use a convolutional basis like <code>nmo.basis.RaisedCosineLogConv(n_basis_funcs, window_size=...)</code>. Basis objects are composable — you can combine several with <code>*</code> (multiplicative interaction) and <code>+</code> (additive) to build a compound feature set from multiple covariates.",
+      "Call <code>.compute_features(...)</code> on your (possibly compound) basis object, passing in your raw input time series (stimulus, position, LFP phase, population spike counts, etc.), to get the design matrix X.",
+      "Fit a GLM: <code>nmo.glm.GLM().fit(X, y)</code> for a single neuron's spike-count series y, or <code>nmo.glm.PopulationGLM().fit(X, spike_counts)</code> to jointly fit an entire simultaneously-recorded population. Optionally specify an observation model (Poisson is the default; also Negative Binomial, Gamma, Gaussian, Bernoulli) and a regularizer (Ridge, Lasso, GroupLasso, ElasticNet) when instantiating the GLM.",
+      "Inspect the fit via <code>glm.coef_</code> and <code>glm.intercept_</code> (the learned weights), <code>glm.predict(X)</code> (predicted firing rate), and <code>glm.score(X, y)</code> (log-likelihood) — the standard building blocks for interpreting an encoding model or comparing model variants.",
+      "If your data has natural epoch boundaries (separate trials or sessions with gaps between them), format it as a pynapple time-series first — the basis module's convolution step then runs epoch-by-epoch automatically, avoiding artifacts from those gaps."
+    ],
+    "tutorial_output": "Fitted GLM coefficients and an intercept describing each feature's contribution to firing rate, a predicted firing-rate time series from <code>predict()</code>, and a log-likelihood score from <code>score()</code> — the standard outputs of a statistical encoding model, from which you'd typically derive tuning curves, compare nested models, or evaluate goodness of fit.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/flatironinstitute/nemos",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Quickstart guide",
+        "url": "https://nemos-neuro.org/en/latest/quickstart.html"
+      },
+      {
+        "label": "Tutorials (fully worked examples)",
+        "url": "https://nemos-neuro.org/en/latest/tutorials/README.html"
+      },
+      {
+        "label": "pynapple (companion package for data handling and preprocessing)",
+        "url": "https://github.com/pynapple-org/pynapple"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
     "added_by": "manual",
     "verified": true
   }

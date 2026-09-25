@@ -1,0 +1,44 @@
+title: Keypoint-MoSeq: parsing behavior by linking point tracking to pose dynamics
+authors: Weinreb C., Pearl J.E., Lin S., Osman M.A.M., Zhang L., Annapragada S., Conlin E., Hoffmann R., Makowska S., Gillis W.F., Jay M., Ye S., Mathis A., Mathis M.W., Pereira T., Linderman S.W., Datta S.R.
+journal: Nature Methods
+year: 2024
+date: 2024-07-12
+doi: 10.1038/s41592-024-02318-2
+paper_url: https://www.nature.com/articles/s41592-024-02318-2
+github_url: https://github.com/dattalab/keypoint-moseq
+website_url: https://keypoint-moseq.readthedocs.io/en/latest/
+access_status: open_access
+category: automated-behavioral-tracking, statistical-analysis
+tags: keypoint tracking, pose estimation, behavior segmentation, unsupervised learning, MoSeq, syllables, switching linear dynamical system, SLDS, AR-HMM, SLEAP, DeepLabCut, mouse, rat, fruit fly, Drosophila, dopamine, striatum, jitter correction, ethogram, computational ethology
+data_acquisition: 2D or 3D keypoint tracking data from an existing pose-estimation pipeline (SLEAP, DeepLabCut, anipose, etc.), optionally paired with depth video, accelerometry or neural recordings for validation
+language: Python (JAX-accelerated)
+animal: Mouse, rat, fruit fly (Drosophila) — demonstrated to generalize across species
+difficulty: intermediate
+citation_count: 267
+added_date: 2026-09-25
+
+summary:
+Keypoint-MoSeq is an unsupervised behavior-segmentation algorithm that fits a switching linear dynamical system to keypoint tracking data (from SLEAP, DeepLabCut, etc.), simultaneously denoising keypoint jitter and identifying discrete behavioral "syllables," outperforming prior clustering methods (B-SOiD, VAME, MotionMapper) at capturing true behavioral transitions across mice, rats and flies.
+
+abstract_long:
+Traditional MoSeq requires 3D depth video and fails when applied directly to 2D/3D keypoint data, because high-frequency tracking jitter gets mistaken for behavioral transitions. The authors rebuilt MoSeq as a switching linear dynamical system (keypoint-MoSeq) with three hierarchical levels — a discrete syllable sequence, a low-dimensional pose trajectory, and per-keypoint noise estimates — so the model can attribute an implausible single-keypoint jump to noise while preserving a smooth underlying pose trajectory. Validated against accelerometry, striatal dopamine photometry, and expert behavior labels, keypoint-MoSeq produces syllables (median duration ~400 ms) that align far better with true behavioral transitions than B-SOiD, VAME, or MotionMapper, and generalizes across species (mice, rats, fruit flies) and timescales (from ~35 ms sniff-aligned head movements to multi-second syllables). Note: the code is free for academic and non-commercial research use under a Harvard University license (see the repo's LICENSE) — not a standard permissive open-source license, so commercial use requires separate arrangement.
+
+extra_links:
+MoSeq project website (tutorials, resources) | http://www.moseq4all.org/
+Google Colab quickstart notebook | https://colab.research.google.com/github/dattalab/keypoint-moseq/blob/main/docs/keypoint_moseq_colab.ipynb
+
+sample_data_text: The paper benchmarks against the public CalMS21 mouse social-behavior dataset (keypoints plus human-annotated social behaviors: mounting, investigation, attack).
+sample_data_url: https://doi.org/10.22002/D1.1991
+
+tutorial_intro:
+Keypoint-MoSeq takes keypoint tracking data you've already generated with a separate pose-estimation tool — it doesn't do the initial tracking itself. It loads directly from several common formats (SLEAP, DeepLabCut, anipose, sleap-anipose, or NWB). A GPU is strongly recommended given its JAX backend; see the docs for exact installation and CUDA setup, which is OS/driver-dependent.
+
+tutorial_steps:
+Load your keypoints with <code>kpms.load_keypoints(keypoint_data_path, format)</code>, where format is one of <code>'sleap'</code>, <code>'deeplabcut'</code>, <code>'anipose'</code>, <code>'sleap-anipose'</code>, or <code>'nwb'</code>.
+Configure two key hyperparameters in the project config: <code>latent_dimension</code> (a good heuristic is the number of PCs needed to explain 90% of variance, or 10 — whichever is lower) and <code>kappa</code> (the "stickiness" hyperparameter that sets the target syllable timescale — higher values give longer, coarser syllables; lower values give shorter, finer-grained ones).
+Fitting happens in two phases: first an AR-HMM is fit to a fixed pose trajectory derived from PCA of egocentrically-aligned keypoints (this is what the paper calls "MoSeq applied to keypoints," useful as a diagnostic baseline), then the full keypoint-MoSeq model is initialized from that AR-HMM and fit via Gibbs sampling — around 500 iterations, which took 30-60 minutes on a consumer GPU for about 5 hours of data in the paper (compute time scales roughly linearly with dataset size).
+Because fitting is stochastic, results differ slightly across random seeds. Fit several models (the paper used ~20) and rank them with the "expected marginal likelihood" score described in the paper to select — or build a consensus from — the best-fitting run, rather than trusting a single fit.
+For downstream analysis, the package's built-in analysis pipeline covers syllable transition graphs, grid movies of each syllable, and group comparisons (for example a Kruskal-Wallis test for syllables that differ significantly in frequency between conditions) — see the "analysis" section of the docs linked above.
+
+tutorial_output:
+Per-frame syllable labels (the discrete behavioral state active at each timepoint, typically ~25-50 distinct syllables for a standard open-field session), a denoised/inferred pose trajectory that's robust to keypoint jitter and brief occlusions, and model diagnostics (the fitted transition matrix and per-syllable duration distribution) — each syllable corresponds to a recognizable, sub-second-to-second movement motif such as a rear, turn, or grooming bout.

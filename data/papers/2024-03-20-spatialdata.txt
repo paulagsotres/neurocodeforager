@@ -1,0 +1,47 @@
+title: SpatialData: an open and universal data framework for spatial omics
+authors: Marconato L., Palla G., Yamauchi K.A., Virshup I., Heidari E., Treis T., Vierdag W.-M., Toth M., Stockhaus S., Shrestha R.B., Rombaut B., Pollaris L., Lehner L., Vöhringer H., Kats I., Saeys Y., Saka S.K., Huber W., Gerstung M., Moore J., Theis F.J., Stegle O.
+journal: Nature Methods
+year: 2024
+date: 2024-03-20
+doi: 10.1038/s41592-024-02212-x
+paper_url: https://www.nature.com/articles/s41592-024-02212-x
+github_url: https://github.com/scverse/spatialdata
+website_url: https://spatialdata.scverse.org
+access_status: open_access
+category: spatial-omics, image-analysis
+tags: spatial omics, Zarr, OME-NGFF, common coordinate system, Xenium, Visium, MERFISH, CosMx, MIBI-TOF, imaging mass cytometry, CyCIF, napari, scverse, Scanpy, Squidpy, cell2location, deconvolution, multimodal integration, breast cancer, lazy loading, PyTorch dataset
+data_acquisition: Not applicable — a general-purpose data framework compatible with all major spatial omics technologies (imaging-based and sequencing-based), not tied to one acquisition modality
+language: Python
+animal: Not applicable — works on human or any species' spatial omics data
+difficulty: intermediate
+citation_count: 272
+added_date: 2026-09-25
+
+summary:
+SpatialData is a Python framework and file format (built on Zarr/OME-NGFF) for storing, aligning, querying, and jointly analyzing spatial omics datasets across technologies (Xenium, Visium, MERFISH, CosMx, MIBI-TOF, imaging mass cytometry, CyCIF), letting you register multiple modalities to a common coordinate system and aggregate data across them for integrative analysis.
+
+abstract_long:
+SpatialData represents any spatial omics dataset using five primitive elements — Images, Labels (segmentation masks), Points (molecule detections), Shapes (regions/capture locations), and Tables (quantifications/annotations) — serialized to a technology-agnostic Zarr store built on the OME-NGFF specification, so data from different platforms and vendors share one programmatic interface. The Python library supports lazy loading of larger-than-memory datasets, coordinate transformations for aligning multiple datasets to a common coordinate system, and query/aggregation operators for transferring annotations (cell types, regions of interest, gene expression) across modalities and spatial scales. The authors demonstrate this on a breast cancer study combining Xenium (in situ sequencing) and Visium (spot-based) data: aligning replicate slides via interactively-selected landmarks, transferring histology-derived regions of interest and copy-number-based clonal annotations across datasets, and comparing cell-type-fraction estimates from Xenium counts versus Visium deconvolution (cell2location). SpatialData interoperates with the broader scverse ecosystem (Scanpy, Squidpy, scvi-tools) and provides a PyTorch Dataset class for training deep learning models directly from spatial data tiles.
+
+extra_links:
+napari-spatialdata (interactive visualization and annotation plugin) | https://github.com/scverse/napari-spatialdata
+spatialdata-io (readers for vendor-specific formats) | https://github.com/scverse/spatialdata-io
+spatialdata-plot (static plotting library) | https://github.com/scverse/spatialdata-plot
+Paper reproducibility notebooks | https://github.com/scverse/spatialdata-notebooks/tree/main/notebooks/paper_reproducibility
+
+sample_data_text: More than 40 example datasets across 8 spatial omics technologies (CosMx, Xenium, Visium, CyCIF, MERFISH, MIBI-TOF, imaging mass cytometry) are provided pre-converted to the SpatialData format, downloadable in full or accessible directly from cloud (S3) storage.
+sample_data_url: https://spatialdata.scverse.org/en/latest/tutorials/notebooks/datasets/README.html
+
+tutorial_intro:
+SpatialData is a general-purpose framework rather than a single-analysis tool — it standardizes how you load, align, and query spatial omics data, and you then plug in your preferred downstream analysis packages (Scanpy, Squidpy, cell2location, etc.). It's a pure Python package (3.9+), installable via pip, with satellite packages for visualization (napari-spatialdata), format-specific readers (spatialdata-io), and static plotting (spatialdata-plot).
+
+tutorial_steps:
+Install with pip (the core spatialdata package plus whichever satellite packages you need: napari-spatialdata for interactive viewing/annotation, spatialdata-io for vendor-format readers, spatialdata-plot for static figures).
+Load your data using the appropriate spatialdata-io reader for your technology (for example, the 10x Xenium or Visium readers) — this parses vendor-specific output into the five standard SpatialData element types (Images, Labels, Points, Shapes, Tables) automatically.
+If you have multiple datasets to integrate (for example, replicate sections or paired modalities), use napari-spatialdata to interactively select corresponding landmark points across images, then align them into a shared common coordinate system with SpatialData's landmark-based alignment function — this is what makes cross-modality queries and aggregation possible afterward.
+Use SpatialData's query interface to extract a specific spatial region (as a bounding box or arbitrary polygon) across all aligned modalities at once, and its aggregation interface (<code>aggregate</code>, with <code>fractions=True</code> for compositional fractions) to transfer quantifications — such as summing molecule counts, or computing cell-type fractions — from one modality's elements (for example, individual Xenium cells) into another's (for example, Visium capture-location circles).
+For downstream analysis, hand off the resulting SpatialData object (or its component AnnData tables) to standard scverse tools — Scanpy for expression analysis, Squidpy for spatial statistics, or cell2location for deconvolution — since SpatialData is designed to interoperate with these rather than replace them.
+If you're training a deep learning model on spatial data, use SpatialData's built-in PyTorch Dataset class to generate training tiles (for example, image patches centered on cells) directly from a SpatialData object, avoiding a separate data-export step.
+
+tutorial_output:
+A SpatialData object (backed by a single Zarr store on disk) containing your aligned, queryable multi-modal dataset — from this you extract whatever your downstream analysis needs: aligned images, per-cell or per-region gene expression tables, transferred annotations (cell types, ROIs, clonal labels) across modalities, or ready-to-train PyTorch tile datasets.

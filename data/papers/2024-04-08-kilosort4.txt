@@ -1,0 +1,39 @@
+title: Spike sorting with Kilosort4
+authors: Pachitariu M., Sridhar S., Pennington J., Stringer C.
+journal: Nature Methods
+year: 2024
+date: 2024-04-08
+doi: 10.1038/s41592-024-02232-7
+paper_url: https://www.nature.com/articles/s41592-024-02232-7
+github_url: https://github.com/MouseLand/Kilosort
+access_status: open_access
+category: electrophysiology
+tags: spike sorting, Kilosort, Neuropixels, drift correction, graph-based clustering, modularity optimization, template matching, matching pursuit, extracellular electrophysiology, Phy, SpikeInterface, IBL, high-density probes
+data_acquisition: Extracellular electrophysiology recordings from high-density probes (Neuropixels 1.0/2.0 and similar), stored as raw binary data
+language: Python (PyTorch); GUI via pyqtgraph
+animal: Not applicable — general-purpose spike-sorting algorithm, validated on mouse Neuropixels recordings from the International Brain Laboratory (IBL)
+difficulty: intermediate
+citation_count: 523
+added_date: 2026-09-25
+
+summary:
+Kilosort4 is a spike-sorting algorithm that extracts single-neuron firing times from extracellular electrophysiology recordings, introducing a graph-based clustering approach (built around modularity optimization and a hierarchical merging tree) that outperformed all prior algorithms — including earlier Kilosort versions — across a range of realistic drift simulations.
+
+abstract_long:
+Spike sorting must contend with two hard problems: nonstationary spike waveforms (caused mainly by probe drift) and overlapping electrical fields between nearby neurons. Kilosort4 keeps the "template deconvolution" approach from earlier Kilosort versions (detecting spikes, including overlapping ones, via iterative matching pursuit against learned waveform templates, then extracting background-corrected spike features), but replaces the final clustering step with a new graph-based algorithm: an iterative neighbor-reassignment procedure (based on modularity optimization) that intentionally oversplits data into many small clusters, followed by a hierarchical "merging tree" that uses two criteria long favored by human curators — bimodality of the spike-projection distribution, and refractoriness of the cross-correlogram — to decide which clusters should be merged back together. To benchmark performance, the authors built realistic simulations using densely sampled electrical fields and drift patterns drawn from real Neuropixels recordings (including the International Brain Laboratory's public dataset). Kilosort4 outperformed all other tested algorithms (including SpyKING CIRCUS, MountainSort4, IronClust, and earlier Kilosort versions) across every drift condition tested, correctly identifying 80-90% of ground-truth units even under high drift, without an increase in false positives.
+
+sample_data_text: All benchmark simulations draw drift patterns and waveforms from more than 500 publicly available Neuropixels recordings from the International Brain Laboratory (IBL).
+sample_data_url: https://www.internationalbrainlab.com/data
+
+tutorial_intro:
+Kilosort4 expects a flat binary data file (default int16) as input. If your recording is in a different format (NWB, Open Ephys, Blackrock, Neuralynx, Intan, etc.), convert it first using SpikeInterface (preferred, for compatibility with the downstream curation tool Phy) or use Kilosort's own SpikeInterface wrapper to load it without a separate conversion step.
+
+tutorial_steps:
+Install Kilosort4 (a Python/PyTorch package) — GPU strongly recommended for anything beyond small test recordings, though PyTorch's CPU backend works for testing.
+Set up your run via the GUI (built with pyqtgraph, replicating the earlier MATLAB GUI) or the Python API: point it at your binary data file, specify or construct a probe/channel-map configuration, and set the key parameters. The GUI displays a short data segment up front, which is the fastest way to catch configuration mistakes (misconfigured channel count shows as diagonal "streaking"; wrong channel order shows single-channel but no multi-channel waveforms).
+Preprocessing runs automatically in this order: common average referencing, temporal high-pass filtering (300 Hz default), channel whitening (in local neighborhoods of ~32 channels), and drift correction — all computed on demand per data batch rather than as a separate precomputation pass, unlike earlier Kilosort versions.
+The core algorithm then runs template deconvolution (detecting spikes, including overlapping ones, via matching pursuit against learned waveform templates) followed by graph-based clustering (oversplitting via iterative modularity-based reassignment, then merging via the hierarchical merging tree using bimodality and refractory-period criteria) — this all runs without manual intervention, though default parameters can be adjusted for probes with unusual geometry (tetrodes, single electrodes, ultra-dense arrays) or very long/chronic recordings.
+Review and curate the output in Phy, the companion visualization tool that all Kilosort versions are designed to export to — even with Kilosort4's substantially reduced need for manual curation compared to earlier versions, the authors recommend continuing to check output quality there.
+
+tutorial_output:
+A set of ".npy" files describing every detected unit — spike times, cluster assignments, and waveform templates — directly loadable in Phy for visualization and manual curation, plus diagnostic plots (drift traces, spike-rate summaries) generated during the run to help assess recording and sorting quality.

@@ -1,0 +1,46 @@
+title: AlphaTracker: a multi-animal tracking and behavioral analysis tool
+authors: Chen Z., Zhang R., Fang H.-S., Zhang Y.E., Bal A., Zhou H., Rock R.R., Padilla-Coreano N., Keyes L.R., Zhu H., Li Y.-L., Komiyama T., Tye K.M., Lu C.
+journal: Frontiers in Behavioral Neuroscience
+year: 2023
+date: 2023-05-30
+doi: 10.3389/fnbeh.2023.1111908
+paper_url: https://www.frontiersin.org/journals/behavioral-neuroscience/articles/10.3389/fnbeh.2023.1111908/full
+github_url: https://github.com/MVIG-SJTU/AlphaTracker
+access_status: open_access
+category: automated-behavioral-tracking
+tags: multi-animal tracking, pose estimation, YOLOv3, SENet, identity tracking, Kalman filter, behavioral clustering, hierarchical clustering, social behavior, mouse, markerless tracking, GUI, Google Colab, AlphaPose, Adjusted Rand Index
+data_acquisition: Standard top-down video of multiple unmarked animals — works with low-cost webcams (tested down to 540p), no specialized hardware or markers required
+language: Python (PyTorch)
+animal: Mouse (demonstrated); adaptable to other species with retraining on new annotated data
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-25
+
+summary:
+AlphaTracker is a markerless multi-animal pose-tracking and behavioral-clustering pipeline (built on AlphaPose/YOLOv3) with a GUI or command-line workflow that outperforms SLEAP and DeepLabCut on identity tracking of near-identical mice, plus an unsupervised hierarchical-clustering module for discovering individual and social behavioral motifs from the tracked poses.
+
+abstract_long:
+AlphaTracker's tracking pipeline has three steps: YOLOv3 detects each animal's bounding box, a Squeeze-and-Excitation Network (SENet) estimates keypoints within each box, and a custom identity-tracking method (comparing hierarchical position/orientation descriptors via intersection-over-union, refined with Kalman filtering) maintains consistent animal identities across frames — important because same-strain animals look nearly identical. On benchmark datasets (two mice in a home cage; four mice in an operant chamber), AlphaTracker outperformed both DeepLabCut and SLEAP on keypoint accuracy (mAP) and tracking consistency (MOTA/MOTP), including with as few as 50 training frames. A separate behavioral-clustering module groups 15-frame (500 ms) pose clips via agglomerative hierarchical clustering into individual behaviors (walking, digging, sniffing, rearing, turning, grooming) and, for interacting dyads, social behaviors (following, chasing, anogenital/face sniffing, social rearing) — validated against human annotation with an Adjusted Rand Index well above chance. Everything is usable via a code-free GUI or the command line, with a Google Colab option for users without local GPU access.
+
+extra_links:
+AlphaTracker2 (Windows-friendlier sister version with lighter-weight backbones for real-time tracking) | https://github.com/Tyelab/AlphaTracker2
+Quick-test Colab notebook (pretrained model, no local install) | https://colab.research.google.com/drive/1wYBAj3kjLMe6uir3TJVfWRAJNHtjCaPG
+Training Colab notebook (train on your own annotated data) | https://colab.research.google.com/drive/1bGUo3eMWIfzXiFWCvNrNiTOzhSsTsVHV
+
+sample_data_text: A demo training dataset (600 annotated frames of two unmarked mice interacting in a home cage) and a bundled demo video are provided for a quick first run.
+sample_data_url: https://drive.google.com/file/d/1TYIXYYIkDDQQ6KRPqforrup_rtS0YetR/view?usp=sharing
+
+tutorial_intro:
+AlphaTracker offers both a code-free GUI and a command-line workflow; either way it expects either your own annotated training frames (to train a custom model) or just a raw video (to use the bundled pretrained demo model). Windows users should check out the repo's "windows" branch before installing, since the default build relies on a Linux-only C-based YOLO toolbox.
+
+tutorial_steps:
+Install: <code>git clone https://github.com/MVIG-SJTU/AlphaTracker.git</code>, then <code>cd AlphaTracker</code> and <code>bash scripts/install.sh</code> (Windows users first run <code>git checkout windows</code>). This sets up an Anaconda environment with all dependencies. Alternatively, skip local installation entirely using the Colab notebooks linked above.
+(Optional — skip if using the bundled pretrained demo model) Annotate your own training frames with the included Sloth-based annotation tool under <code>./Tracking/TheAnnotationTool/</code>: draw a bounding box plus your chosen keypoints (the paper used snout, left ear, right ear, tail base) for at least ~200 representative frames, keeping the same labeling order for every animal in every frame.
+Train the tracking model, either via the GUI's "Train" button or by setting paths and parameters (image/annotation folders, number of animals, number of keypoints) in <code>./Tracking/AlphaTracker/setting.py</code> and running <code>python train.py</code>. In the paper, 600 annotated frames were enough to outperform DeepLabCut and SLEAP on identity-tracking accuracy; even 50 frames reached an mAP above 0.7.
+Run tracking on a new video via the GUI or <code>python track.py</code>, after setting the video path, frame range, and expected number of animals in <code>setting.py</code> — or set <code>exp_name=demo</code> to use the bundled pretrained model without training your own.
+Inspect and correct tracking errors with the browser-based curation UI (<code>python setup.py</code> inside the <code>UI/</code> folder). Large jitter in the keypoint timeline usually means the pose model needs more training data; individual misidentified animals or mislabeled keypoints can be corrected frame-by-frame.
+Run behavioral clustering on the tracked poses with <code>python fft_main_sep_twoMiceInteract.py</code>, after configuring feature weights in <code>./BehavioralClustering/setting.py</code> (set social-feature weights to 0 if you only want individual-behavior clustering). This groups 15-frame (500 ms) pose clips — matching the sub-second timescale of mouse behavior — via agglomerative hierarchical clustering.
+Inspect clustering quality with the provided Jupyter notebook (dendrograms, feature heatmaps, UMAP, mutual-information plots) to choose a good distance threshold, then review, merge, or rename clusters in the browser-based clustering UI.
+
+tutorial_output:
+Per-frame keypoint coordinates and consistent animal identities for every tracked animal (exportable as JSON), plus — from the clustering step — a set of individual behavior clusters (walking, digging, sniffing, rearing, grooming, etc.) and, for multi-animal videos, social behavior clusters (following, chasing, anogenital/face sniffing, social rearing), each represented by a characteristic average pose trajectory.

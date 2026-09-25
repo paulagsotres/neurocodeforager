@@ -1,0 +1,38 @@
+title: Projection-TAGs enable multiplex projection tracing and multi-modal profiling of projection neurons
+authors: Yang L., Liu F., Hahm H., Okuda T., Li X., Zhang Y., Kalyanaraman V., Heitmeier M.R., Samineni V.K.
+journal: Nature Communications
+year: 2025
+date: 2025-07-01
+doi: 10.1038/s41467-025-60360-w
+paper_url: https://www.nature.com/articles/s41467-025-60360-w
+github_url: https://github.com/Samineni-Lab/Projection-TAGs
+access_status: open_access
+category: gene-protein-analysis, spatial-omics
+tags: retrograde AAV, RNA barcode, projection tracing, projection neurons, snRNA-seq, snATAC-seq, multiplexed FISH, cortical projection neurons, cis-regulatory elements, genomic regulatory elements, enhancers, silencers, cellranger, Sun1-GFP, multiplex tracing, axonal collaterals, primary motor cortex, somatosensory cortex, Act-seq
+data_acquisition: Retrograde AAV2-retro RNA-barcode labeling (custom "Projection-TAG" plasmids) combined with single-nucleus RNA-seq, single-nucleus ATAC-seq, and multiplexed FISH
+language: R (regulatory-element analysis); command-line tools (cellranger-based read mapping)
+animal: Mouse
+difficulty: advanced
+citation_count: 3
+added_date: 2026-09-25
+
+summary:
+Projection-TAGs is a retrograde AAV platform that tags projection neurons with unique RNA barcodes so that multiple projections can be traced simultaneously and profiled with commercial single-cell/spatial assays (snRNA-seq, snATAC-seq, multiplexed FISH), letting researchers build multi-modal maps of projection neuron transcriptomes, chromatin accessibility, and spatial organization without specialized sequencing instruments.
+
+abstract_long:
+The authors engineered a set of retrograde AAV2-retro vectors, each expressing a unique 100-nt RNA barcode ("Projection-TAG") fused to Sun1-GFP, so that injecting a different barcoded virus into each of several downstream target regions retrogradely labels neurons in the source region according to which target(s) they project to — detectable via standard commercial assays (snRNA-seq, snATAC-seq, multiplexed FISH) rather than custom sequencing pipelines. Applied to seven projection targets of mouse motor and somatosensory cortex, Projection-TAGs revealed the spatial distribution of distinct projection populations, extensive axonal collaterals (30.6% of labeled neurons expressed more than one TAG), and — by integrating snRNA-seq with snATAC-seq — thousands of putative cell-type-specific and projection-specific enhancers and silencers. The authors also show Projection-TAGs can capture activity-dependent recruitment of specific projections (via Act-seq) following an acute visceral-pain stimulus.
+
+extra_links:
+Addgene plasmid collection (Projection-TAG AAV constructs) | https://www.addgene.org/browse/article/28247961/
+
+tutorial_intro:
+This repo is analysis code for reproducing the paper's own bioinformatic pipeline (barcode read mapping and regulatory-element identification) rather than the wet-lab protocol itself — the actual "tool" is largely a set of AAV plasmids (available from Addgene) plus a detection workflow using standard commercial single-cell/spatial assays. Expect to design your own retrograde-tracing experiment (choosing target regions, TAGs, and downstream assay) and use this repo's scripts for the sequencing-analysis side.
+
+tutorial_steps:
+For Projection-TAG read mapping: generate a custom cellranger reference genome that includes the Projection-TAG sequences as additional "genes," then map your snRNA-seq/snATAC-seq reads to this custom reference using cellranger as normal — this lets you read out each cell's Projection-TAG expression exactly like any other gene in your standard single-cell analysis pipeline.
+Determine which cells are positive for each projection by thresholding Projection-TAG UMI counts per nucleus (the paper used an FDR cutoff of 0.34%, estimated from the false-detection rate observed in empty droplets and non-neuronal cells in their own data — recompute this threshold for your own dataset rather than assuming it transfers directly).
+For identifying putative genomic regulatory elements (GREs): using paired snRNA-seq (gene expression) and snATAC-seq (chromatin accessibility) data from the same cell populations, follow the repo's R scripts to (1) get expression/accessibility values for differentially expressed genes and differentially accessible peaks per cell type or projection, (2) calculate the Pearson correlation between every gene-peak pair within a 5 Mbp window on the same chromosome, and (3) classify strongly positively correlated pairs (r > 0.75) as putative enhancer-gene pairs and strongly negatively correlated pairs (r < -0.75) as putative silencer-gene pairs.
+If you're designing your own multiplex tracing experiment rather than reanalyzing this paper's data, note the practical considerations the authors report: Projection-TAG detection is efficient but not exhaustive in snRNA-seq (a substantial false-negative rate — a cell lacking TAG expression does not necessarily lack that projection), transduction efficiency isn't perfectly uniform across projection pathways, and multiplexed FISH gives higher per-cell detection sensitivity than sequencing at the cost of being far more labor-intensive to scale.
+
+tutorial_output:
+Per-nucleus Projection-TAG expression calls (which of your labeled projection targets, if any, that cell projects to) integrated into a standard snRNA-seq/snATAC-seq analysis, and — from the regulatory-element pipeline — tables of putative cell-type-specific and projection-specific enhancer-gene and silencer-gene pairs with their supporting correlation statistics.
