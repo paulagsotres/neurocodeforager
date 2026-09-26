@@ -10,8 +10,8 @@ access_status: open_access
 category: statistical-analysis, electrophysiology
 tags: hidden Markov model, hidden Markov model, Bayesian, multilevel model, Poisson log-normal emission, longitudinal recording, primary motor cortex, macaque, chronic multi-electrode array, Markov chain Monte Carlo, Gibbs sampling, Viterbi algorithm, state decoding, neural population dynamics, trial-specific random effects, mHMMbayes, reaching grasping placing task
 data_acquisition: Multi-unit spiking activity from chronically implanted multi-electrode arrays (macaque primary motor cortex), recorded across multiple days during a reaching, grasping, and placing task
-language: R (mHMMbayes package)
-animal: Macaque (Macaca mulatta)
+language: R
+animal: Macaque
 difficulty: advanced
 citation_count:
 added_date: 2026-09-26

@@ -12,7 +12,7 @@ category: spatial-omics, image-analysis
 tags: spatial omics, Zarr, OME-NGFF, common coordinate system, Xenium, Visium, MERFISH, CosMx, MIBI-TOF, imaging mass cytometry, CyCIF, napari, scverse, Scanpy, Squidpy, cell2location, deconvolution, multimodal integration, breast cancer, lazy loading, PyTorch dataset
 data_acquisition: Not applicable — a general-purpose data framework compatible with all major spatial omics technologies (imaging-based and sequencing-based), not tied to one acquisition modality
 language: Python
-animal: Not applicable — works on human or any species' spatial omics data
+animal: Not species-specific
 difficulty: intermediate
 citation_count: 272
 added_date: 2026-09-25

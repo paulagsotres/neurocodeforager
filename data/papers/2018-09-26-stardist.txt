@@ -11,8 +11,8 @@ access_status: open_access
 category: image-analysis
 tags: cell segmentation, nuclei segmentation, star-convex polygons, instance segmentation, deep learning, U-Net, QuPath, napari, ImageJ, Fiji, Icy, digital pathology, H&E, fluorescence microscopy, object detection, non-maximum suppression, bioimage analysis, StarDist
 data_acquisition: Fluorescence and brightfield (H&E) microscopy images of cell nuclei — 2D and 3D
-language: Python (core package); Groovy for the QuPath integration
-animal: Not applicable — general-purpose nuclei/cell segmentation, not species-specific
+language: Python; Groovy (QuPath integration)
+animal: Not species-specific
 difficulty: beginner
 citation_count: 2421
 added_date: 2026-09-24

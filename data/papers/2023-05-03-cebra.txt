@@ -11,8 +11,8 @@ access_status: open_access
 category: neural-networks
 tags: contrastive learning, self-supervised learning, latent embedding, representation learning, neural decoding, dimensionality reduction, calcium imaging, electrophysiology, hypothesis-driven, discovery-driven, consistency, PyTorch, joint behavior-neural analysis
 data_acquisition: Not applicable — a general-purpose representation-learning method for time-series neural data (validated on both calcium imaging and electrophysiology) paired with behavioral labels
-language: Python (PyTorch)
-animal: Not applicable — demonstrated across species and recording modalities (mouse, macaque, fly)
+language: Python
+animal: Not species-specific (mouse, macaque, fly)
 difficulty: intermediate
 citation_count:
 added_date: 2026-09-25

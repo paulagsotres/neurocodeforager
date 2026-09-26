@@ -11,8 +11,8 @@ access_status: open_access
 category: neural-circuits
 tags: hippocampus, interneurons, place cells, place fields, spatial coding, cognitive map, Pvalb, Sst, Vip, Id2, GABAergic, optogenetics, opto-tagging, silicon probe, extracellular electrophysiology, spike sorting, KiloSort, interneuron classification, decision tree classifier, machine learning, physiological fingerprinting, sharp-wave ripples, SPW-R, theta oscillations, gamma oscillations, neural decoding, CA1, mouse, freely moving, delayed alternation task, Python
 data_acquisition: Extracellular electrophysiology with 64-site, 5-shank silicon probes (or 32-site 4-shank μLED probes) implanted in CA1 of freely moving mice; optogenetic identification via ChR2 expressed selectively in each interneuron family through Cre/Flp mouse lines; animal position tracked with a Basler camera at 30 Hz
-language: MATLAB (primary analysis, KiloSort spike sorting, SleepScoreMaster, HippoCookBook toolbox); Python (CEBRA for decoding)
-animal: Mouse (C57BL/6 background, 12–32 weeks; transgenic lines: Pvalb-Cre::Ai32, Sst-Flip::Ai80F, Id2-CreER/Dlx5-Flpe::Ai80, Vip-Flip::Ai80F, CaMK2α-Cre::Ai32)
+language: MATLAB; Python (CEBRA for decoding)
+animal: Mouse (C57BL/6, transgenic lines)
 difficulty: advanced
 citation_count:
 added_date: 2026-09-25

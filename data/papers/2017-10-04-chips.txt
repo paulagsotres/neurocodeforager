@@ -11,7 +11,7 @@ category: image-analysis
 tags: two-photon microscopy, blood vessel diameter, red blood cell velocity, calcium imaging, hemodynamics, motion correction, spectral unmixing, line scan, ScanImage, OME Bio-Formats, Radon transform, parameter optimization, MATLAB toolbox, neurovascular coupling, astrocyte imaging, RRID:SCR_015741
 data_acquisition: Two-photon microscopy images of cells and blood vessels — line scans or full-frame images, primarily ScanImage TIFF or any OME Bio-Formats-compatible format
 language: MATLAB
-animal: Not applicable — general-purpose toolbox for two-photon image analysis, demonstrated in rodent brain imaging
+animal: Not species-specific
 difficulty: intermediate
 citation_count:
 added_date: 2026-09-26

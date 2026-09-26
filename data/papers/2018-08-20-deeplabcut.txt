@@ -11,8 +11,8 @@ access_status: paywall_restricted
 category: automated-behavioral-tracking
 tags: markerless pose estimation, transfer learning, DeepLabCut, SuperAnimal, multi-animal tracking, Google Colab, Docker, mouse, Drosophila, reaching, egg-laying, keypoint tracking
 data_acquisition: Standard video of an animal (or, in later multi-animal versions, several animals) performing a behavior — no markers or specialized hardware required
-language: Python (TensorFlow/PyTorch backends across versions)
-animal: Demonstrated in mice, Drosophila, and (in later work) many other species; general-purpose via transfer learning
+language: Python
+animal: Not species-specific (mouse, Drosophila, and others)
 difficulty: beginner
 citation_count:
 added_date: 2026-09-25

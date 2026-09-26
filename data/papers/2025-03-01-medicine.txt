@@ -11,8 +11,8 @@ access_status: open_access
 category: electrophysiology
 tags: motion correction, drift correction, spike sorting, electrophysiology, Neuropixels, silicon probe, SpikeInterface, Kilosort4, deep learning, PyTorch, contrastive learning, motion estimation, neural recording, non-human primate, Python
 data_acquisition: Extracellular electrophysiology recordings from silicon probes (e.g. Neuropixels); input is detected spike amplitudes, depths, and times — not raw voltage traces — so MEDiCINe is agnostic to recording hardware and compatible with any upstream spike detection pipeline
-language: Python (PyTorch); installed via pip as medicine-neuro; integrates with SpikeInterface and Kilosort4
-animal: Not species-specific; validated on non-human primate recordings across dozens of sessions
+language: Python (depends on SpikeInterface or Kilosort4 for upstream spike detection)
+animal: Not species-specific; validated on non-human primate
 difficulty: intermediate
 citation_count:
 added_date: 2026-09-26
@@ -28,16 +28,16 @@ MEDiCINe paper reproduction code | https://github.com/jazlab/medicine_paper
 SpikeInterface motion correction docs | https://spikeinterface.readthedocs.io/en/latest/modules/motion_correction.html
 
 tutorial_intro:
-MEDiCINe is installed as <code>medicine-neuro</code> from PyPI. The single entry point is <code>medicine.run_medicine()</code>, which takes spike amplitudes, depths, and times as numpy arrays and writes motion estimates to an output directory. It does not process raw voltage — any upstream spike detector works. The most common use is as a drop-in motion correction step inside a SpikeInterface pipeline, but it also integrates with Kilosort4 directly.
+MEDiCINe is installed as <code>medicine-neuro</code> from PyPI. It takes spike amplitudes, depths, and times (not raw voltage) as input — the output of any upstream spike detector — and writes motion estimates to an output directory. The most common use is as a drop-in motion correction step inside a SpikeInterface pipeline.
 
 tutorial_steps:
-Install and verify with the demo: <code>pip install medicine-neuro &amp;&amp; python -m medicine_demos.run_demo</code>. The demo downloads a sample dataset and shows motion estimation figures.
-Run motion estimation — pass detected spike amplitudes, depths, and times (as numpy arrays, in microns and seconds) to <code>medicine.run_medicine(peak_amplitudes=..., peak_depths=..., peak_times=..., output_dir=Path('medicine_output'))</code>. These can come from SpikeInterface peak detection, Kilosort, or any other detector.
-Load results from the output directory: <code>motion = np.load('medicine_output/motion.npy')</code> (shape: n_time_bins × n_depth_bins, units: microns), plus <code>time_bins.npy</code> and <code>depth_bins.npy</code> for the bin centers.
-Apply motion correction in SpikeInterface by wrapping the output in a <code>Motion</code> object and passing it to <code>InterpolateMotionRecording(recording, motion_object)</code>, then feed the corrected recording to your spike sorter with its built-in motion correction disabled.
-Check the output figures in <code>medicine_output/</code>, especially <code>corrected_motion_raster.png</code>. Defaults work for most datasets — only consider adjusting <code>motion_bound</code> (large drift), <code>time_kernel_width</code> (fast motion), or <code>amplitude_threshold_quantile</code> (noisy detections). See the README for Kilosort4 integration and the full parameter reference.
+Install via pip (<code>pip install medicine-neuro</code>) and run the bundled demo (<code>python -m medicine_demos.run_demo</code>) to verify the installation and see example output figures.
+Detect spikes from your recording using SpikeInterface, Kilosort, or any other detector. MEDiCINe needs only the spike amplitudes, depths (in microns), and times (in seconds) — not the raw traces.
+Run <code>medicine.run_medicine()</code> passing the spike arrays and an output directory. The model trains on the session's own data without any labeled examples and writes the motion estimates as numpy arrays.
+Apply the resulting motion correction in your SpikeInterface pipeline by wrapping the output in a <code>Motion</code> object and using <code>InterpolateMotionRecording</code>. If using Kilosort4 directly, see the README for the datashift integration snippet.
+Check the diagnostic figures saved to the output directory (especially <code>corrected_motion_raster.png</code>). Defaults work for most datasets; the README documents the few parameters worth adjusting if results look off.
 
 tutorial_output:
-<code>motion.npy</code>: estimated probe motion in microns (n_time_bins × n_depth_bins). <code>time_bins.npy</code> and <code>depth_bins.npy</code>: corresponding bin centers. Diagnostic figures saved to <code>output_dir</code> including raw raster, motion overlay, and corrected raster.
+<code>motion.npy</code>: estimated probe motion in microns (n_time_bins × n_depth_bins). <code>time_bins.npy</code> and <code>depth_bins.npy</code>: corresponding bin centers. Diagnostic figures saved to the output directory including raw raster, motion overlay, and corrected raster.
 
 related_ids: 2020-11-10-spikeinterface, 2024-04-08-kilosort4

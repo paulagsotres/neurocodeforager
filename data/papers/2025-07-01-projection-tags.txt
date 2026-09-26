@@ -10,7 +10,7 @@ access_status: open_access
 category: gene-protein-analysis, spatial-omics
 tags: retrograde AAV, RNA barcode, projection tracing, projection neurons, snRNA-seq, snATAC-seq, multiplexed FISH, cortical projection neurons, cis-regulatory elements, genomic regulatory elements, enhancers, silencers, cellranger, Sun1-GFP, multiplex tracing, axonal collaterals, primary motor cortex, somatosensory cortex, Act-seq
 data_acquisition: Retrograde AAV2-retro RNA-barcode labeling (custom "Projection-TAG" plasmids) combined with single-nucleus RNA-seq, single-nucleus ATAC-seq, and multiplexed FISH
-language: R (regulatory-element analysis); command-line tools (cellranger-based read mapping)
+language: R; command-line (cellranger)
 animal: Mouse
 difficulty: advanced
 citation_count: 3

@@ -10,8 +10,8 @@ access_status: open_access
 category: statistical-analysis
 tags: generalized linear model, generalized linear model, GPU-accelerated, spike train modeling, basis functions, splines, B-spline, M-spline, raised cosine basis, regularization, Ridge, Lasso, ElasticNet, GroupLasso, Poisson regression, population GLM, PopulationGLM, feature engineering, systems neuroscience, Flatiron Institute, pynapple
 data_acquisition: Not applicable — general-purpose statistical modeling toolbox for any spike-count or continuous time-series data (works with whatever neurophysiology or behavioral recordings you already have)
-language: Python (GPU-accelerated via JAX)
-animal: Not applicable — general-purpose framework, not species- or acquisition-specific
+language: Python
+animal: Not species-specific
 difficulty: intermediate
 citation_count:
 added_date: 2026-09-25

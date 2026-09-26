@@ -10,8 +10,8 @@ access_status: open_access
 category: gene-protein-analysis
 tags: massively parallel reporter assay, massively parallel reporter assay, gene regulatory variants, cortical structure, ENIGMA GWAS, Wnt signaling, CHIR99021, neural progenitor cells, phNPC, emVar, expression-modulating variant, Alu elements, transposable elements, CUT&RUN, MPRAnalyze, motifbreakR, CRISPRi, chromatin accessibility, caQTL, Pol III promoter
 data_acquisition: Massively parallel reporter assay (barcoded RNA/DNA sequencing) plus CUT&RUN chromatin profiling in primary human neural progenitor cells (phNPCs), at baseline and after Wnt-pathway (CHIR99021) stimulation
-language: R (MPRAnalyze, mpra, limma, motifbreakR); Nextflow (CUT&RUN pipeline)
-animal: Not applicable — human primary neural progenitor cells derived from fetal brain tissue
+language: R; Nextflow
+animal: Human
 difficulty: advanced
 citation_count:
 added_date: 2026-09-26

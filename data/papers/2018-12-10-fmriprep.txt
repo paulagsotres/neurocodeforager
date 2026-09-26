@@ -11,8 +11,8 @@ access_status: open_access
 category: brain-imaging
 tags: fMRI, functional MRI, preprocessing, brain imaging data structure, NiPreps, FreeSurfer, ANTs, motion correction, normalization, quality reports, reproducibility, neuroimaging, confound regression
 data_acquisition: Functional and structural MRI data organized in the BIDS (Brain Imaging Data Structure) standard
-language: Python (Nipype workflows, wrapping FSL, ANTs, FreeSurfer, AFNI)
-animal: Not applicable — human neuroimaging preprocessing pipeline
+language: Python (depends on FSL, ANTs, FreeSurfer)
+animal: Human
 difficulty: intermediate
 citation_count:
 added_date: 2026-09-25

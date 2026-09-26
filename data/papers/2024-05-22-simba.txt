@@ -11,8 +11,8 @@ access_status: open_access
 category: automated-behavioral-tracking, statistical-analysis
 tags: SimBA, random forest, supervised behavioral classification, Shapley values, explainable AI, explainable AI, DeepLabCut, DeepPoseKit, aggression, resident-intruder, chronic social defeat stress, ROI analysis, Kleinberg filter, pose estimation import, computational neuroethology, mouse, rat, cross-laboratory comparison
 data_acquisition: Pose-tracking data imported from an existing markerless pose-estimation tool (DeepLabCut, SLEAP, DeepPoseKit, or MARS) — species-agnostic, validated on fish, wasp, moth, mouse, rat, and bird
-language: Python 3.6
-animal: Species-agnostic; validated on fish, wasp, moth, mouse, rat, bird
+language: Python
+animal: Not species-specific (fish, mouse, rat, bird, and others)
 difficulty: beginner
 citation_count:
 added_date: 2026-09-26

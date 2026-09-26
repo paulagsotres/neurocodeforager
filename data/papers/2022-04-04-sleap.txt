@@ -11,8 +11,8 @@ access_status: open_access
 category: automated-behavioral-tracking
 tags: multi-animal pose tracking, pose estimation, top-down, bottom-up, part affinity fields, part affinity fields, identity tracking, optical flow, appearance model, real-time tracking, closed-loop, optogenetics, Drosophila, bumblebee, gerbil, mouse, UNet, transfer learning
 data_acquisition: Video of one or more freely-moving or interacting animals of any species, from top-down or side camera angles
-language: Python (TensorFlow)
-animal: Fruit flies, bumblebees, mice, gerbils (general-purpose, demonstrated across species)
+language: Python
+animal: Not species-specific (fly, mouse, gerbil, and others)
 difficulty: beginner
 citation_count: 973
 added_date: 2026-09-25

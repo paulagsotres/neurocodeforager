@@ -11,8 +11,8 @@ access_status: open_access
 category: electrophysiology, brain-imaging
 tags: magnetoencephalography, electroencephalography, ECoG, current dipole, neocortical circuit model, biophysical modeling, NEURON simulator, event-related potential, alpha rhythm, beta rhythm, gamma rhythm, pyramidal neurons, thalamocortical, translational neuroscience, source localization, parameter optimization, hnn-core, computational neuroscience
 data_acquisition: Human non-invasive MEG/EEG (and intracranial ECoG) source-localized current-dipole recordings, compared against a biophysically detailed neocortical circuit simulation
-language: Python (built on the NEURON simulator)
-animal: Not applicable — models human MEG/EEG/ECoG; the circuit predictions it generates have separately been validated against laminar recordings in mice and monkeys
+language: Python (depends on NEURON)
+animal: Human (MEG/EEG modelling); also validated in mouse and macaque
 difficulty: beginner
 citation_count: 103
 added_date: 2026-09-24

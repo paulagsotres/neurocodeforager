@@ -10,8 +10,8 @@ access_status: open_access
 category: electrophysiology
 tags: spike sorting, Kilosort, Neuropixels, drift correction, graph-based clustering, modularity optimization, template matching, matching pursuit, extracellular electrophysiology, Phy, SpikeInterface, international brain laboratory, high-density probes
 data_acquisition: Extracellular electrophysiology recordings from high-density probes (Neuropixels 1.0/2.0 and similar), stored as raw binary data
-language: Python (PyTorch); GUI via pyqtgraph
-animal: Not applicable — general-purpose spike-sorting algorithm, validated on mouse Neuropixels recordings from the International Brain Laboratory (IBL)
+language: Python
+animal: Not species-specific
 difficulty: intermediate
 citation_count: 523
 added_date: 2026-09-25

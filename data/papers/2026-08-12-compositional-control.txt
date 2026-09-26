@@ -10,8 +10,8 @@ access_status: paywall_restricted
 category: electrophysiology
 tags: prey pursuit, continuous decision-making, control theory, compositional control, meta-controller, intracranial recordings, sEEG, single-unit recordings, Behnke-Fried electrodes, WaveClus, spike sorting, anterior cingulate cortex, hippocampus, orbitofrontal cortex, dPCA, hierarchical control, human electrophysiology, joystick task, iELVis, changes of mind, generalized additive model, latent dynamical systems, LDS clustering
 data_acquisition: Human single-neuron intracranial recordings — stereotactic EEG (sEEG) via AdTech Behnke-Fried microwire probes (~4 probes/patient, 8 microwires each), Blackrock Neuroport 512-channel system at 30 kHz, spike-sorted with WaveClus
-language: Python 3.11 (core pipeline); MATLAB (plotting)
-animal: Not applicable (human intracranial recordings in epilepsy patients)
+language: Python; MATLAB (plotting)
+animal: Human
 difficulty: advanced
 citation_count: 1
 added_date: 2026-09-24

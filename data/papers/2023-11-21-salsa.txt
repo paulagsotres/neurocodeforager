@@ -11,7 +11,7 @@ category: automated-behavioral-tracking, neural-networks
 tags: SaLSa, long short-term memory, long short-term memory, behavioral syllables, semi-automatic labeling, DeepLabCut, uniform manifold approximation and projection, spectral clustering, computational ethology, Alzheimer's disease, 5xFAD, keypoint-MoSeq benchmark, egocentric coordinates, wavelet transform, open field
 data_acquisition: Top-down webcam video (25 fps) of a single mouse in an open-field arena, pose-tracked with DeepLabCut
 language: MATLAB
-animal: Mouse (5xFAD Alzheimer's-disease model and wild-type littermates)
+animal: Mouse
 difficulty: intermediate
 citation_count:
 added_date: 2026-09-26

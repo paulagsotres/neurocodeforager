@@ -415,6 +415,14 @@ async function initDetailPage(){
   main.dataset.year = entry.year || '';
   main.dataset.doi = entry.doi || '';
   document.title = `${entry.title} — NeuroCodeForager`;
+  // Update OpenGraph and Twitter meta tags dynamically
+  const ogDesc = entry.summary ? entry.summary.slice(0, 200) : 'A searchable index of open-source tools for neuroscience.';
+  const setMeta = (sel, val) => { const el = document.querySelector(sel); if (el) el.setAttribute('content', val); };
+  setMeta('meta[property="og:title"]',       `${entry.title} — NeuroCodeForager`);
+  setMeta('meta[property="og:description"]', ogDesc);
+  setMeta('meta[property="og:url"]',         window.location.href);
+  setMeta('meta[name="twitter:title"]',      `${entry.title} — NeuroCodeForager`);
+  setMeta('meta[name="twitter:description"]', ogDesc);
 
   const cats = getEntryCategories(entry).map(getCategory).filter(Boolean);
   const accessTag = entry.access_status === 'open_access'

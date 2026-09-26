@@ -12,7 +12,7 @@ category: automated-behavioral-tracking
 tags: 3D pose estimation, markerless tracking, DeepLabCut, camera calibration, bundle adjustment, triangulation, Viterbi filter, autoencoder filter, spatiotemporal regularization, Drosophila, joint kinematics, mouse reaching, human gait, ChArUco board, aniposelib
 data_acquisition: Synchronized multi-camera video (calibration board plus behavior videos), with 2D keypoints detected by an existing 2D pose-estimation network (DeepLabCut, or compatible tools like SLEAP/DeepPoseKit)
 language: Python
-animal: Fruit fly (Drosophila), mouse, human; general-purpose across species
+animal: Not species-specific (Drosophila, mouse, human)
 difficulty: intermediate
 citation_count:
 added_date: 2026-09-26

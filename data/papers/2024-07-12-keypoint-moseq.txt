@@ -11,8 +11,8 @@ access_status: open_access
 category: automated-behavioral-tracking, statistical-analysis
 tags: keypoint tracking, pose estimation, behavior segmentation, unsupervised learning, MoSeq, syllables, switching linear dynamical system, switching linear dynamical system, AR-HMM, DeepLabCut, mouse, rat, fruit fly, Drosophila, dopamine, striatum, jitter correction, ethogram, computational ethology
 data_acquisition: 2D or 3D keypoint tracking data from an existing pose-estimation pipeline (SLEAP, DeepLabCut, anipose, etc.), optionally paired with depth video, accelerometry or neural recordings for validation
-language: Python (JAX-accelerated)
-animal: Mouse, rat, fruit fly (Drosophila) — demonstrated to generalize across species
+language: Python
+animal: Not species-specific (mouse, rat, Drosophila)
 difficulty: intermediate
 citation_count: 267
 added_date: 2026-09-25

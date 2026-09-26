@@ -12,7 +12,7 @@ category: gene-protein-analysis
 tags: single-cell RNA-seq, snRNA-seq, single-nucleus, transcriptomics, Alzheimer's disease, Parkinson's disease, schizophrenia, bipolar disorder, dorsolateral prefrontal cortex, dorsolateral prefrontal cortex, cell type composition, differential expression, dreamlet, crumblr, genome-wide association study, heritability, disease trajectory, PsychAD, cross-disorder, pseudobulk
 data_acquisition: Single-nucleus RNA sequencing (snRNA-seq) — 10x Genomics Chromium, postmortem human DLPFC
 language: R, Python
-animal: Not applicable (human postmortem tissue)
+animal: Human
 difficulty: advanced
 citation_count:
 added_date: 2026-09-24

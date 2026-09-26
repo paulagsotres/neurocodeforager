@@ -12,7 +12,7 @@ category: image-analysis
 tags: two-photon calcium imaging, motion correction, registration, ROI detection, cell detection, spike deconvolution, neuropil correction, GCaMP, in vivo imaging, Janelia
 data_acquisition: Two-photon calcium imaging movies (raw TIFFs or similar), typically from GCaMP-expressing neurons imaged through a cranial window or GRIN lens
 language: Python
-animal: Not applicable — general-purpose calcium imaging pipeline, demonstrated on mouse cortex recordings
+animal: Not species-specific
 difficulty: intermediate
 citation_count:
 added_date: 2026-09-25

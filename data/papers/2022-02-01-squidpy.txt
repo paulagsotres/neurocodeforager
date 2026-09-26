@@ -12,7 +12,7 @@ category: spatial-omics
 tags: spatial omics, spatial transcriptomics, spatial proteomics, single-cell analysis, spatial statistics, spatial neighborhood graph, neighborhood enrichment, co-occurrence analysis, Ripley's statistics, Moran's I, Geary's C, spatially variable genes, ligand-receptor interactions, cell-cell communication, image analysis, tissue morphology, image features, cell segmentation, Visium, Slide-seq, MERFISH, seqFISH, imaging mass cytometry, MIBI-TOF, AnnData, Scanpy, SpatialData, Dask, napari, Python, scverse
 data_acquisition: Spatially resolved molecular data from spot-based, single-cell and subcellular assays, including Visium, Slide-seq, seqFISH, MERFISH, imaging mass cytometry, MIBI-TOF and related spatial transcriptomic or proteomic technologies, optionally accompanied by high-resolution tissue microscopy images.
 language: Python
-animal: Technology-agnostic; demonstrated on mouse, human and other spatial molecular datasets.
+animal: Not species-specific (demonstrated on mouse and human)
 gpu_required: No for the core workflow; GPU may be useful for external deep-learning segmentation or image-feature extraction.
 difficulty: intermediate
 citation_count: null
