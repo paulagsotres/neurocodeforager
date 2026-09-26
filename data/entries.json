@@ -1,80 +1,95 @@
 [
   {
-    "id": "2026-04-17-cellrake",
-    "title": "CellRake: automated detection and quantification of fluorescently labeled cells in brain sections",
-    "authors": "Canela M., Bach Adell J., Roura Coll D., González-Parra J.A., Pinho J.S., Busquets-García A.",
-    "journal": "iScience",
-    "year": 2026,
-    "date": "2026-04-17",
-    "doi": "10.1016/j.isci.2026.115522",
-    "paper_url": "https://www.cell.com/iscience/fulltext/S2589-0042(26)00897-7",
-    "github_url": "https://github.com/marccanela/cellrake",
-    "website_url": "https://doi.org/10.5281/zenodo.19002677",
+    "id": "2025-09-15-behavioralprofiles",
+    "title": "Profiling mouse behavior with computational tools to assess age-dependent differences in associative learning",
+    "authors": "Canela-Grimau M., Pinho J.S., Busquets-García A.",
+    "journal": "Cell Reports Methods",
+    "year": 2025,
+    "date": "2025-09-15",
+    "doi": "10.1016/j.crmeth.2025.101144",
+    "paper_url": "https://pubmed.ncbi.nlm.nih.gov/40882642/",
+    "github_url": "https://github.com/marccanela/BehavioralProfiles",
+    "website_url": "https://doi.org/10.5281/zenodo.16419362",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "image-analysis",
+    "category": "automated-behavioral-tracking",
     "tags": [
-      "cell counting",
-      "fluorescence microscopy",
-      "brain sections",
-      "histology",
-      "cFos",
-      "tdTomato",
-      "activity mapping",
-      "TRAP2",
-      "IEG",
-      "immediate early gene",
-      "segmentation",
-      "classification",
-      "random forest",
-      "semi-supervised learning",
-      "label spreading",
-      "SMOTE",
-      "colocalization",
-      "scikit-image",
-      "scikit-learn",
-      "Python",
+      "behavioral analysis",
+      "second-order conditioning",
+      "fear conditioning",
+      "associative learning",
+      "DeepLabCut",
+      "Keypoint-MoSeq",
+      "DeepOF",
+      "behavioral syllables",
+      "pose estimation",
+      "unsupervised behavior",
+      "behavioral motifs",
+      "transition matrix",
+      "Shannon entropy",
+      "Manhattan distance",
+      "Hotelling T2",
+      "radar plot",
+      "IoU",
+      "MDS",
+      "Mahalanobis distance",
+      "huddling",
+      "freezing",
       "mouse",
-      "image analysis",
-      "automated cell detection",
-      "neural activity quantification"
+      "aging",
+      "sex differences",
+      "Python"
     ],
-    "summary": "CellRake is a lightweight Python package (<30 KB) for automated detection and counting of fluorescently labeled cells in brain sections, using a two-step pipeline: Laplacian-of-Gaussian blob segmentation followed by semi-supervised random forest classification trained on a handful of manually labeled examples per image — no GPU, no large annotated dataset, no external tools like ImageJ required.",
-    "abstract_long": "Manual counting of fluorescently labeled cells across many brain regions and animals is slow, biased, and irreproducible. Existing automated tools (QuPath, CellProfiler, Ilastik, Cellpose) solve this but require extensive customization, large labeled datasets, or GPU resources. CellRake is designed for the single task of detecting and counting fluorescent marker-positive cells in brain section images, with a learning curve that lets users train a working classifier in minutes. The pipeline has two stages. First, segmentation: a Laplacian of Gaussian (LoG) filter detects candidate blob-like structures regardless of background intensity, followed by per-blob adaptive Otsu thresholding, morphological cleanup, and a watershed step to separate overlapping signals — this outperforms global thresholding methods (Otsu, Multi-Otsu, Li, Yen) on images with heterogeneous backgrounds. Second, classification: CellRake extracts 22 morphological and intensity features per blob, clusters them with k-means (10 clusters), and asks the user to label just 10 representative blobs per cluster as positive or negative. It then applies SMOTE to balance the classes and a K-Nearest Neighbors label-spreading kernel to propagate labels, retaining only high-confidence predictions (entropy < 0.025), and trains a final supervised classifier. Validated on 153 BLA images: cFos r=0.944, tdTomato r=0.879, colocalization r=0.912 vs manual counts.",
-    "data_acquisition": "Grayscale fluorescence microscopy images of brain sections stained for fluorescent markers (cFos, tdTomato, or other); tested at 10x magnification on a Nikon Eclipse Ni-E; no GPU required",
-    "language": "Python (NumPy, pandas, scikit-image, scikit-learn, Matplotlib)",
-    "animal": "Mouse (demonstrated in TRAP2:Ai14 mice for tdTomato and cFos brain-wide quantification)",
-    "gpu_required": "no",
-    "difficulty": "beginner",
-    "tutorial_intro": "CellRake runs a two-step pipeline on grayscale fluorescence images: segmentation (LoG + adaptive thresholding + watershed) followed by semi-supervised classification (k-means clustering -> manual labeling of ~10 blobs per cluster -> label spreading -> supervised random forest). The user only needs to label a small number of representative blobs per image type; the model then generalizes across the whole dataset. No GPU is needed. Install with <code>pip install cellrake</code> (or clone from <a href=\"https://github.com/marccanela/cellrake\">github.com/marccanela/cellrake</a>).",
+    "summary": "A reusable behavioral analysis pipeline combining DeepLabCut (pose estimation), Keypoint-MoSeq (unsupervised syllable decomposition), and DeepOF (supervised trait extraction) to characterize conditioned behavioral responses in mice — the pipeline quantifies syllable abundance changes (delta vectors), transition dynamics (Manhattan distance on transition matrices), Shannon entropy, and supervised trait profiles (radar plots with IoU), and reveals age-dependent deficits in second-order conditioning that traditional freezing measures miss entirely.",
+    "abstract_long": "The paper introduces a data-driven behavioral analysis pipeline applied to a light-tone second-order conditioning (SOC) paradigm in mice, but the pipeline itself is the reusable contribution: it chains DeepLabCut for markerless pose estimation (14 body points, ResNet-50 backbone, trained on 20 labeled frames per video), Keypoint-MoSeq for unsupervised decomposition of tracking data into behavioral syllables (9 latent dimensions, kappa 1e10/1e4, 90% variance explained), and DeepOF for extracting supervised behavioral traits (huddling, sniffing, climbing, speed, looking around) into radar plots. The analysis has two complementary arms: unsupervised (syllable abundance delta vectors tested with Hotelling's T2 and syllable-level ANOVAs; transition matrix dynamics quantified by Manhattan distance with permutation tests; Shannon entropy of normalized transition matrices) and supervised (trait profiles visualized as radar plots, changes quantified as Intersection over Union with permutation tests). The pipeline revealed that CS1 (first-order) and CS2 (second-order) elicits qualitatively distinct behavioral repertoires and detected age-related impairments in SOC responses that were completely invisible to traditional freezing/huddling measures.",
+    "data_acquisition": "Top-view video recordings of mice in standard conditioning chambers during cue presentation (light CS1 and tone CS2); pose estimated with DeepLabCut tracking 14 body points at standard frame rates",
+    "language": "Python (DeepLabCut, Keypoint-MoSeq, DeepOF)",
+    "animal": "Mouse (C57BL/6J, adolescent 4-5 weeks, young adult 8-9 weeks, and old 45-55 weeks, both sexes)",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "tutorial_intro": "The pipeline at <a href=\"https://github.com/marccanela/BehavioralProfiles\">github.com/marccanela/BehavioralProfiles</a> takes DeepLabCut tracking output (h5/csv files of keypoint coordinates) as its starting point and runs the full downstream analysis: Keypoint-MoSeq syllable extraction, delta vector computation, transition matrix analysis, Shannon entropy, and DeepOF trait extraction into radar plots. DeepLabCut itself must be run separately first to generate the pose files. The analysis is split into two complementary arms — unsupervised (syllable-based) and supervised (trait-based) — and all statistical tests used in the paper are implemented in the pipeline scripts.",
     "tutorial_steps": [
-      "Install CellRake: <code>pip install cellrake</code>. Dependencies (NumPy, pandas, scikit-image, scikit-learn, Matplotlib) are pulled in automatically. No GPU is required.",
-      "Load your grayscale fluorescence images — CellRake expects standard image files (TIFF, PNG, etc.) readable by scikit-image. Each image should contain one fluorescent marker channel (cFos or tdTomato separately). Run segmentation: <code>from cellrake import segmentation; blobs = segmentation.run(image_path)</code>. This applies the LoG filter, per-blob adaptive Otsu thresholding, morphological cleanup, and watershed, and returns a dictionary of candidate blob contours and their 22 extracted features (area, perimeter, eccentricity, mean intensity, intensity ratio, intensity difference, SD intensity, etc.) per image.",
-      "Label a small set of blobs to train the classifier. CellRake clusters the segmented blobs by k-means (default: 10 clusters) and displays 10 representative blobs per cluster for you to label as positive or negative — typically 5-10 minutes per marker type. Labels are saved and reused across the dataset.",
-      "Run classification: <code>from cellrake import classification; results = classification.run(blobs, labels)</code>. Internally this applies SMOTE to oversample the minority class, uses KNN label spreading to propagate labels (retaining only predictions with entropy < 0.025), trains a supervised model on the high-confidence subset, and outputs per-image positive cell counts alongside ROC AUC, AP, precision, recall, and F1.",
-      "For colocalization across two markers (e.g., tdTomato and cFos in the same section), run each marker independently first, then: <code>from cellrake import colocalization; coloc = colocalization.run(results_marker1, results_marker2)</code>. Two blobs are considered colocalized if their overlap area is at least 80% of the smaller blob's area.",
-      "Export results: <code>results.to_csv('counts.csv')</code>. The paper fits GLMMs with Negative Binomial distribution to relate counts to behavioral performance, using log-transformed ROI area as an offset and animal ID as a random effect — the DataFrame output maps directly to this kind of model in R (lme4/glmmTMB) or Python (statsmodels)."
+      "Run <a href=\"https://github.com/DeepLabCut/DeepLabCut\">DeepLabCut</a> on your videos to generate keypoint tracking files (h5 or csv). The paper used DLC 3.0 with a ResNet-50 backbone, 14 body points, 20 labeled frames per video. Exclude tail keypoints if tracking reliability is low.",
+      "Feed the DLC output into <a href=\"https://github.com/dattalab/keypoint-moseq\">Keypoint-MoSeq</a> to extract behavioral syllables. Key hyperparameters: 9 latent dimensions (set to explain ~90% of variance), kappa values 1e10 and 1e4. Output is a per-frame syllable label sequence per animal.",
+      "Using the BehavioralProfiles scripts, compute syllable abundance: divide sessions into 1-min bins before and after cue onset, count frames per syllable per bin, then compute delta vectors (post minus pre) per animal. Test whether the multivariate delta distribution differs from zero using Hotelling's T2; test individual syllable differences with ANOVA or Kruskal-Wallis depending on Shapiro-Wilk normality, with Tukey or Wilcoxon post hoc.",
+      "Compute transition dynamics: build unidirectional transition matrices (self-transitions removed) per animal per bin, normalize by row-wise conditional probabilities, and calculate Manhattan distance between pre- and post-stimulus matrices per animal. Test significance with permutation tests. Compute Shannon entropy of the normalized matrices — decrease in entropy indicates more stereotyped, constrained behavior.",
+      "To test whether two conditions elicit qualitatively distinct responses, compute within-subject Pearson correlations between syllable delta vectors across conditions and test against a null of perfect correlation (r=1) with a one-sample t-test. For a higher-dimensional view, apply MDS with Mahalanobis distance, compute centroids per behavioral state, and calculate the angle alpha between the CS1 and CS2 vectors from baseline — growing alpha with dimensionality indicates qualitatively distinct trajectories in behavioral space.",
+      "For the supervised arm, run <a href=\"https://github.com/mlfpm/deepof\">DeepOF</a> on the DLC tracking files to extract predefined behavioral traits (huddling, sniffing, climbing, speed, looking around). Average trait values within time bins (0-1 range) and visualize as radar plots. Quantify behavioral profile changes using Intersection over Union (IoU) between pre- and post-stimulus profiles and test significance with permutation tests."
     ],
-    "tutorial_output": "Per-image positive cell counts for each fluorescent marker, a trained classifier (reusable across images of the same marker type), five classification performance metrics (ROC AUC, AP, precision, recall, F1), and a colocalization count table — all as a pandas DataFrame ready for downstream statistical modeling or CSV export.",
+    "tutorial_output": "Per-animal delta vectors (syllables x conditions); Hotelling's T2 p-values and syllable-level ANOVA results; Manhattan distance values and permutation p-values per condition; Shannon entropy time series; within-subject Pearson correlations between conditions; MDS angle alpha across dimensions; DeepOF trait time series; radar plots with IoU values and permutation p-values — organized per experimental group for direct comparison of unsupervised and supervised behavioral signatures.",
     "sample_data": {
-      "text": "Raw and analyzed data from the paper available on Zenodo.",
-      "url": "https://doi.org/10.5281/zenodo.19075438"
+      "text": "Raw and processed behavioral data available on Zenodo.",
+      "url": "https://doi.org/10.5281/zenodo.16419208"
     },
     "code": {
-      "repo_url": "https://github.com/marccanela/cellrake",
+      "repo_url": "https://github.com/marccanela/BehavioralProfiles",
       "platform": "github"
     },
     "extra_links": [
       {
-        "label": "Raw and analyzed data (Zenodo)",
-        "url": "https://doi.org/10.5281/zenodo.19075438"
+        "label": "Raw and processed behavioral data (Zenodo)",
+        "url": "https://doi.org/10.5281/zenodo.16419208"
       },
       {
-        "label": "CellRake code archive (Zenodo)",
-        "url": "https://doi.org/10.5281/zenodo.19002677"
+        "label": "Code archive (Zenodo)",
+        "url": "https://doi.org/10.5281/zenodo.16419362"
+      },
+      {
+        "label": "DeepLabCut",
+        "url": "https://github.com/DeepLabCut/DeepLabCut"
+      },
+      {
+        "label": "Keypoint-MoSeq",
+        "url": "https://github.com/dattalab/keypoint-moseq"
+      },
+      {
+        "label": "DeepOF",
+        "url": "https://github.com/mlfpm/deepof"
       }
     ],
-    "related_ids": [],
+    "related_ids": [
+      "2026-04-17-cellrake"
+    ],
     "added_date": "2026-09-26",
     "added_by": "manual",
     "verified": true
