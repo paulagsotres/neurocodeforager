@@ -3040,78 +3040,85 @@
     "verified": true
   },
   {
-    "id": "2018-11-21-tsc",
-    "title": "Parsing Hippocampal Theta Oscillations by Nested Spectral Components during Spatial Exploration and Memory-Guided Behavior",
-    "authors": "Lopes-dos-Santos V., van de Ven G.M., Morley A., Trouche S., Campo-Urriza N., Dupret D.",
+    "id": "2025-12-17-ripple-csd-classifier",
+    "title": "Hippocampal ripple diversity organizes neuronal reactivation dynamics in the offline brain",
+    "authors": "Castelli M., Lopes-dos-Santos V., Gava G.P., Lambiotte R., Dupret D.",
     "journal": "Neuron",
-    "year": 2018,
-    "date": "2018-11-21",
-    "doi": "10.1016/j.neuron.2018.09.031",
-    "paper_url": "https://www.cell.com/neuron/fulltext/S0896-6273(18)30820-1",
-    "github_url": "https://github.com/tortlab/tSC",
-    "website_url": "https://neurocodeforager.org/assets/tSC",
+    "year": 2025,
+    "date": "2025-12-17",
+    "doi": "10.1016/j.neuron.2025.09.012",
+    "paper_url": "https://www.cell.com/neuron/fulltext/S0896-6273(25)00700-7",
+    "github_url": "https://github.com/mcastelli98/Ripple-CSDprof-classifier",
+    "website_url": "https://zenodo.org/doi/10.5281/zenodo.16995136",
     "access_status": "open_access",
     "citation_count": null,
     "category": "electrophysiology",
     "categories": [
-      "electrophysiology",
-      "statistical-analysis"
+      "electrophysiology"
     ],
     "tags": [
-      "theta oscillations",
-      "spectral components",
+      "sharp-wave ripples",
       "hippocampus",
       "CA1",
-      "gamma oscillations",
+      "current source density",
       "local field potential",
-      "independent component analysis",
-      "ensemble empirical mode decomposition",
-      "theta-gamma coupling",
-      "sharp-wave ripples",
+      "LDA",
+      "linear discriminant analysis",
+      "laminar profile",
+      "memory consolidation",
       "memory reactivation",
-      "neural oscillations",
-      "cycle-by-cycle analysis",
-      "mouse",
-      "rat",
-      "Python"
+      "silicon probe",
+      "ripple classification",
+      "pyramidal layer",
+      "lacunosum moleculare",
+      "radiatum",
+      "sleep",
+      "coactivity",
+      "Python",
+      "scikit-learn"
     ],
-    "summary": "tSC (theta-nested Spectral Components) is an unsupervised framework that decomposes CA1 hippocampal LFP into the spectral components nested within individual theta cycles, using ensemble empirical mode decomposition (EEMD) followed by ICA or NMF. It reveals that cycle-to-cycle variability of theta-nested oscillations reflects dynamic switching between hippocampal operating modes linked to different stages of spatial memory.",
-    "abstract_long": "Theta oscillations in the hippocampal CA1 area co-occur with faster oscillations spanning the gamma band, but whether these computations are consistent across theta cycles or tuned on a cycle-by-cycle basis was unknown. Lopes-dos-Santos et al. developed an unsupervised single-cycle profiling framework: first, ensemble empirical mode decomposition (EEMD) decomposes raw LFPs into theta and supra-theta signals; second, a Morlet wavelet spectrogram (10–200 Hz) is computed for the supra-theta signal and averaged within each theta cycle boundary to yield a spectral signature per cycle; third, ICA (or optionally NMF) extracts statistically independent theta-nested spectral components from the matrix of spectral signatures across all cycles. Five consistent tSCs emerged across 20 recording days in 10 mice and in rat CA1: tSC1 (22-Hz beta), tSC2 (35-Hz slow gamma), tSC3 (54-Hz mid-gamma), tSC4 (80-Hz mid-gamma), and tSC5 (>100-Hz fast gamma). Each tSC is associated with distinct theta phase-amplitude coupling profiles and distinguishable principal cell ensembles. tSC4 (80-Hz mid-gamma) cycles showed the strongest replay in subsequent sharp-wave/ripple events; tSC4 was strengthened during learning while tSC1-3 increased during retrieval, establishing complementary mnemonic roles for the theta-nested operating modes.",
-    "data_acquisition": "Multichannel extracellular tetrode recordings of LFPs and principal cell spiking from CA1 pyramidal layer during open field exploration and goal-directed spatial memory tasks; data stored as numpy binary files per channel per session",
-    "language": "Python 2 (depends on numpy, scipy, scikit-learn, pandas, matplotlib)",
-    "animal": "Mouse; also validated in rat",
+    "summary": "Castelli, Lopes-dos-Santos et al. show that CA1 hippocampal ripples divide into two laminar types — Radsink (current sink in stratum radiatum) and LMsink (sink in lacunosum-moleculare) — which recruit different neuronal populations and support parallel reactivation channels: Radsink ripples stably reactivate recent waking experiences, while LMsink ripples gradually drift from prior to recent representations. The accompanying classifier infers ripple type from the CA1 pyramidal layer LFP alone, requiring no CSD recording.",
+    "abstract_long": "Hippocampal ripples are transient high-frequency oscillations (100–250 Hz) during sleep/rest that reactivate waking coactivity patterns, but whether this reactivation is uniform across ripple events was unknown. By profiling individual ripples using laminar CSD in mouse CA1 during sleep/rest, Castelli et al. identified two ripple types: Radsink ripples (dominant current sink in stratum radiatum, reflecting CA3-to-CA1 input) and LMsink ripples (dominant sink in stratum lacunosum-moleculare, with a double-sink profile where the LM sink precedes the ripple peak by ~17 ms). Radsink ripples integrate superficial and deep CA1 principal cells into denser, higher-dimensional coactivity motifs that stably reactivate recent waking experiences over hours. LMsink ripples primarily recruit deep-sublayer cells into sparser, lower-dimensional motifs that initially reactivate prior representations and drift to incorporate recent ones. Validated across 38 sleep/rest sessions from 5 mice, this ripple-by-ripple diversity supports parallel reactivation channels for integrating new memories while updating prior representations. A pretrained LDA classifier enables ripple-type inference from pyramidal layer LFP waveforms alone.",
+    "data_acquisition": "LFP signals from 64-channel silicon probes spanning the CA1 somato-dendritic axis (1250 Hz), from mouse sleep/rest sessions; ripple-aligned LFP traces per channel; 38 sessions from 5 mice",
+    "language": "Python",
+    "animal": "Mouse",
     "gpu_required": "",
     "difficulty": "intermediate",
     "subjects": {
-      "count": "10 mice, 20 recording days",
+      "count": "5 mice, 38 sleep/rest sessions",
       "strains": "",
       "notes": ""
     },
     "tutorial": "",
-    "tutorial_intro": "The tSC framework is a command-line Python 2 tool consisting of two scripts: <code>tSC.py</code> (main pipeline) and <code>EMDlib.py</code> (EEMD library). LFP data must be stored as numpy binary files with the naming convention <code>[basename]_[session].[affix].[channel]</code>. A Docker container and example data (3 sessions, channel 4) are provided for testing. The dataset, codes, and tutorial are available under <a href=\"https://neurocodeforager.org/assets/tSC\">assets/tSC</a> on this site.",
+    "tutorial_intro": "The classifier is distributed as a Python package (<code>ripple_classifier</code>) with a Jupyter notebook tutorial. It requires only the LFP signal from the CA1 pyramidal layer — no CSD recording needed for inference. Example data (ripple-triggered LFP from one mouse sleep/rest session, 64-channel silicon probe, 1250 Hz) is included in the repository.",
     "tutorial_steps": [
-      "Download the tSC package (codes + example data + tutorial) from the link above. Install dependencies: <code>pip install -r requirements.txt</code> (numpy, scipy, scikit-learn, pandas, matplotlib). Python 2 is required. Alternatively, use the provided Docker container: <code>docker build -t single-cycle-test . && docker run -it single-cycle-test</code>.",
-      "Organize your LFP data as numpy binary files following the naming convention <code>[basename]_[session].eeg.[channel]</code>. Each file contains the raw LFP signal for one channel of one session. The default assumed sampling rate is 1250 Hz (adjustable with <code>sr=</code>).",
-      "Run tSC extraction: <code>python2 tSC.py /data/[basename]</code>. This processes all matching session/channel files. To specify sessions and channels: <code>python2 tSC.py /data/[basename] ses=2,4,6 ch=4</code>. Combining multiple sessions is recommended. Key optional parameters: <code>nPCs=5</code> (number of components), <code>dimrec=nmf</code> (NMF instead of ICA), <code>nCPUs=N</code> (parallelization workers for EEMD).",
-      "Inspect the tSC dictionary (<code>.tSC.ica</code>) written to the data folder: it contains the component vectors (tSCs), per-cycle spectral signatures (cyclePSDs), and per-cycle tSC strengths (projections). A scikit-learn model file (<code>.tSC.ica.model</code>) allows tSCs from one session to be projected onto another.",
-      "Generate the theta phase-gamma coupling plot (as in Figure 1) from a Jupyter notebook: <code>import tSC as tsc; tsc.plotMeantSCcycle(base, ChLabel=4, sessions=[2,4,6])</code>. This visualizes mean LFP amplitude at each theta phase for cycles dominated by each tSC."
+      "Set up the environment: <code>conda create --name ripple_env python=3.10 numpy pandas scipy scikit-learn matplotlib seaborn jupyter</code>, activate it, and clone the repository.",
+      "Load your ripple-triggered LFP data as a numpy array of shape (n_ripples, n_channels, n_time_samples), plus a channel info file mapping electrode positions to CA1 layers. The example session data in <code>/data/</code> can be used to test the pipeline first.",
+      "Optionally visualize the grand-average CSD profile using <code>utils.runCSD()</code> and <code>utils.plotCSD()</code> to confirm that your probe spans the CA1 somato-dendritic axis and that layer assignments are correct.",
+      "Preprocess and format pyramidal layer LFP traces for classifier input: <code>lfp_input, taxis = ripple_classifier.format_lfp_inputs_to_classifier(pyr_lfp, taxis)</code>. This applies z-scoring, low-pass filtering, and PCA automatically.",
+      "Classify ripples: <code>lm_sink, intermediate, rad_sink = ripple_classifier.predict_ripple_types(lfp_input)</code>. Cross-validate by plotting the mean CSD per predicted class to verify that current sinks appear in the expected layers (radiatum for Radsink, lacunosum-moleculare for LMsink)."
     ],
-    "tutorial_output": "Per session and channel: the tSC dictionary (.tSC.ica) containing tSC vectors (frequency x component), per-cycle spectral signatures (cycles x frequencies), and per-cycle tSC strengths (cycles x components); theta cycle boundary timestamps; instantaneous theta phase; EEMD intrinsic mode functions; and a saved ICA model for cross-session projection.",
+    "tutorial_output": "Index arrays identifying each ripple as Radsink, Intermediate, or LMsink from the pyramidal layer LFP waveform. Mean ripple waveforms with 95% CIs per class. CSD laminar profiles per predicted class for cross-validation.",
     "sample_data": {
-      "text": "Example LFP data (3 sessions, channel 4, mouse CA1) is included in the tSC package, available under assets/tSC on this site.",
-      "url": "https://neurocodeforager.org/assets/tSC"
+      "text": "Ripple-triggered LFP from one mouse sleep/rest session (64-channel CA1 silicon probe, 1250 Hz) included in /data/ in the repository.",
+      "url": "https://github.com/mcastelli98/Ripple-CSDprof-classifier/tree/main/data"
     },
     "code": {
-      "repo_url": "https://github.com/tortlab/tSC",
+      "repo_url": "https://github.com/mcastelli98/Ripple-CSDprof-classifier",
       "platform": "github"
     },
     "extra_links": [
       {
-        "label": "Tutorial PDF",
-        "url": "https://neurocodeforager.org/assets/tSC/tSC%20tutorial.pdf"
+        "label": "Zenodo data and model archive",
+        "url": "https://zenodo.org/doi/10.5281/zenodo.16995136"
+      },
+      {
+        "label": "Tutorial notebook",
+        "url": "https://github.com/mcastelli98/Ripple-CSDprof-classifier/blob/main/predicting_ripple_types_from_LFP_waveform.ipynb"
       }
     ],
     "related_ids": [
+      "2018-11-21-tsc",
       "2022-02-04-valero-subthreshold-optogenetics",
       "2025-09-04-valero-interneurons-hippocampal-spatial-code"
     ],

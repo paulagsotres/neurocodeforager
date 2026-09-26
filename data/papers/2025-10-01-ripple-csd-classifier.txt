@@ -1,0 +1,43 @@
+title: Hippocampal ripple diversity organizes neuronal reactivation dynamics in the offline brain
+authors: Castelli M., Lopes-dos-Santos V., Gava G.P., Lambiotte R., Dupret D.
+journal: Neuron
+year: 2025
+date: 2025-12-17
+doi: 10.1016/j.neuron.2025.09.012
+paper_url: https://www.cell.com/neuron/fulltext/S0896-6273(25)00700-7
+github_url: https://github.com/mcastelli98/Ripple-CSDprof-classifier
+website_url: https://zenodo.org/doi/10.5281/zenodo.16995136
+access_status: open_access
+category: electrophysiology
+tags: sharp-wave ripples, hippocampus, CA1, current source density, local field potential, LDA, linear discriminant analysis, laminar profile, memory consolidation, memory reactivation, silicon probe, ripple classification, pyramidal layer, lacunosum moleculare, radiatum, sleep, coactivity, Python, scikit-learn
+data_acquisition: LFP signals from 64-channel silicon probes spanning the CA1 somato-dendritic axis (sampled at 1250 Hz), from mouse sleep/rest sessions; ripple-aligned LFP traces per channel; 38 sleep/rest sessions from 5 mice
+language: Python
+animal: Mouse
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-26
+
+summary:
+Castelli, Lopes-dos-Santos et al. show that CA1 hippocampal ripples divide into two laminar types — Radsink (current sink in stratum radiatum) and LMsink (sink in lacunosum-moleculare) — which recruit different neuronal populations and support parallel reactivation channels: Radsink ripples stably reactivate recent waking experiences, while LMsink ripples gradually drift from prior to recent representations. The accompanying classifier infers ripple type from the CA1 pyramidal layer LFP alone, requiring no CSD recording.
+
+abstract_long:
+Hippocampal ripples are transient high-frequency oscillations (100–250 Hz) during sleep/rest that reactivate waking coactivity patterns, but whether this reactivation is uniform across ripple events was unknown. By profiling individual ripples using laminar CSD in mouse CA1 during sleep/rest, Castelli et al. identified two ripple types defined by the location of the dominant current sink: Radsink ripples (sink in stratum radiatum, reflecting CA3-to-CA1 input) and LMsink ripples (sink in stratum lacunosum-moleculare, with a double-sink profile where the LM sink precedes the ripple peak by ~17 ms). Radsink ripples integrate both superficial and deep CA1 principal cells into denser, higher-dimensional coactivity motifs that stably and persistently reactivate recent waking experiences over hours. LMsink ripples primarily recruit deep-sublayer CA1 cells into sparser, lower-dimensional motifs that initially reactivate prior representations and then gradually drift to incorporate recent ones. This ripple-by-ripple diversity — validated across 38 sleep/rest sessions from 5 mice — supports parallel and complementary reactivation channels for integrating new memories while updating prior representations. A pretrained linear discriminant analysis (LDA) classifier enables ripple-type inference from pyramidal layer LFP waveforms alone, enabling application to existing datasets without CSD recordings.
+
+extra_links:
+Zenodo data and model archive | https://zenodo.org/doi/10.5281/zenodo.16995136
+Tutorial notebook | https://github.com/mcastelli98/Ripple-CSDprof-classifier/blob/main/predicting_ripple_types_from_LFP_waveform.ipynb
+
+tutorial_intro:
+The classifier is distributed as a Python package (<code>ripple_classifier</code>) with a Jupyter notebook tutorial. It requires only the LFP signal from the CA1 pyramidal layer — no CSD recording needed for inference. Example data (ripple-triggered LFP from one mouse sleep/rest session, 64-channel silicon probe, 1250 Hz) is included in the repository.
+
+tutorial_steps:
+Set up the environment: <code>conda create --name ripple_env python=3.10 numpy pandas scipy scikit-learn matplotlib seaborn jupyter</code>, activate it, and clone the repository.
+Load your ripple-triggered LFP data as a numpy array of shape (n_ripples, n_channels, n_time_samples), plus a channel info file mapping electrode positions to CA1 layers. The example session data in <code>/data/</code> can be used to test the pipeline first.
+Optionally visualize the grand-average CSD profile using <code>utils.runCSD()</code> and <code>utils.plotCSD()</code> to confirm that your probe spans the CA1 somato-dendritic axis and that layer assignments are correct. CSD is computed as the second spatial derivative of the LFP across channels.
+Extract pyramidal layer LFP traces and preprocess for classifier input: <code>lfp_input, taxis = ripple_classifier.format_lfp_inputs_to_classifier(pyr_lfp, taxis)</code>. This applies z-scoring, low-pass filtering, and PCA dimensionality reduction automatically.
+Classify ripples: <code>lm_sink, intermediate, rad_sink = ripple_classifier.predict_ripple_types(lfp_input)</code>. Cross-validate predictions by computing and plotting the mean CSD for each predicted class to verify that current sinks appear in the expected layers (radiatum for Radsink, lacunosum-moleculare for LMsink).
+
+tutorial_output:
+Index arrays identifying each ripple as Radsink, Intermediate, or LMsink based on the pyramidal layer LFP waveform. Mean ripple waveforms with 95% confidence intervals per class. CSD laminar profiles per predicted class for cross-validation.
+
+related_ids: 2018-11-21-tsc, 2022-02-04-valero-subthreshold-optogenetics, 2025-09-04-valero-interneurons-hippocampal-spatial-code
