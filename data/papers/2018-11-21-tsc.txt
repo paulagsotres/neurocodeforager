@@ -1,0 +1,42 @@
+title: Parsing Hippocampal Theta Oscillations by Nested Spectral Components during Spatial Exploration and Memory-Guided Behavior
+authors: Lopes-dos-Santos V., van de Ven G.M., Morley A., Trouche S., Campo-Urriza N., Dupret D.
+journal: Neuron
+year: 2018
+date: 2018-11-21
+doi: 10.1016/j.neuron.2018.09.031
+paper_url: https://www.cell.com/neuron/fulltext/S0896-6273(18)30820-1
+github_url: https://github.com/tortlab/tSC
+website_url: https://neurocodeforager.org/assets/tSC
+access_status: open_access
+category: electrophysiology, statistical-analysis
+tags: theta oscillations, spectral components, hippocampus, CA1, gamma oscillations, local field potential, independent component analysis, ensemble empirical mode decomposition, theta-gamma coupling, sharp-wave ripples, memory reactivation, neural oscillations, cycle-by-cycle analysis, mouse, rat, Python
+data_acquisition: Multichannel extracellular tetrode recordings of LFPs and principal cell spiking from CA1 pyramidal layer during open field exploration and goal-directed spatial memory tasks; data stored as binary numpy files per channel per session
+language: Python 2 (depends on numpy, scipy, scikit-learn, pandas, matplotlib)
+animal: Mouse; also validated in rat
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-26
+
+summary:
+tSC (theta-nested Spectral Components) is an unsupervised framework that decomposes CA1 hippocampal LFP into the spectral components nested within individual theta cycles, using ensemble empirical mode decomposition (EEMD) followed by ICA or NMF. It reveals that cycle-to-cycle variability of theta-nested oscillations (beta, slow gamma, two mid-gamma, fast gamma) reflects dynamic switching between hippocampal operating modes linked to different stages of spatial memory.
+
+abstract_long:
+Theta oscillations in the hippocampal CA1 area co-occur with faster oscillations spanning the gamma band, but whether these computations are consistent across theta cycles or tuned on a cycle-by-cycle basis was unknown. Lopes-dos-Santos et al. developed an unsupervised single-cycle profiling framework: first, ensemble empirical mode decomposition (EEMD) decomposes raw LFPs into theta and supra-theta signals; second, a Morlet wavelet spectrogram (10–200 Hz) is computed for the supra-theta signal and averaged within each theta cycle boundary to yield a "spectral signature" per cycle; third, ICA (or optionally NMF) extracts statistically independent theta-nested spectral components (tSCs) from the matrix of spectral signatures across all cycles. Five consistent tSCs emerged across 20 recording days in 10 mice and in rat CA1: tSC1 (22-Hz beta), tSC2 (35-Hz slow gamma), tSC3 (54-Hz mid-gamma), tSC4 (80-Hz mid-gamma), and tSC5 (>100-Hz fast gamma). Each tSC is associated with distinct theta phase-amplitude coupling profiles and distinguishable principal cell ensembles. Crucially, co-firing during tSC4 (80-Hz mid-gamma) cycles showed the strongest replay in subsequent sharp-wave/ripple events. During a goal-directed spatial task, tSC4 was strengthened during learning while tSC1, tSC2, and tSC3 increased during retrieval, establishing complementary mnemonic roles for the theta-nested operating modes.
+
+extra_links:
+Tutorial PDF | https://neurocodeforager.org/assets/tSC/tSC%20tutorial.pdf
+
+tutorial_intro:
+The tSC framework is a command-line Python 2 tool consisting of two scripts: <code>tSC.py</code> (main pipeline) and <code>EMDlib.py</code> (EEMD library). LFP data must be stored as numpy binary files with the naming convention <code>[basename]_[session].[affix].[channel]</code> (e.g. <code>mst158-1809-0124_2.eeg.4</code>). A Docker container and example data (3 sessions, channel 4) are provided for testing. The dataset, codes, and tutorial are available under <code>assets/tSC</code> on this site.
+
+tutorial_steps:
+Download the tSC package (codes + example data + tutorial) from the link above. Install dependencies: <code>pip install -r requirements.txt</code> (numpy, scipy, scikit-learn, pandas, matplotlib). The tool requires Python 2. Alternatively, use the provided Docker container: <code>docker build -t single-cycle-test . && docker run -it single-cycle-test</code>.
+Organize your LFP data as numpy binary files following the naming convention <code>[basename]_[session].eeg.[channel]</code>. Each file contains the raw LFP signal for one channel of one session, loadable via <code>numpy.load</code>. The default assumed sampling rate is 1250 Hz (adjustable with <code>sr=</code>).
+Run tSC extraction from the terminal: <code>python2 tSC.py /data/[basename]</code>. This processes all matching session/channel files automatically. To specify sessions and channels explicitly: <code>python2 tSC.py /data/[basename] ses=2,4,6 ch=4</code>. Combining multiple sessions is recommended — more cycles improve component extraction. Key optional parameters: <code>nPCs=5</code> (number of components, default 5), <code>dimrec=nmf</code> (use NMF instead of ICA), <code>freqs=f1,f2,...</code> (custom spectrogram frequencies), <code>nCPUs=N</code> (parallelization workers for EEMD).
+The algorithm writes 8 output files per session/channel to the data folder: EEMD intrinsic mode functions (<code>.emd</code>), instantaneous amplitude/frequency (<code>.emd.ia</code>, <code>.emd.if</code>), theta cycle boundaries (<code>.theta.cycles</code>), theta phase (<code>.theta.phase</code>), and — most importantly — the tSC dictionary (<code>.tSC.ica</code>) containing the component vectors, per-cycle spectral signatures, and per-cycle tSC strengths (projections).
+To generate the theta phase-gamma coupling plot (as in Figure 1 of the paper), load the outputs in a Jupyter notebook and call <code>tsc.plotMeantSCcycle(base, ChLabel=4, sessions=[2,4,6])</code>. This visualizes the mean LFP amplitude at each theta phase for cycles dominated by each tSC.
+
+tutorial_output:
+Per session and channel: the tSC dictionary (<code>.tSC.ica</code>) containing tSC vectors (frequency × component), per-cycle spectral signatures (cycles × frequencies), and per-cycle tSC strengths (cycles × components); theta cycle boundary timestamps; instantaneous theta phase; and EEMD intrinsic mode functions. A scikit-learn ICA model (<code>.tSC.ica.model</code>) is also saved, allowing tSCs extracted in one session to be projected onto another.
+
+related_ids: 2022-02-04-valero-subthreshold-optogenetics, 2025-09-04-valero-interneurons-hippocampal-spatial-code

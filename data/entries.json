@@ -1048,9 +1048,9 @@
     "website_url": "https://buzsakilab.com/wp/public-data/",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "electrophysiology",
+    "category": "neural-circuits",
     "categories": [
-      "electrophysiology"
+      "neural-circuits"
     ],
     "tags": [
       "hippocampus",
@@ -2123,9 +2123,9 @@
     "website_url": "https://buzsakilab.com/wp/database/",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "electrophysiology",
+    "category": "neural-circuits",
     "categories": [
-      "electrophysiology"
+      "neural-circuits"
     ],
     "tags": [
       "hippocampus",
@@ -3040,82 +3040,80 @@
     "verified": true
   },
   {
-    "id": "2026-10-27-mapseq-visual-cortex",
-    "title": "Structured and target-specific development of cortico-cortical connectivity in the mouse visual cortex",
-    "authors": "Jacobs M.W., Ratliff J.M., Soronow A.L.R., Nichols J.A., James H.T., Eddy J.A.G., Murray A.M., Kim E.J.",
-    "journal": "Cell Reports",
-    "year": 2026,
-    "date": "2026-10-27",
-    "doi": "10.1016/j.celrep.2026.118027",
-    "paper_url": "https://www.cell.com/cell-reports/fulltext/S2211-1247(26)01105-8",
-    "github_url": "https://github.com/Kim-Neuroscience-Lab/mapseq_processing_kimlab",
-    "website_url": "",
+    "id": "2018-11-21-tsc",
+    "title": "Parsing Hippocampal Theta Oscillations by Nested Spectral Components during Spatial Exploration and Memory-Guided Behavior",
+    "authors": "Lopes-dos-Santos V., van de Ven G.M., Morley A., Trouche S., Campo-Urriza N., Dupret D.",
+    "journal": "Neuron",
+    "year": 2018,
+    "date": "2018-11-21",
+    "doi": "10.1016/j.neuron.2018.09.031",
+    "paper_url": "https://www.cell.com/neuron/fulltext/S0896-6273(18)30820-1",
+    "github_url": "https://github.com/tortlab/tSC",
+    "website_url": "https://neurocodeforager.org/assets/tSC",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "gene-protein-analysis",
+    "category": "electrophysiology",
     "categories": [
-      "gene-protein-analysis",
-      "image-analysis",
-      "brain-imaging"
+      "electrophysiology",
+      "statistical-analysis"
     ],
     "tags": [
-      "MAPseq",
-      "axonal projection",
-      "cortico-cortical connectivity",
-      "visual cortex",
-      "V1",
-      "higher visual areas",
-      "projection motif",
-      "single-cell tracing",
-      "barcoded virus",
-      "Sindbis virus",
-      "retrograde tracing",
-      "anterograde tracing",
-      "circuit development",
-      "pruning",
-      "postnatal development",
+      "theta oscillations",
+      "spectral components",
+      "hippocampus",
+      "CA1",
+      "gamma oscillations",
+      "local field potential",
+      "independent component analysis",
+      "ensemble empirical mode decomposition",
+      "theta-gamma coupling",
+      "sharp-wave ripples",
+      "memory reactivation",
+      "neural oscillations",
+      "cycle-by-cycle analysis",
       "mouse",
+      "rat",
       "Python"
     ],
-    "summary": "Using MAPseq barcoded single-cell tracing alongside retrograde and anterograde bulk methods, Jacobs et al. map how V1 cortico-cortical projection neurons develop their axonal targeting to eleven higher visual areas across postnatal development, finding that individual neurons initialize specific projection motifs early and retain them with little variation — supporting a directed guidance model over exuberant growth and pruning.",
-    "abstract_long": "The mammalian visual cortex establishes highly stereotyped long-range connectivity, yet whether this specificity arises from exuberant outgrowth followed by pruning or from initially directed axonal targeting has remained unresolved. Jacobs et al. systematically map the postnatal development of V1 cortico-cortical projection neurons (CCPNs) to eleven higher visual areas (HVAs) across three postnatal windows (P14→P16, P22→P24, P60+→P62+). Bulk retrograde tracing (CTB, AAV-retro) revealed that medial HVAs are innervated days earlier than lateral ones, while anterograde tracing (VSV, barcoded Sindbis) showed medial circuits refine gradually while lateral circuits transiently overshoot and prune rapidly by P24. MAPseq single-cell profiling of thousands of individual V1 CCPNs revealed that projection motif complexity, target number per neuron, and motif frequencies remained largely stable across timepoints (99.87% unique barcode rate; 584,899 total barcodes), arguing against global inter-areal reorganization and supporting a directed guidance model in which distinct CCPN subtypes establish selective projections early, with subsequent local, target-dependent refinement.",
-    "data_acquisition": "MAPseq (Multiplexed Analysis of Projections by Sequencing) using barcoded Sindbis virus injected into V1; brains harvested 48h post-injection, target areas microdissected at −20°C, RNA extracted and sequenced (NextSeq/NovaSeq); complemented by retrograde (CTB, AAV-retro) and anterograde (VSV, rabies) bulk tracing",
-    "language": "Python",
-    "animal": "Mouse",
+    "summary": "tSC (theta-nested Spectral Components) is an unsupervised framework that decomposes CA1 hippocampal LFP into the spectral components nested within individual theta cycles, using ensemble empirical mode decomposition (EEMD) followed by ICA or NMF. It reveals that cycle-to-cycle variability of theta-nested oscillations reflects dynamic switching between hippocampal operating modes linked to different stages of spatial memory.",
+    "abstract_long": "Theta oscillations in the hippocampal CA1 area co-occur with faster oscillations spanning the gamma band, but whether these computations are consistent across theta cycles or tuned on a cycle-by-cycle basis was unknown. Lopes-dos-Santos et al. developed an unsupervised single-cycle profiling framework: first, ensemble empirical mode decomposition (EEMD) decomposes raw LFPs into theta and supra-theta signals; second, a Morlet wavelet spectrogram (10–200 Hz) is computed for the supra-theta signal and averaged within each theta cycle boundary to yield a spectral signature per cycle; third, ICA (or optionally NMF) extracts statistically independent theta-nested spectral components from the matrix of spectral signatures across all cycles. Five consistent tSCs emerged across 20 recording days in 10 mice and in rat CA1: tSC1 (22-Hz beta), tSC2 (35-Hz slow gamma), tSC3 (54-Hz mid-gamma), tSC4 (80-Hz mid-gamma), and tSC5 (>100-Hz fast gamma). Each tSC is associated with distinct theta phase-amplitude coupling profiles and distinguishable principal cell ensembles. tSC4 (80-Hz mid-gamma) cycles showed the strongest replay in subsequent sharp-wave/ripple events; tSC4 was strengthened during learning while tSC1-3 increased during retrieval, establishing complementary mnemonic roles for the theta-nested operating modes.",
+    "data_acquisition": "Multichannel extracellular tetrode recordings of LFPs and principal cell spiking from CA1 pyramidal layer during open field exploration and goal-directed spatial memory tasks; data stored as numpy binary files per channel per session",
+    "language": "Python 2 (depends on numpy, scipy, scikit-learn, pandas, matplotlib)",
+    "animal": "Mouse; also validated in rat",
     "gpu_required": "",
-    "difficulty": "advanced",
+    "difficulty": "intermediate",
     "subjects": {
-      "count": "",
+      "count": "10 mice, 20 recording days",
       "strains": "",
       "notes": ""
     },
     "tutorial": "",
-    "tutorial_intro": "This repository contains the Kim Lab's downstream MAPseq analysis pipeline, which picks up from the output of the CSHL Zador Lab <code>mapseq-processing</code> pipeline. The CSHL pipeline takes raw FASTQ files and produces per-sample <code>.nbcm.tsv</code> barcode count matrices (rows = neurons/barcodes, columns = dissected brain regions). The Kim Lab scripts then filter, normalize, and analyze these matrices to identify projection motifs and quantify projection strengths across animals and developmental timepoints.",
+    "tutorial_intro": "The tSC framework is a command-line Python 2 tool consisting of two scripts: <code>tSC.py</code> (main pipeline) and <code>EMDlib.py</code> (EEMD library). LFP data must be stored as numpy binary files with the naming convention <code>[basename]_[session].[affix].[channel]</code>. A Docker container and example data (3 sessions, channel 4) are provided for testing. The dataset, codes, and tutorial are available under <a href=\"https://neurocodeforager.org/assets/tSC\">assets/tSC</a> on this site.",
     "tutorial_steps": [
-      "Run the CSHL upstream pipeline first (<a href=\"https://github.com/ZadorLaboratory/mapseq-processing\">ZadorLaboratory/mapseq-processing</a>) on your raw FASTQ files to produce per-sample <code>.nbcm.tsv</code> barcode count matrices — the Kim Lab scripts start from these files, not raw sequencing data.",
-      "Install the Kim Lab pipeline: clone the repo, create a conda environment (<code>conda create -n mapseq_processing python==3.9 pip</code>), activate it, and run <code>pip install -r requirements.txt</code>. On macOS you can also use the automated install script from the releases page to reproduce the paper dataset end-to-end.",
-      "Run <code>preprocess_and_aggregate.py</code> on your <code>.nbcm.tsv</code> files. This standardizes column names across replicates (interactive prompts), applies noise thresholding based on the negative control column, removes rows where the negative control is non-zero, and concatenates replicates into a single <code>aggregated_cleaned_matrix.tsv</code>.",
-      "Run <code>process-nbcm-tsv.py</code> on the aggregated matrix. Required arguments: output directory (<code>-o</code>), input data (<code>-d</code>), file prefix (<code>-s</code>), and column labels (<code>-l</code>, e.g. <code>\"area,area,neg,inj,area\"</code> — use <code>neg</code> for negative controls and <code>inj</code> for the injection site). This applies stringent barcode filtering (injection UMI ≥ 300, target UMI ≥ 10, injection/target ratio ≥ 10), normalizes projection strengths, and identifies projection motifs.",
-      "Run the numbered helper scripts in order from <code>helpers/scripts/</code>: motif analysis per animal (01), projection analysis (02), composition by age (03), proportions over time (04), motif frequency (05), motif divergence (06, requires 05), trajectory analysis (07), clustering (08, requires 07), and projection strength plots (09). Use <code>run_commands.sh</code> to execute all steps from <code>all_commands.txt</code> with automatic logging.",
-      "Check outputs with <code>postprocessing_checks.py</code> and generate publication-ready multi-panel figures with <code>figure_generation/generate_figure_from_outputs.py</code>."
+      "Download the tSC package (codes + example data + tutorial) from the link above. Install dependencies: <code>pip install -r requirements.txt</code> (numpy, scipy, scikit-learn, pandas, matplotlib). Python 2 is required. Alternatively, use the provided Docker container: <code>docker build -t single-cycle-test . && docker run -it single-cycle-test</code>.",
+      "Organize your LFP data as numpy binary files following the naming convention <code>[basename]_[session].eeg.[channel]</code>. Each file contains the raw LFP signal for one channel of one session. The default assumed sampling rate is 1250 Hz (adjustable with <code>sr=</code>).",
+      "Run tSC extraction: <code>python2 tSC.py /data/[basename]</code>. This processes all matching session/channel files. To specify sessions and channels: <code>python2 tSC.py /data/[basename] ses=2,4,6 ch=4</code>. Combining multiple sessions is recommended. Key optional parameters: <code>nPCs=5</code> (number of components), <code>dimrec=nmf</code> (NMF instead of ICA), <code>nCPUs=N</code> (parallelization workers for EEMD).",
+      "Inspect the tSC dictionary (<code>.tSC.ica</code>) written to the data folder: it contains the component vectors (tSCs), per-cycle spectral signatures (cyclePSDs), and per-cycle tSC strengths (projections). A scikit-learn model file (<code>.tSC.ica.model</code>) allows tSCs from one session to be projected onto another.",
+      "Generate the theta phase-gamma coupling plot (as in Figure 1) from a Jupyter notebook: <code>import tSC as tsc; tsc.plotMeantSCcycle(base, ChLabel=4, sessions=[2,4,6])</code>. This visualizes mean LFP amplitude at each theta phase for cycles dominated by each tSC."
     ],
-    "tutorial_output": "Filtered and normalized barcode-by-region matrices (one row per neuron), projection motif classifications for each neuron, per-animal and cohort-level motif frequency statistics, projection strength heatmaps, motif divergence metrics across developmental timepoints, k-means clustering results, and multi-panel publication figures.",
+    "tutorial_output": "Per session and channel: the tSC dictionary (.tSC.ica) containing tSC vectors (frequency x component), per-cycle spectral signatures (cycles x frequencies), and per-cycle tSC strengths (cycles x components); theta cycle boundary timestamps; instantaneous theta phase; EEMD intrinsic mode functions; and a saved ICA model for cross-session projection.",
     "sample_data": {
-      "text": "A truncated sample dataset with associated labels is provided in the repository for testing the pipeline before running on your own data.",
-      "url": "https://github.com/Kim-Neuroscience-Lab/mapseq_processing_kimlab"
+      "text": "Example LFP data (3 sessions, channel 4, mouse CA1) is included in the tSC package, available under assets/tSC on this site.",
+      "url": "https://neurocodeforager.org/assets/tSC"
     },
     "code": {
-      "repo_url": "https://github.com/Kim-Neuroscience-Lab/mapseq_processing_kimlab",
+      "repo_url": "https://github.com/tortlab/tSC",
       "platform": "github"
     },
     "extra_links": [
       {
-        "label": "CSHL MAPseq upstream processing pipeline (Zador Lab)",
-        "url": "https://github.com/ZadorLaboratory/mapseq-processing"
+        "label": "Tutorial PDF",
+        "url": "https://neurocodeforager.org/assets/tSC/tSC%20tutorial.pdf"
       }
     ],
     "related_ids": [
-      "2025-07-01-projection-tags"
+      "2022-02-04-valero-subthreshold-optogenetics",
+      "2025-09-04-valero-interneurons-hippocampal-spatial-code"
     ],
     "added_date": "2026-09-26",
     "added_by": "manual",

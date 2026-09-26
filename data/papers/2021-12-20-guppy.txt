@@ -1,0 +1,44 @@
+title: GuPPy, a Python toolbox for the analysis of fiber photometry data
+authors: Sherathiya V.N., Schaid M.D., Seiler J.L., Lopez G.C., Lerner T.N.
+journal: Scientific Reports
+year: 2021
+date: 2021-12-20
+doi: 10.1038/s41598-021-03626-9
+paper_url: https://www.nature.com/articles/s41598-021-03626-9
+github_url: https://github.com/LernerLab/GuPPy
+website_url: https://guppy.readthedocs.io
+access_status: open_access
+category: electrophysiology, statistical-analysis
+tags: fiber photometry, GCaMP, dLight, isosbestic control, delta F over F, z-score, peri-stimulus time histogram, peak detection, area under the curve, artifact correction, photobleaching, batch processing, group analysis, Tucker Davis Technologies, Neurophotometrics, calcium imaging, dopamine, GUI, Python
+data_acquisition: Fiber photometry recordings from any commercial or DIY acquisition system — natively supports Tucker Davis Technologies (TDT/Synapse tank-block format), Neurophotometrics (NPM CSV format), and a generic CSV format for other hardware; behavioral event timestamps accepted as TDT stores or CSV files
+language: Python
+animal: Not species-specific; demonstrated in mouse (C57BL/6, DAT-Cre) with GCaMP7b and dLight1.3b
+difficulty: beginner
+citation_count:
+added_date: 2026-09-26
+
+summary:
+GuPPy (Guided Photometry Analysis in Python) is a GUI-driven, cross-platform Python toolbox for fiber photometry data analysis. It covers the full workflow from raw signal extraction through ΔF/F or z-score computation, artifact correction, peri-stimulus time histogram (PSTH) generation, peak detection, area under the curve, and multi-animal group comparisons — requiring no programming knowledge to use.
+
+abstract_long:
+Fiber photometry has grown rapidly as a method for recording in vivo bulk neural activity, but analysis pipelines have remained largely lab-specific and unpublished. GuPPy standardizes this workflow in a GUI-driven, cross-platform Python tool built on Anaconda, designed for users with minimal programming background while remaining open and modifiable for those with Python experience. GuPPy accepts data from Tucker Davis Technologies (TDT) processors in tank/block format, Neurophotometrics CSV files, or a generic CSV format covering DIY and other hardware. The analysis workflow begins with artifact removal (trimming the recording start or manually selecting segments to keep), then computes ΔF/F using isosbestic control normalization (or exponential fitting if no isosbestic channel was recorded), and optionally converts to z-score (standard, baseline, or modified). PSTHs are generated around user-defined behavioral event timestamps, with baseline correction, AUC (trapezoidal method), and peak analysis computed per event window. Transient detection uses a MAD-based moving window approach. Results and figures are saved in HDF5/CSV and PNG/SVG formats, respectively. Batch processing across sessions and group averaging across animals are both supported.
+
+extra_links:
+Step-by-step user guide and tutorials | https://github.com/LernerLab/GuPPy/wiki
+Zenodo archive | https://zenodo.org/badge/latestdoi/382176345
+ReadTheDocs tutorials | https://guppy.readthedocs.io/tutorials/first_analysis.html
+
+tutorial_intro:
+GuPPy runs entirely through a series of GUIs — no command-line or coding required. The workflow has three main stages: setting input parameters, specifying storenames (for TDT data) or CSV files, and running the analysis. Single sessions and batch processing across multiple sessions use the same GUIs; batch mode is triggered simply by selecting multiple folders.
+
+tutorial_steps:
+Install Anaconda (any OS), then install GuPPy following the instructions on the GitHub Wiki. Minimum system requirements are 8 GB RAM; a 2–4 core processor is recommended for batch processing of more than 10 sessions.
+Open the <strong>Input Parameters GUI</strong>. Select the folder(s) where your recorded data is stored (one folder = single processing; multiple folders = batch processing). Set key parameters: whether you have an isosbestic control channel to use for normalization, whether to display output as ΔF/F or z-score (standard/baseline/modified), the PSTH window [A, B] in seconds around each event, and the moving window size for transient detection (default 15 s, adjust for your sampling rate). Artifact correction options are also set here — you can trim a fixed duration from the recording start or enable manual artifact removal.
+If using TDT data, open the <strong>Open Storenames GUI</strong> to specify which TDT stores contain your signal and isosbestic channels. For Neurophotometrics or CSV data, provide channel information as prompted. GuPPy will apply a zero-phase moving average filter to both channels to reduce high-frequency noise before fitting.
+Run the analysis. GuPPy fits the isosbestic control to the signal channel (least-squares polynomial fit, degree 1) and computes ΔF/F = (Signal − Fitted Control) / Fitted Control. If no isosbestic channel was recorded, GuPPy smooths the signal and fits an exponential to approximate photobleaching. The resulting trace is displayed for inspection before continuing.
+Inspect outputs using the <strong>Visualization GUI</strong>: browse individual PSTH trials, plot mean PSTH ± SEM, overlay multiple event types on the same graph, view per-trial heatmaps, and inspect peak detection results (amplitude and frequency). For group analysis, re-select all session folders in the Input Parameters GUI, set 'Average Group' to True, and re-run — GuPPy averages results across sessions and supports multi-group PSTH overlays for condition comparisons.
+
+tutorial_output:
+Per-session HDF5/CSV files containing ΔF/F and z-score traces, per-event PSTH matrices, peak timestamps with amplitude and frequency statistics, and AUC values per event window. Figures are saved as PNG (for documents) and SVG (for vector editing in Illustrator, Inkscape, or PowerPoint). All outputs are readable in MATLAB via the HDF5 format.
+
+related_ids: 2020-06-22-brain-states-connectivity, 2020-11-10-spikeinterface
