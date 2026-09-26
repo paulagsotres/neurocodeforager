@@ -8,20 +8,104 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Text:ital,wght@0,400;0,500;0,600&family=Fraunces:ital,opsz,wght@0,9..144,500;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/style.css">
+<style>
+  .all-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 60px;
+    align-items: start;
+  }
+  .filter-panel {
+    position: sticky;
+    top: 24px;
+    background: var(--surface, #f7f6f1);
+    border: 1px solid var(--border, #e0ded6);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .filter-panel h3 {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted, #7a7768);
+    margin: 0 0 10px;
+  }
+  .filter-panel h3:not(:first-child) {
+    margin-top: 20px;
+  }
+  .filter-chip {
+    display: inline-block;
+    padding: 4px 10px;
+    margin: 3px 3px 3px 0;
+    border-radius: 20px;
+    border: 1.5px solid var(--border, #e0ded6);
+    background: transparent;
+    font-size: 12px;
+    cursor: pointer;
+    color: var(--text, #1B1D16);
+    transition: all .15s;
+    font-family: inherit;
+  }
+  .filter-chip:hover { border-color: var(--teal, #1B8C82); color: var(--teal, #1B8C82); }
+  .filter-chip.active { background: var(--teal, #1B8C82); border-color: var(--teal, #1B8C82); color: #fff; }
+  .filter-reset {
+    display: block;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--text-muted, #7a7768);
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    text-decoration: underline;
+  }
+  .filter-reset:hover { color: var(--teal, #1B8C82); }
+  #all-count { color: var(--text-muted, #7a7768); font-size: 14px; margin: 0 0 4px; }
+  .all-header { padding: 0 24px; max-width: 1200px; margin: 0 auto 24px; }
+  @media (max-width: 700px) {
+    .all-layout { grid-template-columns: 1fr; }
+    .filter-panel { position: static; }
+  }
+</style>
 </head>
 <body>
 
 <nav class="site-nav" id="site-nav"></nav>
 
-<section class="cat-header">
+<div class="all-header">
   <a class="back" href="index.html">&larr; home</a>
-  <h1>All tools</h1>
+  <h1 style="margin:8px 0 4px;">All tools</h1>
   <p id="all-count"></p>
-</section>
+</div>
 
-<section class="results">
-  <div class="results-list" id="all-list"></div>
-</section>
+<div class="all-layout">
+
+  <!-- Filter panel -->
+  <aside class="filter-panel">
+
+    <h3>Year</h3>
+    <div id="filter-year"></div>
+
+    <h3>Technique</h3>
+    <div id="filter-tech"></div>
+
+    <h3>Species</h3>
+    <div id="filter-species"></div>
+
+    <button class="filter-reset" id="filter-reset">Clear all filters</button>
+  </aside>
+
+  <!-- Results -->
+  <section>
+    <div class="results-list" id="all-list"></div>
+  </section>
+
+</div>
 
 <footer class="site-footer" id="site-footer"></footer>
 
@@ -30,21 +114,116 @@
 <script src="assets/layout.js"></script>
 <script src="assets/app.js"></script>
 <script>
-  async function initAllPage(){
-    const list = document.getElementById('all-list');
-    const count = document.getElementById('all-count');
-    let entries;
-    try {
-      entries = await loadEntries();
-    } catch(err) {
-      list.innerHTML = '<div class="empty-state" style="color:#a6472a;">' + err.message + '</div>';
-      return;
-    }
-    const sorted = entries.slice().reverse();
-    count.textContent = sorted.length + ' tools indexed';
-    renderCards(list, sorted);
+// ── Filter definitions ──────────────────────────────────────────────────────
+
+const TECH_FILTERS = [
+  { label: 'Fiber photometry',       match: e => /fiber photometry|fibre photometry|dLight|fiber optic/i.test(JSON.stringify(e)) },
+  { label: 'In vivo calcium imaging', match: e => /two.photon|2.photon|calcium imaging|GCaMP|miniscope/i.test(JSON.stringify(e)) },
+  { label: 'Ex vivo calcium imaging', match: e => /ex.vivo.*calcium|calcium.*ex.vivo|slice.*GCaMP|GCaMP.*slice/i.test(JSON.stringify(e)) },
+  { label: 'In vivo electrophysiology', match: e => /neuropixels|silicon probe|tetrode|kilosort|spike sort|in.vivo.*electrophys|freely.moving/i.test(JSON.stringify(e)) },
+  { label: 'Ex vivo electrophysiology', match: e => /ex.vivo.*electrophys|electrophys.*ex.vivo|patch.clamp|whole.cell|brain.slice|acute.slice/i.test(JSON.stringify(e)) },
+  { label: 'EEG / MEG',        match: e => /\bEEG\b|electroencephalog|MEG\b|magnetoencephalog/i.test(JSON.stringify(e)) },
+  { label: 'fMRI',             match: e => /\bfMRI\b|functional MRI|BOLD/i.test(JSON.stringify(e)) },
+  { label: 'Optogenetics',     match: e => /optogenet|ChR2|channelrhodopsin|μLED|micro.LED/i.test(JSON.stringify(e)) },
+  { label: 'Behavior',         match: e => /pose estimation|behavioral tracking|ethogram|DeepLabCut|SLEAP|SimBA/i.test(JSON.stringify(e)) },
+  { label: 'Computational',    match: e => /neural network|deep learning|machine learning|latent|embedding|ICA|PCA/i.test(JSON.stringify(e)) },
+  { label: 'Spatial omics',    match: e => /spatial omics|spatial transcriptom|MERFISH|Visium|seqFISH/i.test(JSON.stringify(e)) },
+];
+
+const SPECIES_FILTERS = [
+  { label: 'Mouse',      match: e => /\bmouse\b|\bmice\b/i.test((e.animal||'')) },
+  { label: 'Rat',        match: e => /\brat\b/i.test((e.animal||'')) },
+  { label: 'Human',      match: e => /\bhuman\b/i.test((e.animal||'')) },
+  { label: 'Drosophila', match: e => /drosophila|fly|flies/i.test((e.animal||'')) },
+  { label: 'Zebrafish',  match: e => /zebrafish/i.test((e.animal||'')) },
+  { label: 'Non-specific', match: e => /not species.specific|general.purpose/i.test((e.animal||'')) },
+];
+
+// ── State ───────────────────────────────────────────────────────────────────
+let allEntries = [];
+let activeYears   = new Set();
+let activeTechs   = new Set();
+let activeSpecies = new Set();
+
+// ── Helpers ─────────────────────────────────────────────────────────────────
+function buildChips(containerId, items, activeSet, onToggle) {
+  const el = document.getElementById(containerId);
+  items.forEach(item => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-chip';
+    btn.textContent = item.label || item;
+    btn.addEventListener('click', () => {
+      const key = item.label || item;
+      if (activeSet.has(key)) activeSet.delete(key);
+      else activeSet.add(key);
+      btn.classList.toggle('active', activeSet.has(key));
+      onToggle();
+    });
+    el.appendChild(btn);
+  });
+}
+
+function applyFilters() {
+  let results = allEntries.slice().reverse();
+
+  if (activeYears.size > 0) {
+    results = results.filter(e => activeYears.has(String(e.year)));
   }
-  document.addEventListener('DOMContentLoaded', initAllPage);
+  if (activeTechs.size > 0) {
+    results = results.filter(e =>
+      TECH_FILTERS.filter(t => activeTechs.has(t.label)).some(t => t.match(e))
+    );
+  }
+  if (activeSpecies.size > 0) {
+    results = results.filter(e =>
+      SPECIES_FILTERS.filter(s => activeSpecies.has(s.label)).some(s => s.match(e))
+    );
+  }
+
+  const count = document.getElementById('all-count');
+  const total = allEntries.length;
+  count.textContent = results.length === total
+    ? `${total} tools indexed`
+    : `${results.length} of ${total} tools`;
+
+  const list = document.getElementById('all-list');
+  if (results.length) {
+    renderCards(list, results);
+  } else {
+    list.innerHTML = '<div class="empty-state">No tools match the selected filters.</div>';
+  }
+}
+
+function resetAll() {
+  activeYears.clear(); activeTechs.clear(); activeSpecies.clear();
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  applyFilters();
+}
+
+// ── Init ────────────────────────────────────────────────────────────────────
+async function initAllPage() {
+  const list = document.getElementById('all-list');
+  const count = document.getElementById('all-count');
+
+  try {
+    allEntries = await loadEntries();
+  } catch(err) {
+    list.innerHTML = '<div class="empty-state" style="color:#a6472a;">' + err.message + '</div>';
+    return;
+  }
+
+  // Build year chips from actual data
+  const years = [...new Set(allEntries.map(e => String(e.year)).filter(Boolean))].sort().reverse();
+  buildChips('filter-year', years, activeYears, applyFilters);
+  buildChips('filter-tech', TECH_FILTERS.map(t => t.label), activeTechs, applyFilters);
+  buildChips('filter-species', SPECIES_FILTERS.map(s => s.label), activeSpecies, applyFilters);
+
+  document.getElementById('filter-reset').addEventListener('click', resetAll);
+
+  applyFilters();
+}
+
+document.addEventListener('DOMContentLoaded', initAllPage);
 </script>
 </body>
 </html>
