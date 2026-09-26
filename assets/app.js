@@ -309,8 +309,9 @@ async function initHome(){
     keys: [
       { name: 'title', weight: 0.3 },
       { name: 'tags', weight: 0.25 },
+      { name: 'authors', weight: 0.15 },
       { name: 'summary', weight: 0.15 },
-      { name: 'journal', weight: 0.05 },
+      { name: 'journal', weight: 0.1 },
       { name: 'data_acquisition', weight: 0.1 },
       { name: 'animal', weight: 0.05 },
       { name: 'language', weight: 0.05 },
@@ -340,6 +341,32 @@ async function initHome(){
 }
 
 // ---------- Detail page (full page for one entry) ----------
+function computeRelatedEntries(entry, allEntries){
+  const myCats = new Set(getEntryCategories(entry));
+  const myTags = new Set((entry.tags || []).map(t => t.toLowerCase().trim()));
+  const myAnimal = (entry.animal || '').toLowerCase();
+  const animalIsSpecific = myAnimal && !myAnimal.startsWith('not applicable');
+
+  const scored = allEntries
+    .filter(e => e.id !== entry.id)
+    .map(e => {
+      const cats = getEntryCategories(e);
+      const catOverlap = cats.filter(c => myCats.has(c)).length;
+      const tags = (e.tags || []).map(t => t.toLowerCase().trim());
+      const tagOverlap = tags.filter(t => myTags.has(t)).length;
+      const animal = (e.animal || '').toLowerCase();
+      const sameAnimal = animalIsSpecific && animal.startsWith(myAnimal.split(/[,(]/)[0].trim()) ? 1 : 0;
+      const score = catOverlap * 3 + tagOverlap * 1 + sameAnimal * 2;
+      return { e, score };
+    })
+    .filter(x => x.score > 0)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 4)
+    .map(x => x.e);
+
+  return scored;
+}
+
 async function initDetailPage(){
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id');
@@ -408,15 +435,17 @@ async function initDetailPage(){
   // Tutorial: structured (intro/steps/output) if present, else fall back to the flat field
   const tutorialHTML = buildTutorialHTML(entry);
 
-  // Related tools — only entries explicitly listed in related_ids
-  const relatedEntries = (entry.related_ids || [])
-    .map(rid => entries.find(e => e.id === rid))
-    .filter(Boolean);
+  // Related tools — manually curated via related_ids if the entry sets it,
+  // otherwise computed from shared categories/tags/animal with every other entry.
+  const manualIds = entry.related_ids || [];
+  const relatedEntries = manualIds.length
+    ? manualIds.map(rid => entries.find(e => e.id === rid)).filter(Boolean)
+    : computeRelatedEntries(entry, entries);
   const relatedHTML = relatedEntries.length
     ? `<div class="related-grid">${relatedEntries.map(r => `
         <a class="related-card" href="detail.html?id=${encodeURIComponent(r.id)}">
           <span class="rt">${r.title}</span>
-          <span class="rm">${(getCategory(r.category) || {}).name || ''}</span>
+          <span class="rm">${getEntryCategories(r).map(s => (getCategory(s) || {}).name).filter(Boolean).join(' · ')}</span>
         </a>`).join('')}</div>`
     : `<div class="empty-note">No related tools indexed yet.</div>`;
 
