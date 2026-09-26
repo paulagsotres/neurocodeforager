@@ -13,7 +13,7 @@
 
 <nav class="site-nav" id="site-nav"></nav>
 
-<section class="cat-header" id="all-header">
+<section class="cat-header">
   <a class="back" href="index.html">&larr; home</a>
   <h1>All tools</h1>
   <p id="all-count"></p>
@@ -37,12 +37,11 @@
     try {
       entries = await loadEntries();
     } catch(err) {
-      list.innerHTML = `<div class="empty-state" style="color:#a6472a;">${err.message}</div>`;
+      list.innerHTML = '<div class="empty-state" style="color:#a6472a;">' + err.message + '</div>';
       return;
     }
-    // Show newest first (mirror the homepage Last indexed order)
     const sorted = entries.slice().reverse();
-    count.textContent = `${sorted.length} tools indexed`;
+    count.textContent = sorted.length + ' tools indexed';
     renderCards(list, sorted);
   }
   document.addEventListener('DOMContentLoaded', initAllPage);
