@@ -18,18 +18,10 @@ async function loadEntries(){
     throw new Error(`data/entries.json returned ${res.status} — check the file exists at that path.`);
   }
   ENTRIES_CACHE = await res.json();
-  // Pre-tokenize authors so individual surnames are searchable
   ENTRIES_CACHE.forEach(e => {
-    if (e.authors) {
-      // Split "Smith J., Jones A.B., García M." into individual surname tokens
-      e._author_tokens = e.authors
-        .split(/[,;]+/)
-        .map(a => a.trim().split(/\s+/)[0])  // take first word (surname) of each author chunk
-        .filter(Boolean)
-        .join(' ');
-    } else {
-      e._author_tokens = '';
-    }
+    e._author_tokens = e.authors
+      ? e.authors.split(/[,;]+/).map(a => a.trim().split(/\s+/)[0]).filter(Boolean).join(' ')
+      : '';
   });
   return ENTRIES_CACHE;
 }
@@ -282,7 +274,7 @@ async function initHome(){
   const lastIndexedList = document.getElementById('last-indexed-list');
   const lastIndexedDate = document.getElementById('last-indexed-date');
   if (lastIndexedList){
-    const sorted = [...entries].map((e, i) => ({e, i})).sort((a, b) => { const d = new Date(b.e.added_date) - new Date(a.e.added_date); return d !== 0 ? d : a.i - b.i; }).map(x => x.e);
+    const sorted = [...entries].slice().reverse();
     renderSquareCards(lastIndexedList, sorted.slice(0, 6));
     if (lastIndexedDate && sorted.length){
       lastIndexedDate.textContent = `${entries.length} tools indexed · updated ${sorted[0].added_date}`;
@@ -316,22 +308,29 @@ async function initHome(){
 
   if (!input) return;
 
-  const fuse = new Fuse(entries, {
+  const fuseGeneral = new Fuse(entries, {
     includeScore: true,
     threshold: 0.3,
     ignoreLocation: true,
+    minMatchCharLength: 3,
     keys: [
-      { name: 'title', weight: 0.3 },
-      { name: 'tags', weight: 0.25 },
-      { name: '_author_tokens', weight: 0.2 },
-      { name: 'authors', weight: 0.1 },
-      { name: 'summary', weight: 0.15 },
-      { name: 'journal', weight: 0.1 },
-      { name: 'data_acquisition', weight: 0.1 },
-      { name: 'animal', weight: 0.05 },
-      { name: 'language', weight: 0.05 },
-      { name: 'tutorial', weight: 0.05 },
+      { name: 'title',            weight: 0.35 },
+      { name: 'tags',             weight: 0.25 },
+      { name: 'summary',          weight: 0.15 },
+      { name: 'journal',          weight: 0.08 },
+      { name: 'data_acquisition', weight: 0.08 },
+      { name: 'animal',           weight: 0.05 },
+      { name: 'language',         weight: 0.04 },
     ],
+  });
+
+  const fuseAuthors = new Fuse(entries, {
+    includeScore: true,
+    threshold: 0.0,
+    distance: 0,
+    ignoreLocation: true,
+    minMatchCharLength: 3,
+    keys: [{ name: '_author_tokens', weight: 1 }],
   });
 
   function runSearch(query){
@@ -345,7 +344,10 @@ async function initHome(){
       return;
     }
 
-    const hits = fuse.search(query).map(r => r.item);
+    const authorHits  = fuseAuthors.search(query).map(r => r.item);
+    const authorIds   = new Set(authorHits.map(e => e.id));
+    const generalHits = fuseGeneral.search(query).map(r => r.item).filter(e => !authorIds.has(e.id));
+    const hits = [...authorHits, ...generalHits];
     countLabel.textContent = `${hits.length} result${hits.length === 1 ? '' : 's'}`;
     if (hits.length){
       renderCards(resultsList, hits);
