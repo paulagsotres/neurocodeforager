@@ -1,0 +1,42 @@
+title: CellRake: automated detection and quantification of fluorescently labeled cells in brain sections
+authors: Canela M., Bach Adell J., Roura Coll D., González-Parra J.A., Pinho J.S., Busquets-García A.
+journal: iScience
+year: 2026
+date: 2026-04-17
+doi: 10.1016/j.isci.2026.115522
+paper_url: https://www.cell.com/iscience/fulltext/S2589-0042(26)00897-7
+github_url: https://github.com/marccanela/cellrake
+website_url: https://doi.org/10.5281/zenodo.19002677
+access_status: open_access
+category: image-analysis
+tags: cell counting, fluorescence microscopy, brain sections, histology, cFos, tdTomato, activity mapping, TRAP2, IEG, immediate early gene, segmentation, classification, random forest, semi-supervised learning, label spreading, SMOTE, colocalization, scikit-image, scikit-learn, Python, mouse, image analysis, automated cell detection, neural activity quantification
+data_acquisition: Grayscale fluorescence microscopy images of brain sections stained for fluorescent markers (cFos, tdTomato, or other); tested at 10x magnification on a Nikon Eclipse Ni-E; no GPU required
+language: Python (NumPy, pandas, scikit-image, scikit-learn, Matplotlib)
+animal: Mouse (demonstrated in TRAP2:Ai14 mice for tdTomato and cFos brain-wide quantification)
+difficulty: beginner
+citation_count:
+added_date: 2026-09-26
+
+summary:
+CellRake is a lightweight Python package (<30 KB) for automated detection and counting of fluorescently labeled cells in brain sections, using a two-step pipeline: Laplacian-of-Gaussian blob segmentation followed by semi-supervised random forest classification trained on a handful of manually labeled examples per image — no GPU, no large annotated dataset, no external tools like ImageJ required.
+
+abstract_long:
+Manual counting of fluorescently labeled cells across many brain regions and animals is slow, biased, and irreproducible. Existing automated tools (QuPath, CellProfiler, Ilastik, Cellpose) solve this but require extensive customization, large labeled datasets, or GPU resources. CellRake is designed for the single task of detecting and counting fluorescent marker-positive cells in brain section images, with a learning curve that lets users train a working classifier in minutes. The pipeline has two stages. First, segmentation: a Laplacian of Gaussian (LoG) filter detects candidate blob-like structures regardless of background intensity, followed by per-blob adaptive Otsu thresholding, morphological cleanup, and a watershed step to separate overlapping signals — this outperforms global thresholding methods (Otsu, Multi-Otsu, Li, Yen) on images with heterogeneous backgrounds. Second, classification: CellRake extracts 22 morphological and intensity features per blob, clusters them with k-means (10 clusters), and asks the user to label just 10 representative blobs per cluster as positive or negative. It then applies SMOTE to balance the classes and a K-Nearest Neighbors label-spreading kernel to propagate labels, retaining only high-confidence predictions (entropy < 0.025), and trains a final supervised classifier. The paper validates CellRake on 153 BLA images from 36 mice for both cFos (r = 0.944 vs manual) and tdTomato (r = 0.879), and colocalization (r = 0.912), and shows it generalizes to brain regions with very different cellular density and background (DG, PAGd).
+
+extra_links:
+Raw and analyzed data (Zenodo) | https://doi.org/10.5281/zenodo.19075438
+CellRake code archive (Zenodo) | https://doi.org/10.5281/zenodo.19002677
+
+tutorial_intro:
+CellRake runs a two-step pipeline on grayscale fluorescence images: segmentation (LoG + adaptive thresholding + watershed) followed by semi-supervised classification (k-means clustering → manual labeling of ~10 blobs per cluster → label spreading → supervised random forest). The user only needs to label a small number of representative blobs per image type; the model then generalizes across the whole dataset. No GPU is needed — CellRake relies entirely on scikit-learn and scikit-image. Install with <code>pip install cellrake</code> (or clone from <a href="https://github.com/marccanela/cellrake">github.com/marccanela/cellrake</a>).
+
+tutorial_steps:
+Install CellRake: <code>pip install cellrake</code>. Dependencies (NumPy, pandas, scikit-image, scikit-learn, Matplotlib) are pulled in automatically. No GPU is required.
+Load your grayscale fluorescence images — CellRake expects standard image files (TIFF, PNG, etc.) readable by scikit-image. Each image should contain one fluorescent marker channel (cFos or tdTomato separately; do not pass multichannel images directly). Run segmentation on a folder of images: <code>from cellrake import segmentation; blobs = segmentation.run(image_path)</code>. This applies the LoG filter, per-blob adaptive Otsu thresholding, morphological cleanup, and watershed, and returns a dictionary of candidate blob contours and their 22 extracted features (area, perimeter, eccentricity, mean intensity, intensity ratio, intensity difference, SD intensity, etc.) per image.
+Label a small set of blobs to train the classifier. CellRake clusters the segmented blobs by k-means (default: 10 clusters) and displays 10 representative blobs per cluster for you to label as positive or negative. This typically takes 5–10 minutes per image type (e.g., one labeling session for cFos, one for tdTomato). Labels are saved and reused across the dataset — you do not need to re-label every image.
+Run classification: <code>from cellrake import classification; results = classification.run(blobs, labels)</code>. Internally this applies SMOTE to oversample the minority class, uses KNN label spreading to propagate your manual labels to unlabeled blobs (retaining only predictions with entropy < 0.025), trains a supervised model on the high-confidence subset, and outputs per-image positive cell counts alongside five performance metrics (ROC AUC, AP, precision, recall, F1).
+For colocalization across two markers (e.g., tdTomato and cFos in the same section), run each marker independently through the full pipeline first, then: <code>from cellrake import colocalization; coloc = colocalization.run(results_marker1, results_marker2)</code>. Two blobs are considered colocalized if their overlap area is at least 80% of the smaller blob's area.
+Export results: CellRake outputs per-image and per-region cell counts as a pandas DataFrame, which you can save with <code>results.to_csv('counts.csv')</code> and pass directly to downstream statistical modeling (the paper fits GLMMs with Negative Binomial distribution to relate counts to behavioral performance, using ROI area as a log-transformed offset and animal ID as a random effect).
+
+tutorial_output:
+Per-image positive cell counts for each fluorescent marker, a trained classifier (reusable across images of the same marker type and tissue), five classification performance metrics (ROC AUC, AP, precision, recall, F1), and a colocalization count table — all as a pandas DataFrame ready for downstream statistical analysis or export to CSV.

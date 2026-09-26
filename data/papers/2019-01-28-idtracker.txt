@@ -1,0 +1,43 @@
+title: idtracker.ai: tracking all individuals in small or large collectives of unmarked animals
+authors: Romero-Ferrero F., Bergomi M.G., Hinz R.C., Heras F.J.H., de Polavieja G.G.
+journal: Nature Methods
+year: 2019
+date: 2019-01-28
+doi: 10.1038/s41592-018-0295-5
+paper_url: https://www.nature.com/articles/s41592-018-0295-5
+github_url: https://github.com/shaliulab/idtrackerai
+website_url: https://idtracker.ai
+access_status: open_access
+category: automated-behavioral-tracking
+tags: animal tracking, identity tracking, multi-animal tracking, unmarked animals, zebrafish, Drosophila, mice, ants, markerless tracking, deep learning, convolutional neural network, GPU, video analysis, collective behavior, social behavior, trajectory analysis, Python, idtracker.ai
+data_acquisition: Standard video of a group of unmarked animals moving freely in an arena — no markers, dyes, or specialized hardware required; works with top-down or side-view recordings from a standard camera
+language: Python (PyTorch backend)
+animal: Demonstrated in zebrafish, Drosophila, mice, ants, and other species; general-purpose for any visually distinct animals in a shared arena
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-26
+
+summary:
+idtracker.ai tracks and maintains the identity of every individual in a group of unmarked animals across an entire video using two cascaded convolutional networks: one to detect and separate touching animals, one to assign consistent identities frame by frame — eliminating the need for manual tagging, color-coding, or RFID and achieving near-perfect identity accuracy even in large groups with frequent crossings.
+
+abstract_long:
+The core problem in multi-animal tracking is not detection but identity: when two animals touch or cross, classical tracking algorithms lose track of who is who. idtracker.ai solves this with a cascade of two deep neural networks trained on automatically extracted image patches from the video itself (no external labeled data required). The first network (the "crossing detector") classifies each blob as a single animal or a group of touching animals and separates touching individuals by subtracting a learned single-animal blob shape. The second network (the "identification network") learns the visual appearance of each individual from frames where animals are isolated and uses this to assign consistent identities across crossings. The system uses the GPU to process video at close to real-time speed and requires no manual annotation of identities or manual labeling for training — the networks are trained automatically from scratch on each new video. The authors validate the approach on groups of up to 100 zebrafish and show near-zero identity errors, and demonstrate generalization across species (Drosophila, mice, ants).
+
+extra_links:
+idtracker.ai documentation (usage guide) | https://idtracker.ai/latest/user_guide/usage.html
+idtracker.ai installation guide | https://idtracker.ai/latest/install/installation.html
+trajectorytools (companion Python library for trajectory analysis) | https://github.com/fjhheras/trajectorytools
+
+tutorial_intro:
+The idtracker.ai workflow is GUI-driven but fully scriptable via its Python API. The core pipeline runs on a single video and produces per-animal trajectory files; the networks are trained automatically from scratch on each video, so there is no pretrained model to download or fine-tune. A GPU is strongly recommended (required for groups larger than ~10 animals at reasonable speed). The key output is a <code>trajectories_wo_gaps.npy</code> file with identity-assigned (x, y) coordinates per frame per animal, which feeds directly into trajectory analysis with <a href="https://github.com/fjhheras/trajectorytools">trajectorytools</a> or any custom analysis.
+
+tutorial_steps:
+Install idtracker.ai following the <a href="https://idtracker.ai/latest/install/installation.html">installation guide</a>: create a dedicated conda environment (<code>conda create -n idtrackerai python=3.10</code>), activate it, and install with <code>pip install idtrackerai</code>. For GPU support (strongly recommended), install the matching PyTorch CUDA build before installing idtracker.ai. Verify the install with <code>idtrackerai --help</code>.
+Launch the GUI with <code>idtrackerai</code> or run headlessly via the CLI. In the GUI, load your video and set the three key preprocessing parameters: (1) <strong>intensity threshold</strong> — separates animals from the background (use the preview to find a value where all animals are cleanly segmented); (2) <strong>number of animals</strong> — must be set correctly; (3) <strong>min/max blob area</strong> in pixels — filters out noise and background artifacts. These parameters are saved to a <code>local_settings.py</code> file that can be reused or scripted.
+Run the tracking session. idtracker.ai will automatically: (a) segment every frame to extract animal blobs, (b) detect crossings using the crossing-detector network trained on blobs from that video, (c) train the identification network on isolated-animal image patches extracted from the video, and (d) assign consistent identities across all frames including crossings. Progress is shown in the GUI; intermediate results are saved to disk so a crashed session can be resumed.
+Inspect the output in the session folder: <code>trajectories_wo_gaps.npy</code> (shape: frames × n_animals × 2) contains identity-assigned (x, y) pixel coordinates per frame; <code>trajectories.npy</code> contains the same with gaps where identity was uncertain; <code>validation.npy</code> stores the per-frame identity-assignment probabilities from the identification network. Load with <code>import numpy as np; traj = np.load('trajectories_wo_gaps.npy', allow_pickle=True).item()</code>.
+Run trajectory analysis with <a href="https://github.com/fjhheras/trajectorytools">trajectorytools</a> (<code>pip install trajectorytools</code>): load the trajectories, convert pixel coordinates to real-world units using the known arena size, compute per-animal and pairwise metrics (speed, acceleration, distance to neighbors, heading direction, border distance, inter-individual distance distributions). Example: <code>import trajectorytools as tt; tr = tt.Trajectories.from_idtracker(session_folder)</code>.
+For scripted/batch processing of multiple videos, use idtracker.ai's CLI mode: <code>idtrackerai --video path/to/video.avi --number_of_animals 10 --intensity_ths 0 50 --area_ths 150 600 --exec</code> — all parameters map directly to the GUI fields and can be looped over a folder of videos in a shell script or Python subprocess call.
+
+tutorial_output:
+A session folder per video containing <code>trajectories_wo_gaps.npy</code> (frames × n_animals × 2 array of identity-assigned pixel coordinates), <code>trajectories.npy</code> (with gaps where identity was uncertain), per-animal identity images, and network training logs. These trajectory arrays are the direct input to downstream collective behavior analysis: inter-individual distances, speed distributions, social network metrics, leader-follower dynamics, alignment, and cohesion.
