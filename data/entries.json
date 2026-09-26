@@ -1586,6 +1586,98 @@
     "verified": true
   },
   {
+    "id": "2025-04-09-foundation-model-visual-cortex",
+    "title": "Foundation model of neural activity predicts response to new stimulus types",
+    "authors": "Wang E.Y., Fahey P.G., Ding Z., Papadopoulos S., Ponder K., Weis M.A., et al., Sinz F.H., Tolias A.S.",
+    "journal": "Nature",
+    "year": 2025,
+    "date": "2025-04-09",
+    "doi": "10.1038/s41586-025-08829-y",
+    "paper_url": "https://doi.org/10.1038/s41586-025-08829-y",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": 98,
+    "category": "neural-networks",
+    "categories": [
+      "neural-networks",
+      "brain-imaging"
+    ],
+    "tags": [
+      "foundation model",
+      "digital twin",
+      "visual cortex",
+      "calcium imaging",
+      "two-photon imaging",
+      "ANN",
+      "Conv-LSTM",
+      "CvT-LSTM",
+      "transfer learning",
+      "MICrONS",
+      "connectomics",
+      "encoding model",
+      "neural response prediction",
+      "in silico experiments",
+      "natural videos",
+      "parametric tuning",
+      "orientation selectivity",
+      "direction selectivity",
+      "functional barcode",
+      "readout",
+      "DataJoint",
+      "CAImAn",
+      "mouse visual cortex"
+    ],
+    "summary": "A deep neural network \"foundation model\" trained on responses from around 135,000 mouse visual-cortex neurons across 8 mice, whose frozen shared \"core\" lets new mice be fitted with minimal data and generalizes to out-of-distribution stimuli (Gabor filters, flashing dots, random-dot kinematograms) — and whose per-neuron \"functional barcodes\" predict anatomical cell type, dendritic morphology, and synaptic connectivity in the MICrONS connectomics dataset.",
+    "abstract_long": "The model is an ANN with four modules: a perspective module that uses ray tracing plus eye-tracking to infer what the mouse's retina actually sees from the raw stimulus and pupil position; a modulation module (a small LSTM) that turns locomotion and pupil-size signals into a dynamic behavioral-state representation; a core module (feedforward 3D-convolutional layers plus recurrent Conv-LSTM or CvT-LSTM cells) that produces the bulk of the model's nonlinear visual representation; and a readout module that linearly maps the core's output, at each neuron's own learned spatial position, onto that neuron's predicted response. Trained end-to-end on natural-video responses from a \"foundation cohort\" of 8 mice, the resulting shared core could be frozen and transferred to new mice, requiring far less new data (well under 30 minutes) than training a model from scratch to reach the same accuracy — and this advantage held not just for natural videos but for stimulus types never seen during training, including drifting Gabors, flashing Gaussian dots, directional pink noise, and random-dot kinematograms. Applied to the MICrONS dataset (which pairs functional recordings with nanometer-resolution electron microscopy across a 1 mm3 volume), each neuron's fitted readout — a spatial position plus a 512-dimensional \"functional barcode\" of feature weights — accurately predicted its visual area and, from a separate logistic-regression classifier, its morphologically defined excitatory cell type, substantially above chance and beyond what could be explained by imaging depth alone. The same functional barcodes were used in companion papers to predict synaptic connectivity and dendritic morphology from function alone.",
+    "data_acquisition": "Two-photon calcium imaging (large field-of-view mesoscope) of roughly 135,000 excitatory neurons across mouse visual cortex, recorded during natural-video and parametric visual stimulation, paired with eye-tracking and treadmill locomotion data",
+    "language": "Python",
+    "animal": "Mouse",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "The work is split across three repos mirroring the pipeline: cajal/pipeline (raw two-photon calcium imaging plus eye/behavior processing), cajal/foundation (model training and downstream analyses), and cajal/fnn (the released model architecture and pretrained foundation weights, linked as the main GitHub above). If you just want to use the pretrained foundation core to predict responses or run in silico experiments on new stimuli, cajal/fnn is the relevant starting point rather than reproducing data collection and training from scratch.",
+    "tutorial_steps": [
+      "Start from cajal/fnn if you want to use the released pretrained foundation core; only clone cajal/pipeline and cajal/foundation as well if you need to reproduce calcium-imaging preprocessing or full model training from raw recordings.",
+      "Prepare your inputs in the format the architecture expects: synchronized stimulus video frames, eye position (for the perspective/ray-tracing module), and behavioral variables (treadmill locomotion speed, pupil diameter and its instantaneous derivative, for the modulation module) — the same four input streams described in the paper's architecture.",
+      "To fit a new mouse using transfer learning (the paper's \"foundation model\" approach, as opposed to training an \"individual model\" from scratch): freeze the pretrained shared core and fit only the perspective, modulation, and readout modules using a natural-video recording session from your own mouse — the paper found this reached high accuracy with well under 30 minutes of new data, versus over an hour for training all four modules end-to-end.",
+      "To run in silico experiments — for example, reproducing classical parametric-tuning measurements (orientation/direction selectivity, spatial receptive fields) without presenting those stimuli in vivo — pass synthetic stimuli (drifting Gabor filters, flashing Gaussian dots, directional pink noise, random-dot kinematograms) through your fitted model and read out the predicted per-neuron responses, then fit the same parametric tuning models described in the paper's Methods (a mixture of von Mises functions for orientation/direction, a 2D Gaussian for spatial receptive fields).",
+      "Extract each neuron's fitted readout — a 2D spatial position (its receptive-field center within the core's feature maps) and a 512-dimensional feature-weight vector, together forming a \"functional barcode\" — directly from a fitted model for downstream analyses, such as training your own classifier to relate function to anatomy.",
+      "To relate model outputs to anatomy or connectivity (as in the paper's MICrONS analysis), separately obtain the corresponding connectomics/morphology data (see the MICrONS data link above) and match neurons via their functional-to-structural coregistration IDs."
+    ],
+    "tutorial_output": "Predicted per-neuron response time series for arbitrary visual stimuli, in-domain or out-of-domain; a per-neuron \"functional barcode\" (readout spatial position plus 512-dimensional feature-weight vector) usable to predict anatomical properties such as visual area, cell type, dendritic morphology, or synaptic connectivity; and, for parametric stimuli, fitted tuning parameters (orientation/direction selectivity indices and preferred angles, spatial selectivity index and preferred receptive-field location) directly comparable to in vivo measurements.",
+    "sample_data": {
+      "text": "The MICrONS functional and connectomics data used in the paper's structure-function analyses are publicly hosted, browsable via the MICrONS Explorer or accessible in bulk from BossDB.",
+      "url": "https://bossdb.org/project/microns-minnie"
+    },
+    "code": {
+      "repo_url": "https://github.com/cajal/fnn",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "cajal/foundation (model training and analysis pipeline)",
+        "url": "https://github.com/cajal/foundation"
+      },
+      {
+        "label": "cajal/pipeline (experimental recording and calcium-imaging processing pipeline)",
+        "url": "https://github.com/cajal/pipeline"
+      },
+      {
+        "label": "MICrONS functional + connectomics data explorer",
+        "url": "https://www.microns-explorer.org/cortical-mm3"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2025-07-01-projection-tags",
     "title": "Projection-TAGs enable multiplex projection tracing and multi-modal profiling of projection neurons",
     "authors": "Yang L., Liu F., Hahm H., Okuda T., Li X., Zhang Y., Kalyanaraman V., Heitmeier M.R., Samineni V.K.",
