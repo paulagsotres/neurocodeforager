@@ -1,0 +1,43 @@
+title: Spatio-temporal organization of network activity patterns in the hippocampus
+authors: Lopes-dos-Santos V., Brizee D., Dupret D.
+journal: Cell Reports
+year: 2025
+date: 2025-06-24
+doi: 10.1016/j.celrep.2025.115808
+paper_url: https://www.cell.com/cell-reports/fulltext/S2211-1247(25)00579-0
+github_url: https://github.com/vitorlds/Hipp-LFP-embedding
+website_url: https://zenodo.org/doi/10.5281/zenodo.16995136
+access_status: open_access
+category: electrophysiology, statistical-analysis
+tags: hippocampus, CA1, dentate gyrus, local field potential, low-dimensional embedding, Isomap, PCA, theta oscillations, gamma oscillations, sharp-wave ripples, dentate spikes, laminar analysis, anatomical trajectory, interneurons, principal cells, deep-superficial, radial axis, Python, silicon probe, mouse
+data_acquisition: LFP recordings along the CA1-to-dentate gyrus axis using silicon probes in freely behaving mice (1250 Hz); mean waveforms of theta cycles and sharp-wave events per anatomical control point across layers
+language: Python
+animal: Mouse
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-26
+
+summary:
+Lopes-dos-Santos et al. develop a low-dimensional embedding of hippocampal LFP signals recorded along the CA1-to-dentate gyrus axis, using PCA followed by Isomap. The embedding reveals an anatomical trajectory through hippocampal layers that organizes layer-specific gamma profiles, theta-nested rhythms, and the firing behavior of deep vs. superficial CA1 principal cells and interneurons.
+
+abstract_long:
+Understanding the spatiotemporal organization of hippocampal network activity requires mapping electrophysiological signatures across the CA1-to-dentate gyrus (DG) axis. Lopes-dos-Santos et al. develop a low-dimensional embedding of LFP waveforms recorded along this axis using PCA (applied separately to theta-cycle and sharp-wave waveforms per channel) followed by Isomap (nonlinear dimensionality reduction preserving local neighborhood structure). The resulting 2D embedding reveals a smooth anatomical trajectory through hippocampal layers — from CA1 oriens through pyramidale, radiatum, and lacunosum-moleculare into the DG — that can be consistently reconstructed across mice using pre-trained models. Within this embedding, layer-specific gamma profiles reflect spatially organized rhythms: distinct theta-nested gamma oscillations co-vary with interneuron and principal cell firing motifs specific to each layer. Along the CA1 radial axis, deep and superficial principal cells show distinguishable firing behaviors, and interneurons from the pyramidal, radiatum, and lacunosum-moleculare layers form separable populations. The framework provides a comprehensive electrophysiological map for characterizing hippocampal microcircuits without requiring prior anatomical assignment of each electrode.
+
+extra_links:
+Example notebook | https://github.com/vitorlds/Hipp-LFP-embedding/blob/v1.0.0/notebooks/visualising_embedding_trajectory.ipynb
+Data README | https://github.com/vitorlds/Hipp-LFP-embedding/blob/v1.0.0/data/README.md
+
+tutorial_intro:
+The repository provides a Python package (<code>hipp_embedding</code>) with two modules: <code>embedding.py</code> (fit and project LFP features onto the low-dimensional space) and <code>trajectory.py</code> (define and interpolate the anatomical trajectory through the embedding). Pre-trained PCA and Isomap models from the original publication are included, so you can project new sessions without retraining. Input data is z-scored mean LFP waveforms aligned to theta cycles and sharp-wave events per recording channel.
+
+tutorial_steps:
+Clone the repository and install dependencies into a virtual environment: <code>pip install -r requirements.txt</code>. Use the exact versions specified (Python 3.10, numpy 1.23.5, scikit-learn 1.2.2) — the saved models may be incompatible with newer scikit-learn versions.
+Prepare your input data as z-scored mean LFP waveforms per channel, aligned to two network patterns: theta cycles (189 time samples at 1250 Hz, aligned to the descending zero-crossing of the pyramidal-layer theta cycle) and sharp-wave events (629 time samples, aligned to the ripple-band amplitude peak). Store as a <code>.npz</code> file with keys <code>'theta'</code> and <code>'sw'</code>, shape (n_channels, n_timesamples).
+To use the pre-trained models from the paper, call <code>hipp_embedding.embedding.project()</code> with your waveform data and the paths to the saved PCA and Isomap models in <code>models/pca/</code> and <code>models/iso/</code>. This projects each channel onto the 2D embedding space without refitting.
+To fit a new embedding from scratch on your own data, call <code>hipp_embedding.embedding.fit_embedding()</code>, specifying the input <code>.npz</code> path, output folder, number of PCA components per pattern (default 4 each), and Isomap parameters (default: n_neighbors=15, n_components=2). Fitted models are saved for reuse.
+Compute the anatomical trajectory through the embedding using <code>hipp_embedding.trajectory.interpolate_trajectory()</code>, passing the projected control points (anatomically identified channels per session). The trajectory maps the CA1-to-DG axis as a smooth curve in embedding space. See the example notebook (<code>notebooks/visualising_embedding_trajectory.ipynb</code>) for a full worked example with the included data.
+
+tutorial_output:
+2D embedding coordinates per recording channel (or per network event), a smooth anatomical trajectory through the CA1-to-DG axis in embedding space, and figures showing how gamma profiles, theta-nested rhythms, and cell-type firing motifs map onto the embedding — enabling layer and sublayer classification without prior anatomical ground truth.
+
+related_ids: 2018-11-21-tsc, 2025-12-17-ripple-csd-classifier, 2025-09-04-valero-interneurons-hippocampal-spatial-code
