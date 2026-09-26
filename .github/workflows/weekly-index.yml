@@ -13,6 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - uses: actions/setup-python@v5
         with:
@@ -32,4 +34,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/papers/ data/entries.json reviews/
           git diff --cached --quiet || git commit -m "Auto-index: weekly run"
-          git push
+          git push origin HEAD:${{ github.ref_name }}
