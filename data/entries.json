@@ -1,209 +1,4 @@
 [
-    {
-    "id": "2025-09-04-valero-interneurons-hippocampal-spatial-code",
-    "title": "Cooperative actions of interneuron families support the hippocampal spatial code",
-    "authors": "Valero M., Abad-Perez P., Gallardo A., Picco M., García-Hernandez R., Brotons J., Martínez-Félix A., Machold R., Rudy B., Buzsáki G.",
-    "journal": "Science",
-    "year": 2025,
-    "date": "2025-09-04",
-    "doi": "10.1126/science.adv5638",
-    "paper_url": "https://www.science.org/doi/10.1126/science.adv5638",
-    "github_url": "https://github.com/valegarman/HippoCookBook",
-    "website_url": "https://buzsakilab.com/wp/database/",
-    "access_status": "open_access",
-    "citation_count": null,
-    "category": "neural-circuits",
-    "categories": [
-      "neural-circuits",
-      "electrophysiology",
-      "statistical-analysis"
-    ],
-    "tags": [
-      "hippocampus",
-      "interneurons",
-      "place cells",
-      "place fields",
-      "spatial coding",
-      "cognitive map",
-      "Pvalb",
-      "Sst",
-      "Vip",
-      "Id2",
-      "GABAergic",
-      "optogenetics",
-      "opto-tagging",
-      "silicon probe",
-      "Neuropixels",
-      "extracellular electrophysiology",
-      "spike sorting",
-      "KiloSort",
-      "interneuron classification",
-      "decision tree classifier",
-      "machine learning",
-      "physiological fingerprinting",
-      "sharp-wave ripples",
-      "SPW-R",
-      "theta oscillations",
-      "gamma oscillations",
-      "CEBRA",
-      "neural decoding",
-      "CA1",
-      "mouse",
-      "freely moving",
-      "delayed alternation task",
-      "MATLAB",
-      "Python"
-    ],
-    "summary": "This paper shows that the four major hippocampal GABAergic interneuron families (Pvalb, Sst, Vip, Id2) can be reliably identified in large-scale extracellular recordings using only physiological features — spike width, firing irregularity, ACG rise time, waveform asymmetry, theta modulation — trained on opto-tagged ground-truth data, and that these families cooperate to differentially shape the spatial features (stability, selectivity, generalization, place-field amplitude) of CA1 pyramidal place cells.",
-    "abstract_long": "Valero et al. combined silicon probe recordings with optogenetic identification (ChR2 in Pvalb, Sst, Vip, Id2, and CaMK2α lines) to collect ground-truth physiological fingerprints for all major interneuron families in freely moving mice, across both the hippocampus and neocortex. A decision tree classifier trained on six physiological features (CV2, ACG rise time, spike width, anatomical location, waveform asymmetry, firing rate) achieved >89% accuracy per family in 10-fold cross-validation and was then applied to large-scale, unlabeled recordings (5276 CA1 units from 155 sessions, 30 mice), whose predicted family fractions matched gene-expression-based fractions. The study then examined how the four interneuron families cooperatively shape pyramidal place cell spatial coding: Pvalb suppressed the first half of place fields, while Sst and Id2 suppressed the second half; Vip disinhibited CaMK2α neurons via Sst suppression and increased place-field amplitude. CEBRA-based decoding showed that interneurons alone (at matched cell counts) decode spatial position as accurately as pyramidal cells, and leaving out any single family increased decoding error. The physiological fingerprinting strategy is paradigm-independent and applicable to datasets from different labs and species.",
-    "data_acquisition": "Extracellular electrophysiology with 64-site, 5-shank silicon probes (or 32-site 4-shank μLED probes) implanted in CA1 of freely moving mice; optogenetic identification via ChR2 expressed selectively in each interneuron family through Cre/Flp mouse lines; animal position tracked with a Basler camera at 30 Hz",
-    "language": "MATLAB (primary analysis, KiloSort spike sorting, SleepScoreMaster, HippoCookBook toolbox); Python (CEBRA for decoding)",
-    "animal": "Mouse (C57BL/6 background, 12–32 weeks; transgenic lines: Pvalb-Cre::Ai32, Sst-Flip::Ai80F, Id2-CreER/Dlx5-Flpe::Ai80, Vip-Flip::Ai80F, CaMK2α-Cre::Ai32)",
-    "gpu_required": "",
-    "difficulty": "advanced",
-    "subjects": {
-      "count": "30 mice (32 male)",
-      "strains": "Pvalb-Cre::Ai32, Sst-Flip::Ai80F, Id2-CreER/Dlx5-Flpe::Ai80, Vip-Flip::Ai80F, CaMK2α-Cre::Ai32",
-      "notes": "164 recording sessions averaging 6.7 ± 1.9 h each; 7532 units across five neuronal classes"
-    },
-    "tutorial": "",
-    "tutorial_intro": "The core reusable output of this paper is the interneuron family classifier in <a href=\"https://github.com/valegarman/HippoCookBook/tree/main/analysis/cell_type_classification\">HippoCookBook/analysis/cell_type_classification</a>. Given any sorted CA1 hippocampal dataset, it assigns each unit to one of five families: Pvalb, Sst, Id2, Vip, or CaMK2α. Important constraints: (1) the classifier reads the <code>cell_metrics</code> struct produced by CellExplorer — this is a hard dependency, CellExplorer must be run first; (2) the full classifier only works for hippocampal CA1 neurons, as the CA1-specific LFP features (theta modulation, SPW-R response, gamma phase locking) depend on hippocampal oscillatory landmarks that do not exist in neocortex.",
-    "tutorial_steps": [
-      "Run CellExplorer (<a href=\"https://github.com/petersenpeter/CellExplorer\">petersenpeter/CellExplorer</a>) on your KiloSort-sorted CA1 data. CellExplorer outputs a <code>cell_metrics</code> struct (saved as <code>session.cell_metrics.cellinfo.mat</code>) containing the waveform and spike-train features the classifier needs: <code>cell_metrics.waveforms</code> (spike width, asymmetry), <code>cell_metrics.acg</code> (autocorrelogram and rise time), <code>cell_metrics.firingRate</code>, <code>cell_metrics.cv2</code>, and <code>cell_metrics.general.chanCoords</code> (anatomical location). This struct is the required input format.",
-      "Run the LFP feature extraction functions in HippoCookBook to add CA1-specific features to <code>cell_metrics</code>: theta phase modulation (<code>computePhaseModulation.m</code>), SPW-R response (<code>rippleMasterDetector.m</code> + PSTH), and slow/mid/fast gamma phase preferences. These are computed from the raw LFP alongside the spike data and appended to <code>cell_metrics</code> before classification.",
-      "Call the classifier: load the pretrained model from <code>cell_type_classification/</code> and pass your <code>cell_metrics</code> struct. The classifier returns a predicted family label (Pvalb / Sst / Id2 / Vip / CaMK2α) and a confidence score per unit. A classification cutoff of ≥95% confidence per family is recommended (as used in the paper)."
-    ],
-    "tutorial_output": "A per-unit table of predicted interneuron family labels and confidence scores, ready to use as cell-type annotations for any downstream analysis (place fields, functional coupling, population decoding). The classifier achieves >89% accuracy per family (>97% for CA1 with LFP features) in 10-fold cross-validation against opto-tagged ground truth.",
-    "sample_data": {
-      "text": "All data are publicly available in the Buzsaki Lab Databank.",
-      "url": "https://buzsakilab.com/wp/database/"
-    },
-    "code": {
-      "repo_url": "https://github.com/valegarman/HippoCookBook",
-      "platform": "github"
-    },
-    "extra_links": [
-      {
-        "label": "CellExplorer (prerequisite: computes the cell metrics that the classifier reads)",
-        "url": "https://github.com/petersenpeter/CellExplorer"
-      },
-      {
-        "label": "HippoCookBook Arduino circuits and software for optogenetic control during behavior",
-        "url": "https://github.com/valegarman/HippoPlayground"
-      },
-      {
-        "label": "CEBRA toolbox (used for position decoding from interneuron ensembles)",
-        "url": "https://cebra.ai"
-      },
-      {
-        "label": "KiloSort spike sorter",
-        "url": "https://github.com/cortex-lab/KiloSort"
-      }
-    ],
-    "related_ids": [
-      "2023-05-03-cebra"
-    ],
-    "added_date": "2026-09-25",
-    "added_by": "manual",
-    "verified": true
-    },
-    {
-    "id": "2022-02-04-valero-subthreshold-optogenetics",
-    "title": "Probing subthreshold dynamics of hippocampal neurons by pulsed optogenetics",
-    "authors": "Valero M., Zutshi I., Yoon E., Buzsáki G.",
-    "journal": "Science",
-    "year": 2022,
-    "date": "2022-02-04",
-    "doi": "10.1126/science.abm1891",
-    "paper_url": "https://www.science.org/doi/10.1126/science.abm1891",
-    "github_url": "https://github.com/buzsakilab/buzcode",
-    "website_url": "https://buzsakilab.com/wp/public-data/",
-    "access_status": "open_access",
-    "citation_count": null,
-    "category": "neural-circuits",
-    "categories": [
-      "neural-circuits",
-      "electrophysiology"
-    ],
-    "tags": [
-      "hippocampus",
-      "CA1",
-      "place cells",
-      "place fields",
-      "subthreshold dynamics",
-      "excitability",
-      "E/I balance",
-      "excitation-inhibition",
-      "sharp-wave ripples",
-      "SPW-R",
-      "theta oscillations",
-      "optogenetics",
-      "μLED",
-      "micro-LED",
-      "pulsed optogenetics",
-      "ghost fields",
-      "unmasked place fields",
-      "non-place cells",
-      "cell assemblies",
-      "ICA",
-      "neural decoding",
-      "Bayesian decoding",
-      "membrane potential",
-      "CaMKIIα",
-      "freely moving",
-      "mouse",
-      "MATLAB"
-    ],
-    "summary": "Valero et al. use brief optogenetic depolarizing pulses delivered via μLED probes to probe the subthreshold excitability of large CA1 pyramidal neuron populations in freely moving mice, without disrupting their normal spiking. During SPW-Rs excitability decreases (balanced E/I model), during theta and within place fields it increases (reciprocal model); critically, optogenetic unmasking reveals stable latent place fields in 69% of apparent non-place cells, implying the fraction of CA1 neurons with a place representation is far higher than classical firing-threshold criteria suggest.",
-    "abstract_long": "The paper develops a population-scale, non-invasive proxy for membrane potential dynamics by delivering brief (20 ms), low-power μLED pulses to CA1 pyramidal neurons at random intervals while monitoring their spike responses. The magnitude of the evoked firing-rate change (ΔRate = μLED response − control) serves as a readout of the neuron's instantaneous excitability (Vm). Three main findings emerge. First, during SPW-Rs individual pyramidal neurons decrease their light-evoked responses (negative gain, balanced E/I model), even though population firing increases — resolving an apparent paradox between population and single-cell excitability. Second, during theta oscillations and within place fields, light-evoked responses are enhanced (reciprocal/disinhibition model), consistent with place cells receiving reduced inhibition inside their fields. Third — the most striking result — optogenetic depolarization unmasks stable, spatially selective ghost place fields in 69% of neurons classified as non-place cells under normal conditions; these latent fields are spatially correlated with the sparse spontaneous spikes of the same cells, are as stable as real place fields, and their SPW-R cofiring patterns predict their spatial overlap on the track, just as for real place cells. The implication is that essentially the entire CA1 pyramidal population carries a spatial representation, with most cells held below firing threshold by inhibition under normal conditions.",
-    "data_acquisition": "Extracellular electrophysiology with 4-shank μLED probes (3 μLEDs per shank, Neurolight) implanted in CA1 of freely moving CaMKIIα-Cre::Ai32 mice; 20-ms light pulses (0.02–0.1 μW) delivered at random 0.3–0.6 s intervals to depolarize pyramidal neurons while recording spiking responses; animal position tracked on a linear track",
-    "language": "MATLAB (custom scripts, buzcode toolbox)",
-    "animal": "Mouse (CaMKIIα-Cre::Ai32, C57BL/6 background; 4 mice, 822 CA1 pyramidal neurons, 43.3 ± 8.37 neurons per session)",
-    "gpu_required": "",
-    "difficulty": "advanced",
-    "subjects": {
-      "count": "4 mice",
-      "strains": "CaMKIIα-Cre::Ai32",
-      "notes": "822 CA1 pyramidal neurons total; 611 light-responsive; 43.3 ± 8.37 per session"
-    },
-    "tutorial": "",
-    "tutorial_intro": "The analysis code lives in <a href=\"https://github.com/buzsakilab/buzcode\">buzcode</a> and <a href=\"https://github.com/valegarman/HippoCookBook\">HippoCookBook</a> (MATLAB). The key analysis concept is DeltaRate: for each neuron, subtract the firing rate during matched no-light control windows from the firing rate during light-pulse windows. This single number -- computed per brain state, per theta phase bin, or per spatial position bin -- is the excitability proxy that drives all the paper's analyses. The required input is a standard buzcode/HippoCookBook session struct with spike times, light pulse times (stored as events), LFP, and animal position.",
-    "tutorial_steps": [
-      "Classify light-responsive units using <code>getOptogeneticResponse.m</code> (HippoCookBook): it computes the cross-correlogram between each unit's spikes and the pulse times, then applies four statistical tests (mean DeltaRate > 2 SD, P < 1e-3 vs shuffled pulses, bootstrap, SALT latency jitter). Returns a per-unit <code>optogeneticResponse</code> struct with <code>.isResponsive</code>, <code>.deltaRate</code> per intensity level, and response PSTHs. Only responsive units are used as the excitability proxy.",
-      "Compute DeltaRate across brain states with <code>getAveragedPeriEventResponses.m</code>: pass spike times, light pulse event times, and a brain state vector (from <code>SleepScoreMaster.m</code>) to get mean DeltaRate separately for Run, Quiet, NREM, and REM. For SPW-R-aligned analysis, pass SPW-R peak times (from <code>rippleMasterDetector.m</code>) as the reference event to get DeltaRate as a function of time relative to ripple onset -- this produces the negative gain during SPW-R result.",
-      "Compute DeltaRate as a function of spatial position: bin the animal's track position into 2.2-cm bins and compute mean DeltaRate per bin per neuron using <code>getSpikesReturnPlaceFields.m</code>. Comparing in-field vs out-of-field DeltaRate (using place field boundaries from control epochs) gives the within-field excitability gain. The same function run on light-stimulation epochs for non-place cells identifies unmasked (ghost) fields as spatial bins with significantly elevated DeltaRate that are stable across trial halves.",
-      "For population assembly analysis, run <code>getAssemblies.m</code> (buzcode) on the z-scored spike matrix of all pyramidal neurons during home-cage SPW-Rs to extract ICA assembly membership weights. Then correlate assembly membership with pairwise spatial overlap using <code>getSpikesReturnPlaceFields.m</code> output. To test replay, run <code>replayDetect.m</code> (buzcode) with and without unmasked place field spikes included in the sequence template, and compare the fraction of SPW-R events with significant Bayesian trajectory probabilities."
-    ],
-    "tutorial_output": "Per-unit <code>optogeneticResponse</code> struct (DeltaRate per intensity, brain state, and spatial bin); place field maps for control and light epochs with ghost field flags; ICA assembly weight matrix; pairwise spatial-vs-ripple cofiring correlation matrices; replay trajectory significance fractions with and without unmasked fields included.",
-    "sample_data": {
-      "text": "All data publicly available in the Buzsaki Lab Databank.",
-      "url": "https://buzsakilab.com/wp/public-data/"
-    },
-    "code": {
-      "repo_url": "https://github.com/buzsakilab/buzcode",
-      "platform": "github"
-    },
-    "extra_links": [
-      {
-        "label": "buzcode (Buzsaki lab MATLAB toolbox, used for all analyses)",
-        "url": "https://github.com/buzsakilab/buzcode"
-      },
-      {
-        "label": "HippoCookBook (Valero lab toolbox, extends buzcode with place field and cell-type analysis)",
-        "url": "https://github.com/valegarman/HippoCookBook"
-      },
-      {
-        "label": "Buzsaki Lab public data repository",
-        "url": "https://buzsakilab.com/wp/public-data/"
-      }
-    ],
-    "related_ids": [
-      "2025-09-04-valero-interneurons-hippocampal-spatial-code"
-    ],
-    "added_date": "2026-09-25",
-    "added_by": "manual",
-    "verified": true
-  },
   {
     "id": "2017-07-20-suite2p",
     "title": "Suite2p: beyond 10,000 neurons with standard two-photon microscopy",
@@ -919,6 +714,86 @@
     "verified": true
   },
   {
+    "id": "2021-09-28-anipose",
+    "title": "Anipose: A toolkit for robust markerless 3D pose estimation",
+    "authors": "Karashchuk P., Rupp K.L., Dickinson E.S., Walling-Bell S., Sanders E., Azim E., Brunton B.W., Tuthill J.C.",
+    "journal": "Cell Reports",
+    "year": 2021,
+    "date": "2021-09-28",
+    "doi": "10.1016/j.celrep.2021.109730",
+    "paper_url": "https://doi.org/10.1016/j.celrep.2021.109730",
+    "website_url": "http://anipose.org",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "automated-behavioral-tracking",
+    "categories": [
+      "automated-behavioral-tracking"
+    ],
+    "tags": [
+      "3D pose estimation",
+      "markerless tracking",
+      "DeepLabCut",
+      "camera calibration",
+      "bundle adjustment",
+      "triangulation",
+      "Viterbi filter",
+      "autoencoder filter",
+      "spatiotemporal regularization",
+      "Drosophila",
+      "joint kinematics",
+      "mouse reaching",
+      "human gait",
+      "ChArUco board",
+      "aniposelib"
+    ],
+    "summary": "Anipose extends 2D markerless pose estimation (built on DeepLabCut) to robust 3D tracking from multiple synchronized cameras, adding automated camera calibration, 2D and 3D filters that remove tracking errors using the spatiotemporal structure of animal movement, and a web-based visualization tool — evaluated on flies, mice, and humans with sub-degree/sub-millimeter accuracy in most frames.",
+    "abstract_long": "Anipose implements the full 3D tracking pipeline: (1) a robust camera calibration module that estimates each camera's parameters from videos of a moving calibration board via \"iterative bundle adjustment\" (a procedure that automatically down-weights outlier keypoint detections across several optimization stages); (2) 2D filters — a median filter, a Viterbi filter (finding the most temporally consistent path through each frame's top-N candidate keypoint detections), and a learned autoencoder filter (correcting confidence scores using correlations among joints) — that clean up per-camera 2D keypoint detections before triangulation; (3) a spatiotemporal 3D triangulation optimization that enforces smooth movement over time and constant limb length across frames, further reducing tracking errors and producing markedly smoother derivative (movement-speed) estimates than raw triangulation, RANSAC, or a simple 3D median filter; and (4) a structured project file format plus a web-based visualization tool for reviewing and annotating tracked videos at scale. Validated on a precision-manufactured calibration board (sub-20-micron length error, sub-1-degree angle error in over 90% of frames) and on walking Drosophila, reaching mice, and the Human 3.6M walking dataset, Anipose reveals that fly middle legs are driven primarily by femur rotation while front and hind legs are driven primarily by femur-tibia flexion — a finding invisible to 2D tracking alone.",
+    "data_acquisition": "Synchronized multi-camera video (calibration board plus behavior videos), with 2D keypoints detected by an existing 2D pose-estimation network (DeepLabCut, or compatible tools like SLEAP/DeepPoseKit)",
+    "language": "Python",
+    "animal": "Fruit fly (Drosophila), mouse, human; general-purpose across species",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "Anipose requires synchronized video from 3 or more cameras (2 can work for some setups, but 3+ evenly spaced around the animal is recommended so every joint is visible from at least 2 cameras at all times) — it does not do 2D tracking itself, relying on DeepLabCut (or, with a one-file change, SLEAP or DeepPoseKit) for that step. Users don't need to know Python: after initial setup, the pipeline runs from a configuration file and a small set of terminal commands.",
+    "tutorial_steps": [
+      "Set up your multi-camera rig and record calibration videos: film a standard calibration board (a ChArUco board is recommended, since its keypoints remain detectable even with partial occlusion) moved by hand through all cameras' fields of view.",
+      "Organize your project using Anipose's standardized file structure (a specific folder layout for behavior videos, calibration videos, and configuration files), which lets project-wide commands operate on every video at once rather than one at a time.",
+      "Run <code>anipose calibrate</code> to estimate each camera's intrinsic and extrinsic parameters via iterative bundle adjustment — a good calibration should have an average reprojection error under 3 pixels (ideally under 1).",
+      "Detect 2D keypoints in your behavior videos with DeepLabCut (or a compatible 2D tracker), then run <code>anipose analyze</code> to process every video in the project.",
+      "Apply Anipose's default 2D filters (median, Viterbi, and/or autoencoder — configurable per dataset) to clean up the raw 2D detections, then run the 3D triangulation step with spatiotemporal regularization to obtain filtered, smooth 3D poses and joint angles.",
+      "Review results with the web-based visualization tool, which synchronously displays all camera views alongside the reconstructed 3D keypoints and lets you annotate behaviors directly on the tracked videos — useful for isolating specific behaviors (for example, labeling reach outcomes as hits, misses, or bumps) for downstream analysis.",
+      "If tracking quality is poor, start troubleshooting with the most common causes: insufficient or poorly distributed calibration board detections, too few cameras for the number of joints being tracked, or a 2D network that hasn't seen a particular pose before (in which case, identify and relabel outlier frames, then retrain)."
+    ],
+    "tutorial_output": "Per-frame 3D keypoint positions and joint angles for every tracked animal, plus camera calibration parameters (reusable across sessions with the same camera rig) and, where 3D filtering was applied, smoothed position and velocity trajectories suitable for direct kinematic analysis (for example, UMAP embedding of joint angles and their derivatives, as demonstrated in the paper for fly and human gait).",
+    "sample_data": {
+      "text": "Raw and analyzed data from all four evaluation datasets (ChArUco board, mouse reaching, fly walking, human walking) are on Dryad; the human dataset is the publicly available Human 3.6M dataset.",
+      "url": "https://doi.org/10.5061/dryad.nzs7h44s4"
+    },
+    "code": {
+      "repo_url": "https://github.com/lambdaloop/anipose",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "aniposelib (standalone camera calibration and triangulation library, usable independently)",
+        "url": "https://github.com/lambdaloop/aniposelib"
+      },
+      {
+        "label": "DeepLabCut (the 2D pose-estimation tool Anipose is built on)",
+        "url": "https://github.com/DeepLabCut/DeepLabCut"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2022-04-04-sleap",
     "title": "SLEAP: A deep learning system for multi-animal pose tracking",
     "authors": "Pereira T.D., Tabris N., Matsliah A., Turner D.M., Li J., Ravindranath S., Papadoyannis E.S., Normand E., Deutsch D.S., Wang Z.Y., McKenzie-Smith G.C., Mitelut C.C., Diez Castro M., D'Uva J., Kislin M., Sanes D.H., Kocher S.D., Wang S.S.-H., Falkner A.L., Shaevitz J.W., Murthy M.",
@@ -1150,6 +1025,80 @@
     "verified": true
   },
   {
+    "id": "2023-06-01-multilevel-bayesian-hmm",
+    "title": "Bayesian multilevel hidden Markov models identify stable state dynamics in longitudinal recordings from macaque primary motor cortex",
+    "authors": "Kirchherr S., Mildiner Moraga S., Coudé G., Bimbi M., Ferrari P.F., Aarts E., Bonaiuto J.J.",
+    "journal": "European Journal of Neuroscience",
+    "year": 2023,
+    "date": "2023-06-01",
+    "doi": "10.1111/ejn.16065",
+    "paper_url": "https://doi.org/10.1111/ejn.16065",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "statistical-analysis",
+    "categories": [
+      "statistical-analysis",
+      "electrophysiology"
+    ],
+    "tags": [
+      "hidden Markov model",
+      "HMM",
+      "Bayesian",
+      "multilevel model",
+      "Poisson log-normal emission",
+      "longitudinal recording",
+      "primary motor cortex",
+      "macaque",
+      "chronic multi-electrode array",
+      "MCMC",
+      "Gibbs sampling",
+      "Viterbi algorithm",
+      "state decoding",
+      "neural population dynamics",
+      "trial-specific random effects",
+      "mHMMbayes",
+      "reaching grasping placing task"
+    ],
+    "summary": "This paper introduces a multilevel Bayesian hidden Markov model (mHMMbayes) for longitudinal multi-electrode spiking data, using a multivariate Poisson log-normal emission distribution and trial-specific random effects so that hidden neural population states — and their relationship to behavior — generalize consistently across multiple days of recording, unlike a standard single-level HMM which failed to generalize across sessions in the same dataset.",
+    "abstract_long": "Chronically implanted multi-electrode arrays let researchers record from the same neural population over weeks or months, but standard hidden Markov model (HMM) approaches to segmenting this activity into discrete population states assume the same transition and emission parameters apply to every trial — ignoring the nested, trial-by-trial and day-by-day structure of longitudinal recordings. The authors' multilevel Bayesian HMM instead estimates trial-specific transition and emission parameters (centered around group-level means) via a multivariate Poisson log-normal emission distribution suited to multi-electrode spike-count data, fit with an iterative Bayesian (Gibbs-based) estimation procedure rather than classic expectation-maximization. Applied to macaque primary motor cortex activity recorded across 10 days during a reaching-grasping-placing task, the model identified five-to-six discrete population states whose onset/offset times were tightly and stably linked to behavioral events (movement onset, object contact, placing) across the entire recording period — a relationship a comparison single-level HMM could not reliably recover, since it lacks trial-specific parameters and so cannot generalize the same state definitions across sessions recorded on different days.",
+    "data_acquisition": "Multi-unit spiking activity from chronically implanted multi-electrode arrays (macaque primary motor cortex), recorded across multiple days during a reaching, grasping, and placing task",
+    "language": "R (mHMMbayes package)",
+    "animal": "Macaque (Macaca mulatta)",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "mHMMbayes expects binned spike counts (the paper used 10 ms bins) per electrode, per trial, optionally alongside trial-level covariates (such as experimental condition) that you want the transition probabilities to depend on. It's not yet on CRAN — the multilevel Poisson log-normal functionality used in this paper lives on the package's \"develop\" branch.",
+    "tutorial_steps": [
+      "Install the development version directly from GitHub, e.g. <code>remotes::install_github(\"smildiner/mHMMbayes\", ref = \"develop\")</code>, to get the <code>HMM_plnorm</code> (single-level) and <code>mHMM_plnorm</code> (multilevel) functions used in this paper.",
+      "Prepare your data as binned spike counts per electrode and trial, plus any trial-level covariates you want to include in the transition model.",
+      "Fit the model, specifying the number of hidden states, starting values for the group-level transition and emission parameters (a conventional EM-fit single-level HMM — for example via the depmixS4 package — is a convenient source for these starting values), and non-informative hyper-priors for the group-level parameters.",
+      "Select the number of states by comparing relative fit (AIC/BIC) across several candidate values, and confirm convergence of all group-level parameters using the multivariate potential scale reduction factor (target Ȓ below 1.05) across at least two additional chains with randomized starting values.",
+      "Validate the fitted model with Bayesian posterior predictive checks: simulate new datasets from the fitted model and compare summary statistics (mean, standard deviation, maximum counts, proportion of zeros) against your real data, aggregated across trials per electrode.",
+      "Decode the most likely hidden-state sequence for each trial using the Viterbi algorithm with that trial's own estimated trial-specific parameters — this trial-specific decoding (rather than one shared parameter set for every trial) is the paper's key advantage over a standard single-level HMM for longitudinal data.",
+      "Relate the decoded state onset/offset times and state statistics (number of activations per trial, state lifetime) to your own behavioral event timings using your own correlation or regression approach — the package provides the fitted states and their forward probabilities, and downstream behavioral analysis is left to the user (the paper's own such analysis code is a separate repository — see the link above)."
+    ],
+    "tutorial_output": "A fitted multilevel HMM with group-level and trial-specific estimates of the transition probability matrix and the Poisson log-normal emission means per electrode and state (each with credibility intervals), plus, via the Viterbi algorithm, a decoded most-likely hidden-state sequence for every trial — from which state onset/offset times, activation counts, and lifetimes can be computed and related to behavioral events or experimental conditions.",
+    "sample_data": {
+      "text": "The macaque M1 spiking dataset analyzed in the paper is openly available on Zenodo.",
+      "url": "https://doi.org/10.5281/zenodo.7737574"
+    },
+    "code": {
+      "repo_url": "https://github.com/smildiner/mHMMbayes/tree/develop",
+      "platform": "github"
+    },
+    "extra_links": [],
+    "related_ids": [],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2024-03-20-spatialdata",
     "title": "SpatialData: an open and universal data framework for spatial omics",
     "authors": "Marconato L., Palla G., Yamauchi K.A., Virshup I., Heidari E., Treis T., Vierdag W.-M., Toth M., Stockhaus S., Shrestha R.B., Rombaut B., Pollaris L., Lehner L., Vöhringer H., Kats I., Saeys Y., Saka S.K., Huber W., Gerstung M., Moore J., Theis F.J., Stegle O.",
@@ -1307,6 +1256,90 @@
     "extra_links": [],
     "related_ids": [],
     "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2024-05-22-simba",
+    "title": "Simple Behavioral Analysis (SimBA) as a platform for explainable machine learning in behavioral neuroscience",
+    "authors": "Goodwin N.L., Choong J.J., Hwang S., Pitts K., Bloom L., Islam A., Zhang Y.Y., Szelenyi E.R., Tong X., Newman E.L., Miczek K., Wright H.R., McLaughlin R.J., Norville Z.C., Eshel N., Heshmati M., Nilsson S.R.O., Golden S.A.",
+    "journal": "Nature Neuroscience",
+    "year": 2024,
+    "date": "2024-05-22",
+    "doi": "10.1038/s41593-024-01649-9",
+    "paper_url": "https://doi.org/10.1038/s41593-024-01649-9",
+    "website_url": "https://simba-uw-tf-dev.readthedocs.io/",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "automated-behavioral-tracking",
+    "categories": [
+      "automated-behavioral-tracking",
+      "statistical-analysis"
+    ],
+    "tags": [
+      "SimBA",
+      "random forest",
+      "supervised behavioral classification",
+      "SHAP",
+      "explainable AI",
+      "XAI",
+      "GUI",
+      "DeepLabCut",
+      "SLEAP",
+      "DeepPoseKit",
+      "MARS",
+      "aggression",
+      "resident-intruder",
+      "chronic social defeat stress",
+      "ROI analysis",
+      "Kleinberg filter",
+      "pose estimation import",
+      "computational neuroethology",
+      "mouse",
+      "rat",
+      "cross-laboratory comparison"
+    ],
+    "summary": "SimBA is a GUI-driven, open-source platform that turns pose-tracking data from any pose-estimation tool (DeepLabCut, SLEAP, etc.) into supervised random-forest behavioral classifiers, and — distinctively — builds in SHAP-based explainability so classifiers can be objectively compared and shared across labs, species, and pose-estimation schemes like a reusable research reagent.",
+    "abstract_long": "SimBA sits downstream of pose estimation: after tracking animals with an external tool, users import the tracking data (CSV, H5, SLP, JSON, TRK, or MAT) and SimBA computes hundreds of per-frame features (movements, angles, paths, velocities, distances, sizes) across static and dynamic time windows, which are then used to train per-behavior random forest classifiers via an in-app annotation interface (manual, machine-assisted, or imported from BORIS/Noldus/EthoVisionXT). The platform's key innovation is built-in SHAP (SHapley Additive exPlanation) analysis, letting researchers see which features and timescales drive each classification — and, because SHAP values can be grouped into ethologically defined feature categories, classifiers trained on different pose-estimation schemes (e.g. 5 vs. 8 tracked body parts) can still be directly compared. The authors demonstrate this by comparing independently built mouse and rat attack classifiers from six research sites, finding both high cross-site accuracy and SHAP-revealed differences in which features and timescales different annotators relied on — and use SHAP-quantified behavior to reveal sex and environment-dependent differences in aggression and coping behaviors during resident-intruder and chronic social defeat stress assays.",
+    "data_acquisition": "Pose-tracking data imported from an existing markerless pose-estimation tool (DeepLabCut, SLEAP, DeepPoseKit, or MARS) — species-agnostic, validated on fish, wasp, moth, mouse, rat, and bird",
+    "language": "Python 3.6",
+    "animal": "Species-agnostic; validated on fish, wasp, moth, mouse, rat, bird",
+    "gpu_required": "",
+    "difficulty": "beginner",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "SimBA does not perform pose estimation itself — you first track your animals with an external tool (DeepLabCut, SLEAP, DeepPoseKit, or MARS), then import that tracking data into SimBA for feature calculation, classifier training, and analysis.",
+    "tutorial_steps": [
+      "Install with <code>pip install Simba-UW-tf-dev</code> (or via conda; see the docs for full environment setup).",
+      "(Optional) Pre-process raw videos within SimBA's batch tools: cropping, trimming, downsampling, or adjusting contrast/resolution before pose estimation.",
+      "Track your animals with your pose-estimation tool of choice (DeepLabCut, SLEAP, DeepPoseKit, or MARS), then import the resulting tracking files into a SimBA project via the GUI.",
+      "Apply SimBA's outlier-correction options if needed (movement and location criteria that flag and correct implausible frame-to-frame body-part jumps), then let SimBA calculate its default battery of features (movements, angles, paths, velocities, distances, sizes) across both single frames and rolling time windows — advanced users can define fully custom feature-extraction classes.",
+      "Build a training set for each behavior of interest: annotate frames directly in SimBA's built-in scoring interface (from raw video, or machine-assisted where you verify a prior model's predictions), or import existing annotations from BORIS, Noldus Observer, or EthoVisionXT. SimBA's video batch tools can extract targeted clips around the behavior of interest to balance positive/negative frames without requiring every frame of every video to be labeled.",
+      "Train a random forest classifier per behavior (SimBA's defaults: entropy criterion, sqrt max features, minimum sample leaf 1, 2,000 estimators — adjustable, with recommended settings importable from classifiers of similar behaviors). Evaluate with F1 learning curves and precision-recall curves, and use the interactive discrimination-threshold tool to set an appropriate probability cutoff for calling a behavior \"present\" in new videos.",
+      "Run the trained classifier on new videos, then use SimBA's built-in analysis tools (Gantt plots, probability plots, heatmaps, ROI-based time analyses) to extract behavior metrics — total duration, bout count, mean bout duration, and mean bout interval — with a Kleinberg-filter option to smooth frame-by-frame predictions into coherent temporal \"bursts.\"",
+      "For explainability, compute SHAP values for your classifier (built on TreeSHAP) to see which features and timescales drive its predictions — group individual features into the ethologically defined categories described in the paper (or your own custom bins) to make classifiers built on different pose-estimation schemes or from different labs directly comparable."
+    ],
+    "tutorial_output": "Per-frame behavior probabilities and binary classifications for every video analyzed, bout-level summary statistics (total duration, number of bouts, mean bout duration and interval) per behavior, visualizations (Gantt charts, probability traces, heatmaps, annotated video overlays) for qualitative validation, and — where computed — per-feature-category SHAP explainability scores that quantify and make comparable what each classifier is actually keying on.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/sgoldenlab/simba",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Gitter community support channel",
+        "url": "https://app.gitter.im/#/room/#SimBA-Resource_community"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-26",
     "added_by": "manual",
     "verified": true
   },

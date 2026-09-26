@@ -1,0 +1,43 @@
+title: Simple Behavioral Analysis (SimBA) as a platform for explainable machine learning in behavioral neuroscience
+authors: Goodwin N.L., Choong J.J., Hwang S., Pitts K., Bloom L., Islam A., Zhang Y.Y., Szelenyi E.R., Tong X., Newman E.L., Miczek K., Wright H.R., McLaughlin R.J., Norville Z.C., Eshel N., Heshmati M., Nilsson S.R.O., Golden S.A.
+journal: Nature Neuroscience
+year: 2024
+date: 2024-05-22
+doi: 10.1038/s41593-024-01649-9
+paper_url: https://doi.org/10.1038/s41593-024-01649-9
+github_url: https://github.com/sgoldenlab/simba
+website_url: https://simba-uw-tf-dev.readthedocs.io/
+access_status: open_access
+category: automated-behavioral-tracking, statistical-analysis
+tags: SimBA, random forest, supervised behavioral classification, SHAP, explainable AI, XAI, GUI, DeepLabCut, SLEAP, DeepPoseKit, MARS, aggression, resident-intruder, chronic social defeat stress, ROI analysis, Kleinberg filter, pose estimation import, computational neuroethology, mouse, rat, cross-laboratory comparison
+data_acquisition: Pose-tracking data imported from an existing markerless pose-estimation tool (DeepLabCut, SLEAP, DeepPoseKit, or MARS) — species-agnostic, validated on fish, wasp, moth, mouse, rat, and bird
+language: Python 3.6
+animal: Species-agnostic; validated on fish, wasp, moth, mouse, rat, bird
+difficulty: beginner
+citation_count:
+added_date: 2026-09-26
+
+summary:
+SimBA is a GUI-driven, open-source platform that turns pose-tracking data from any pose-estimation tool (DeepLabCut, SLEAP, etc.) into supervised random-forest behavioral classifiers, and — distinctively — builds in SHAP-based explainability so classifiers can be objectively compared and shared across labs, species, and pose-estimation schemes like a reusable research reagent.
+
+abstract_long:
+SimBA sits downstream of pose estimation: after tracking animals with an external tool, users import the tracking data (CSV, H5, SLP, JSON, TRK, or MAT) and SimBA computes hundreds of per-frame features (movements, angles, paths, velocities, distances, sizes) across static and dynamic time windows, which are then used to train per-behavior random forest classifiers via an in-app annotation interface (manual, machine-assisted, or imported from BORIS/Noldus/EthoVisionXT). The platform's key innovation is built-in SHAP (SHapley Additive exPlanation) analysis, letting researchers see which features and timescales drive each classification — and, because SHAP values can be grouped into ethologically defined feature categories, classifiers trained on different pose-estimation schemes (e.g. 5 vs. 8 tracked body parts) can still be directly compared. The authors demonstrate this by comparing independently built mouse and rat attack classifiers from six research sites, finding both high cross-site accuracy and SHAP-revealed differences in which features and timescales different annotators relied on — and use SHAP-quantified behavior to reveal sex and environment-dependent differences in aggression and coping behaviors during resident-intruder and chronic social defeat stress assays.
+
+extra_links:
+Gitter community support channel | https://app.gitter.im/#/room/#SimBA-Resource_community
+
+tutorial_intro:
+SimBA does not perform pose estimation itself — you first track your animals with an external tool (DeepLabCut, SLEAP, DeepPoseKit, or MARS), then import that tracking data into SimBA for feature calculation, classifier training, and analysis.
+
+tutorial_steps:
+Install with <code>pip install Simba-UW-tf-dev</code> (or via conda; see the docs for full environment setup).
+(Optional) Pre-process raw videos within SimBA's batch tools: cropping, trimming, downsampling, or adjusting contrast/resolution before pose estimation.
+Track your animals with your pose-estimation tool of choice (DeepLabCut, SLEAP, DeepPoseKit, or MARS), then import the resulting tracking files into a SimBA project via the GUI.
+Apply SimBA's outlier-correction options if needed (movement and location criteria that flag and correct implausible frame-to-frame body-part jumps), then let SimBA calculate its default battery of features (movements, angles, paths, velocities, distances, sizes) across both single frames and rolling time windows — advanced users can define fully custom feature-extraction classes.
+Build a training set for each behavior of interest: annotate frames directly in SimBA's built-in scoring interface (from raw video, or machine-assisted where you verify a prior model's predictions), or import existing annotations from BORIS, Noldus Observer, or EthoVisionXT. SimBA's video batch tools can extract targeted clips around the behavior of interest to balance positive/negative frames without requiring every frame of every video to be labeled.
+Train a random forest classifier per behavior (SimBA's defaults: entropy criterion, sqrt max features, minimum sample leaf 1, 2,000 estimators — adjustable, with recommended settings importable from classifiers of similar behaviors). Evaluate with F1 learning curves and precision-recall curves, and use the interactive discrimination-threshold tool to set an appropriate probability cutoff for calling a behavior "present" in new videos.
+Run the trained classifier on new videos, then use SimBA's built-in analysis tools (Gantt plots, probability plots, heatmaps, ROI-based time analyses) to extract behavior metrics — total duration, bout count, mean bout duration, and mean bout interval — with a Kleinberg-filter option to smooth frame-by-frame predictions into coherent temporal "bursts."
+For explainability, compute SHAP values for your classifier (built on TreeSHAP) to see which features and timescales drive its predictions — group individual features into the ethologically defined categories described in the paper (or your own custom bins) to make classifiers built on different pose-estimation schemes or from different labs directly comparable.
+
+tutorial_output:
+Per-frame behavior probabilities and binary classifications for every video analyzed, bout-level summary statistics (total duration, number of bouts, mean bout duration and interval) per behavior, visualizations (Gantt charts, probability traces, heatmaps, annotated video overlays) for qualitative validation, and — where computed — per-feature-category SHAP explainability scores that quantify and make comparable what each classifier is actually keying on.

@@ -1,0 +1,46 @@
+title: Anipose: A toolkit for robust markerless 3D pose estimation
+authors: Karashchuk P., Rupp K.L., Dickinson E.S., Walling-Bell S., Sanders E., Azim E., Brunton B.W., Tuthill J.C.
+journal: Cell Reports
+year: 2021
+date: 2021-09-28
+doi: 10.1016/j.celrep.2021.109730
+paper_url: https://doi.org/10.1016/j.celrep.2021.109730
+github_url: https://github.com/lambdaloop/anipose
+website_url: http://anipose.org
+access_status: open_access
+category: automated-behavioral-tracking
+tags: 3D pose estimation, markerless tracking, DeepLabCut, camera calibration, bundle adjustment, triangulation, Viterbi filter, autoencoder filter, spatiotemporal regularization, Drosophila, joint kinematics, mouse reaching, human gait, ChArUco board, aniposelib
+data_acquisition: Synchronized multi-camera video (calibration board plus behavior videos), with 2D keypoints detected by an existing 2D pose-estimation network (DeepLabCut, or compatible tools like SLEAP/DeepPoseKit)
+language: Python
+animal: Fruit fly (Drosophila), mouse, human; general-purpose across species
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-26
+
+summary:
+Anipose extends 2D markerless pose estimation (built on DeepLabCut) to robust 3D tracking from multiple synchronized cameras, adding automated camera calibration, 2D and 3D filters that remove tracking errors using the spatiotemporal structure of animal movement, and a web-based visualization tool — evaluated on flies, mice, and humans with sub-degree/sub-millimeter accuracy in most frames.
+
+abstract_long:
+Anipose implements the full 3D tracking pipeline: (1) a robust camera calibration module that estimates each camera's parameters from videos of a moving calibration board via "iterative bundle adjustment" (a procedure that automatically down-weights outlier keypoint detections across several optimization stages); (2) 2D filters — a median filter, a Viterbi filter (finding the most temporally consistent path through each frame's top-N candidate keypoint detections), and a learned autoencoder filter (correcting confidence scores using correlations among joints) — that clean up per-camera 2D keypoint detections before triangulation; (3) a spatiotemporal 3D triangulation optimization that enforces smooth movement over time and constant limb length across frames, further reducing tracking errors and producing markedly smoother derivative (movement-speed) estimates than raw triangulation, RANSAC, or a simple 3D median filter; and (4) a structured project file format plus a web-based visualization tool for reviewing and annotating tracked videos at scale. Validated on a precision-manufactured calibration board (sub-20-micron length error, sub-1-degree angle error in over 90% of frames) and on walking Drosophila, reaching mice, and the Human 3.6M walking dataset, Anipose reveals that fly middle legs are driven primarily by femur rotation while front and hind legs are driven primarily by femur-tibia flexion — a finding invisible to 2D tracking alone.
+
+extra_links:
+aniposelib (standalone camera calibration and triangulation library, usable independently) | https://github.com/lambdaloop/aniposelib
+DeepLabCut (the 2D pose-estimation tool Anipose is built on) | https://github.com/DeepLabCut/DeepLabCut
+
+sample_data_text: Raw and analyzed data from all four evaluation datasets (ChArUco board, mouse reaching, fly walking, human walking) are on Dryad; the human dataset is the publicly available Human 3.6M dataset.
+sample_data_url: https://doi.org/10.5061/dryad.nzs7h44s4
+
+tutorial_intro:
+Anipose requires synchronized video from 3 or more cameras (2 can work for some setups, but 3+ evenly spaced around the animal is recommended so every joint is visible from at least 2 cameras at all times) — it does not do 2D tracking itself, relying on DeepLabCut (or, with a one-file change, SLEAP or DeepPoseKit) for that step. Users don't need to know Python: after initial setup, the pipeline runs from a configuration file and a small set of terminal commands.
+
+tutorial_steps:
+Set up your multi-camera rig and record calibration videos: film a standard calibration board (a ChArUco board is recommended, since its keypoints remain detectable even with partial occlusion) moved by hand through all cameras' fields of view.
+Organize your project using Anipose's standardized file structure (a specific folder layout for behavior videos, calibration videos, and configuration files), which lets project-wide commands operate on every video at once rather than one at a time.
+Run <code>anipose calibrate</code> to estimate each camera's intrinsic and extrinsic parameters via iterative bundle adjustment — a good calibration should have an average reprojection error under 3 pixels (ideally under 1).
+Detect 2D keypoints in your behavior videos with DeepLabCut (or a compatible 2D tracker), then run <code>anipose analyze</code> to process every video in the project.
+Apply Anipose's default 2D filters (median, Viterbi, and/or autoencoder — configurable per dataset) to clean up the raw 2D detections, then run the 3D triangulation step with spatiotemporal regularization to obtain filtered, smooth 3D poses and joint angles.
+Review results with the web-based visualization tool, which synchronously displays all camera views alongside the reconstructed 3D keypoints and lets you annotate behaviors directly on the tracked videos — useful for isolating specific behaviors (for example, labeling reach outcomes as hits, misses, or bumps) for downstream analysis.
+If tracking quality is poor, start troubleshooting with the most common causes: insufficient or poorly distributed calibration board detections, too few cameras for the number of joints being tracked, or a 2D network that hasn't seen a particular pose before (in which case, identify and relabel outlier frames, then retrain).
+
+tutorial_output:
+Per-frame 3D keypoint positions and joint angles for every tracked animal, plus camera calibration parameters (reusable across sessions with the same camera rig) and, where 3D filtering was applied, smoothed position and velocity trajectories suitable for direct kinematic analysis (for example, UMAP embedding of joint angles and their derivatives, as demonstrated in the paper for fly and human gait).
