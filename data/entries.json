@@ -2615,5 +2615,75 @@
     "added_date": "2026-09-25",
     "added_by": "manual",
     "verified": true
+  },
+  {
+    "id": "2025-03-01-medicine",
+    "title": "MEDiCINe: Motion Estimation by Distributional Contrastive Inference for Neurophysiology",
+    "authors": "Watters N., Buccino A.P., Jazayeri M.",
+    "journal": "eNeuro",
+    "year": 2025,
+    "date": "2025-03-01",
+    "doi": "10.1523/ENEURO.0529-24.2025",
+    "paper_url": "https://www.eneuro.org/content/12/3/ENEURO.0529-24.2025",
+    "github_url": "https://github.com/jazlab/medicine",
+    "website_url": "https://jazlab.github.io/medicine/",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "electrophysiology",
+    "tags": [
+      "motion correction",
+      "drift correction",
+      "spike sorting",
+      "electrophysiology",
+      "Neuropixels",
+      "silicon probe",
+      "SpikeInterface",
+      "Kilosort4",
+      "deep learning",
+      "PyTorch",
+      "contrastive learning",
+      "motion estimation",
+      "neural recording",
+      "NHP",
+      "primate",
+      "Python",
+      "GPU"
+    ],
+    "summary": "MEDiCINe estimates brain motion (drift) during electrophysiology recordings by jointly optimizing two components — a motion function and an activity distribution along the probe — via gradient descent on detected spike amplitudes, depths, and times. It plugs directly into SpikeInterface and Kilosort4 pipelines, requires no manual parameter tuning across dozens of NHP datasets, and produces motion estimates as simple numpy arrays.",
+    "abstract_long": "Probe drift during extracellular recordings distorts spike waveforms and degrades spike sorting quality. MEDiCINe addresses this by decomposing neural activity data into two jointly-optimized components: a motion function m(t, depth) describing how the brain moves relative to the probe over time and depth, and an activity distribution a(depth) describing the baseline firing rate distribution along the probe. These are fit simultaneously via gradient descent to maximize the likelihood of the observed spike amplitude-depth-time dataset. The motion function is parameterized as a smooth (triangular kernel-smoothed) function with configurable temporal resolution (default 1s bins, 30s smoothing kernel) and depth bins (default 2, allowing linear interpolation of non-rigid motion). The activity distribution is parameterized as a small MLP. No labeled data is required — the model trains entirely on detected spikes from the session itself. The output is a motion array (time_bins x depth_bins) in microns that can be used directly with SpikeInterface's InterpolateMotionRecording or with Kilosort4's datashift module.",
+    "data_acquisition": "Extracellular electrophysiology recordings from silicon probes (e.g. Neuropixels); input is detected spike amplitudes, depths, and times — not raw voltage traces — so MEDiCINe is agnostic to recording hardware and compatible with any upstream spike detection pipeline",
+    "language": "Python (PyTorch)",
+    "animal": "Not species-specific; validated on NHP recordings across dozens of sessions",
+    "gpu_required": "recommended",
+    "difficulty": "intermediate",
+    "tutorial_intro": "MEDiCINe is installed as <code>medicine-neuro</code> from PyPI. The single entry point is <code>medicine.run_medicine()</code>, which takes spike amplitudes, depths, and times as numpy arrays and writes motion estimates to an output directory. It does not process raw voltage — any upstream spike detector works. The most common use is as a drop-in motion correction step inside a SpikeInterface pipeline, but it also integrates with Kilosort4 directly.",
+    "tutorial_steps": [
+      "Install and verify:\n<code>pip install medicine-neuro\npython -m medicine_demos.run_demo</code>\nThe demo downloads a sample dataset and displays motion estimation figures.",
+      "Run motion estimation by passing detected spike times, depths, and amplitudes to <code>medicine.run_medicine()</code>. These can come from SpikeInterface peak detection, Kilosort, or any other detector:\n<code>import medicine, numpy as np\nfrom pathlib import Path\n\noutput_dir = Path(\"medicine_output\")\noutput_dir.mkdir(parents=True, exist_ok=True)\n\nmedicine.run_medicine(\n    peak_amplitudes=...,\n    peak_depths=...,\n    peak_times=...,\n    output_dir=output_dir,\n)\n\nmotion     = np.load(output_dir / \"motion.npy\")\ntime_bins  = np.load(output_dir / \"time_bins.npy\")\ndepth_bins = np.load(output_dir / \"depth_bins.npy\")</code>",
+      "Apply motion correction in a SpikeInterface pipeline:\n<code>from spikeinterface.core.motion import Motion\nfrom spikeinterface.sortingcomponents.motion.motion_interpolation import InterpolateMotionRecording\n\nmotion_object = Motion(\n    displacement=motion,\n    temporal_bins_s=time_bins,\n    spatial_bins_um=depth_bins,\n)\nrecording_corrected = InterpolateMotionRecording(\n    recording, motion_object, border_mode=\"force_extrapolate\"\n)\n# Pass recording_corrected to your spike sorter with its built-in motion correction disabled</code>",
+      "Check the figures saved to <code>output_dir/</code>, especially <code>corrected_motion_raster.png</code>. The defaults work for most datasets — the only parameters worth adjusting are <code>motion_bound</code> (increase if drift is very large), <code>time_kernel_width</code> (decrease if motion is fast), and <code>amplitude_threshold_quantile</code> (increase to exclude noisy low-amplitude spikes). See the README for the full parameter reference and Kilosort4 integration instructions."
+    ],
+    "tutorial_output": "<code>motion.npy</code>: estimated probe motion in microns (n_time_bins x n_depth_bins). <code>time_bins.npy</code> and <code>depth_bins.npy</code>: corresponding bin centers. Diagnostic figures saved to <code>output_dir</code> including raw raster, motion overlay, and corrected raster.",
+    "code": {
+      "repo_url": "https://github.com/jazlab/medicine",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "MEDiCINe paper reproduction code",
+        "url": "https://github.com/jazlab/medicine_paper"
+      },
+      {
+        "label": "SpikeInterface motion correction docs",
+        "url": "https://spikeinterface.readthedocs.io/en/latest/modules/motion_correction.html"
+      }
+    ],
+    "related_ids": [
+      "2020-11-10-spikeinterface",
+      "2024-04-08-kilosort4"
+    ],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
   }
 ]
