@@ -1048,9 +1048,9 @@
     "website_url": "https://buzsakilab.com/wp/public-data/",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "neural-circuits",
+    "category": "electrophysiology",
     "categories": [
-      "neural-circuits"
+      "electrophysiology"
     ],
     "tags": [
       "hippocampus",
@@ -2123,9 +2123,9 @@
     "website_url": "https://buzsakilab.com/wp/database/",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "neural-circuits",
+    "category": "electrophysiology",
     "categories": [
-      "neural-circuits"
+      "electrophysiology"
     ],
     "tags": [
       "hippocampus",
@@ -3052,9 +3052,11 @@
     "website_url": "",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "neural-circuits",
+    "category": "gene-protein-analysis",
     "categories": [
-      "neural-circuits"
+      "gene-protein-analysis",
+      "image-analysis",
+      "brain-imaging"
     ],
     "tags": [
       "MAPseq",
