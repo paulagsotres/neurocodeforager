@@ -5,7 +5,7 @@ const CATEGORIES = [
   { slug: 'statistical-analysis', name: 'Statistical analysis', desc: 'models, inference, testing', icon: 'stats' },
   { slug: 'automated-behavioral-tracking', name: 'Automated behavioral tracking', desc: 'pose, motion, ethograms', icon: 'behavior' },
   { slug: 'electrophysiology', name: 'Electrophysiology', desc: 'spike sorting, LFP, SWR', icon: 'ephys' },
-  { slug: 'brain-imaging', name: 'Brain imaging', desc: 'functional or anatomical — MRI, fMRI, MEG/EEG, light-sheet', icon: 'brainImaging' },
+  { slug: 'brain-imaging', name: 'Brain imaging', desc: 'MRI, fMRI, MEG/EEG, light-sheet, fiber photometry, calcium imaging', icon: 'brainImaging' },
   { slug: 'gene-protein-analysis', name: 'Gene and protein analysis', desc: 'sequencing, structure', icon: 'gene' },
   { slug: 'spatial-omics', name: 'Spatial omics', desc: 'tissue-level molecular maps', icon: 'omics' },
   { slug: 'neural-networks', name: 'Neural networks', desc: 'ML/DL models for neuro data', icon: 'nn' },
