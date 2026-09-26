@@ -149,12 +149,28 @@ def build():
         print(f"No entry files found in {PAPERS_DIR} (besides TEMPLATE.txt).")
         return []
 
-    entries = []
+    # Load existing order so we preserve it and append new entries at the end
+    existing_order = []
+    if ENTRIES_PATH.exists():
+        try:
+            existing_order = [e["id"] for e in json.loads(ENTRIES_PATH.read_text())]
+        except Exception:
+            pass
+    existing_set = set(existing_order)
+
+    # Parse all files
+    parsed = {}
     for f in files:
         try:
-            entries.append(parse_entry_file(f))
+            entry = parse_entry_file(f)
+            parsed[entry["id"]] = entry
         except Exception as e:
             print(f"  Skipping {f.name} — couldn't parse it: {e}")
+
+    # Existing entries keep their order; new files go at the end
+    known_ids = [eid for eid in existing_order if eid in parsed]
+    new_ids   = [eid for eid in parsed if eid not in existing_set]
+    entries   = [parsed[eid] for eid in known_ids + new_ids]
 
     ENTRIES_PATH.write_text(json.dumps(entries, indent=2, ensure_ascii=False) + "\n")
     print(f"Built {ENTRIES_PATH} from {len(entries)} file(s) in {PAPERS_DIR}")
