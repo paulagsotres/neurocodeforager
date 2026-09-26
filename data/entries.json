@@ -3224,9 +3224,9 @@
     "website_url": "https://guppy.readthedocs.io",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "electrophysiology",
+    "category": "brain-imaging",
     "categories": [
-      "electrophysiology",
+      "brain-imaging",
       "statistical-analysis"
     ],
     "tags": [
@@ -3336,7 +3336,7 @@
     "summary": "tSC (theta-nested Spectral Components) is an unsupervised framework that decomposes CA1 hippocampal LFP into the spectral components nested within individual theta cycles, using ensemble empirical mode decomposition (EEMD) followed by ICA or NMF. It reveals that cycle-to-cycle variability of theta-nested oscillations reflects dynamic switching between hippocampal operating modes linked to different stages of spatial memory.",
     "abstract_long": "Lopes-dos-Santos et al. developed an unsupervised single-cycle profiling framework: EEMD decomposes raw LFPs into theta and supra-theta signals; a Morlet wavelet spectrogram is computed per theta cycle; ICA extracts statistically independent theta-nested spectral components. Five consistent tSCs emerged: tSC1 (22-Hz beta), tSC2 (35-Hz slow gamma), tSC3 (54-Hz mid-gamma), tSC4 (80-Hz mid-gamma), tSC5 (>100-Hz fast gamma). tSC4 cycles showed the strongest replay in SPW-Rs; tSC4 was strengthened during learning while tSC1-3 increased during retrieval.",
     "data_acquisition": "Multichannel extracellular tetrode recordings of LFPs and principal cell spiking from CA1 pyramidal layer during open field and goal-directed spatial tasks; data stored as numpy binary files per channel per session",
-    "language": "Python 2 (depends on numpy, scipy, scikit-learn, pandas, matplotlib)",
+    "language": "Python 2",
     "animal": "Mouse; also validated in rat",
     "gpu_required": "",
     "difficulty": "intermediate",
@@ -3357,7 +3357,7 @@
     "tutorial_output": "tSC dictionary (.tSC.ica) with component vectors, per-cycle spectral signatures, and tSC strengths; theta cycle boundary timestamps; instantaneous theta phase; EEMD intrinsic mode functions; saved ICA model for cross-session projection.",
     "sample_data": {
       "text": "Example LFP data (3 sessions, channel 4, mouse CA1) included in the tSC package under assets/tSC.",
-      "url": "https://neurocodeforager.org/assets/tSC"
+      "url": "https://data.mrc.ox.ac.uk/data-set/tsc"
     },
     "code": {
       "repo_url": "https://github.com/tortlab/tSC",
@@ -3366,7 +3366,7 @@
     "extra_links": [
       {
         "label": "Tutorial PDF",
-        "url": "https://neurocodeforager.org/assets/tSC/tSC%20tutorial.pdf"
+        "url": "https://github.com/paulagsotres/neurocodeforager/blob/main/assets/tSC/tSC%20tutorial.pdf"
       }
     ],
     "related_ids": [
