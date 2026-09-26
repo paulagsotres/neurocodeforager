@@ -3038,5 +3038,95 @@
     "added_date": "2026-09-26",
     "added_by": "manual",
     "verified": true
+  },
+  {
+    "id": "2026-09-09-netneurotools",
+    "title": "netneurotools: a trainee-oriented approach to network neuroscience",
+    "authors": "Liu Z.Q., Bazinet V., Hansen J.Y., Milisav F., Luppi A.I., Ceballos E.G., Farahani A., Suarez L.E., Shafiei G., Markello R.D., Misic B.",
+    "journal": "Nature Protocols",
+    "year": 2026,
+    "date": "2026-09-09",
+    "doi": "10.1038/s41596-026-01446-7",
+    "paper_url": "https://www.nature.com/articles/s41596-026-01446-7",
+    "github_url": "https://github.com/netneurolab/netneurotools",
+    "website_url": "https://netneurolab.github.io/netneurotools/",
+    "access_status": "paywall_restricted",
+    "citation_count": null,
+    "category": "statistical-analysis",
+    "categories": [
+      "statistical-analysis",
+      "brain-imaging"
+    ],
+    "tags": [
+      "network neuroscience",
+      "connectome",
+      "graph theory",
+      "brain networks",
+      "community detection",
+      "consensus clustering",
+      "surrogate networks",
+      "spatial statistics",
+      "Moran's I",
+      "dominance analysis",
+      "parcellation",
+      "brain atlas",
+      "surface visualization",
+      "FreeSurfer",
+      "CIFTI",
+      "network metrics",
+      "communicability",
+      "permutation testing",
+      "Python",
+      "human",
+      "MRI"
+    ],
+    "summary": "netneurotools is a Python toolbox that fills the gap between large, specialized neuroimaging packages — offering modular, trainee-tested functions for the full network neuroscience workflow: fetching datasets and atlases, constructing consensus and surrogate networks, computing graph metrics and spatial statistics, running permutation tests, and visualizing results on brain surfaces. Developed organically by the Misic lab since 2017 and used across more than 15 publications.",
+    "abstract_long": "Modern network neuroscience projects typically involve many moving parts: importing brain atlases, parcellating brain maps, constructing consensus connectivity matrices, computing graph metrics, running spatially-informed statistical tests, and rendering results on brain surfaces. The \"daylight\" between major specialized packages — fMRIPrep, Nilearn, NetworkX, Brain Connectivity Toolbox — is substantial, and trainees are left to develop ad hoc scripts that rarely survive beyond one or two generations. netneurotools fills this gap with nine modules covering the full analytical lifecycle: datasets (programmatic download of atlases, templates, and published datasets), networks (consensus and surrogate network construction), metrics (graph-theoretic measures including communicability, navigation efficiency, and assortativity), modularity (consensus community detection via the Louvain algorithm), stats (correlation, permutation testing, regression, and dominance analysis), spatial (Moran's I, Geary's C, and Lee's L spatial autocorrelation), plotting (surface-based and parcellated brain visualization via PyVista/VTK), interface (parsers for FreeSurfer, CIFTI, and GIfTI formats), and experimental (sandbox for community contributions). The toolbox is BSD-3 licensed, continuously tested via GitHub Actions, and distributed via PyPI and Docker.",
+    "data_acquisition": "Not applicable — a general-purpose toolbox for any parcellated brain imaging data (MRI connectivity matrices, brain maps, atlases); operates on regionalized data rather than raw imaging",
+    "language": "Python",
+    "animal": "Not species-specific (primarily demonstrated on human MRI data)",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "netneurotools is installed via pip and works on any parcellated brain data — connectivity matrices, brain maps, or atlases. The typical workflow starts with the <code>datasets</code> module to fetch standard atlases or published datasets, then passes through <code>networks</code>, <code>metrics</code>/<code>modularity</code>, and <code>stats</code> for analysis, and ends with <code>plotting</code> for surface visualization. Modules are decoupled and can be used independently.",
+    "tutorial_steps": [
+      "Install via pip: <code>pip install netneurotools</code>. For the latest development version: <code>pip install git+https://github.com/netneurolab/netneurotools.git</code>.",
+      "Fetch a standard dataset or atlas using the <code>datasets</code> module. For example, <code>nnt.datasets.fetch_schaefer2018()</code> returns a Schaefer parcellation, and <code>nnt.datasets.fetch_cammoun2012()</code> returns the Lausanne multi-scale atlas. Published datasets from the lab's own papers (myelin maps, connectivity matrices, receptor maps) can be fetched similarly — no manual downloading required.",
+      "Construct a consensus or surrogate network using the <code>networks</code> module. <code>nnt.networks.struct_consensus()</code> builds a group-representative structural connectivity matrix from individual subjects using distance-dependent thresholding. Surrogate networks preserving edge length and degree distribution can be generated with <code>nnt.networks.match_length_degree_distribution()</code> for null-model testing.",
+      "Compute graph-theoretic or communication metrics using the <code>metrics</code> module — for example <code>nnt.metrics.communicability_wei()</code>, <code>nnt.metrics.navigation_wu()</code>, or <code>nnt.metrics.assortativity_und()</code>. For community structure, use <code>nnt.modularity.consensus_modularity()</code>, which runs the Louvain algorithm across multiple resolutions and derives a robust consensus partition.",
+      "Run spatial or statistical tests using the <code>stats</code> and <code>spatial</code> modules. <code>nnt.stats.permtest_pearsonr()</code> performs spin-test-corrected correlation between brain maps. <code>nnt.stats.get_dominance_stats()</code> decomposes variance explained in a multiple regression into per-predictor contributions. <code>nnt.spatial.morans_i()</code> quantifies spatial autocorrelation of a brain map on a parcellation.",
+      "Visualize results on the brain surface using the <code>plotting</code> module. <code>nnt.plotting.pv_plot_parcellated_data()</code> renders a vector of parcellated values onto a cortical surface mesh using PyVista, with customizable views, colormaps, and lighting. <code>nnt.plotting.plot_mod_heatmap()</code> generates publication-quality community-ordered connectivity heatmaps."
+    ],
+    "tutorial_output": "Depends on the module used: consensus connectivity matrices, surrogate network ensembles, graph metrics per node or edge, community assignments across resolutions, permutation p-values, dominance statistics, spatial autocorrelation coefficients, or rendered brain surface figures and heatmaps — all as standard Python objects (numpy arrays, pandas DataFrames) or saved figures.",
+    "sample_data": {
+      "text": "The datasets module provides direct access to the datasets used in the paper's three tutorial examples (assortative mixing in annotated connectomes, structure-function coupling across MEG frequency bands, community structure across connectivity modes).",
+      "url": "https://netneurolab.github.io/netneurotools/auto_examples/index.html"
+    },
+    "code": {
+      "repo_url": "https://github.com/netneurolab/netneurotools",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Full documentation and API reference",
+        "url": "https://netneurolab.github.io/netneurotools/"
+      },
+      {
+        "label": "Tutorial examples",
+        "url": "https://netneurolab.github.io/netneurotools/auto_examples/index.html"
+      }
+    ],
+    "related_ids": [
+      "2018-12-10-fmriprep",
+      "2023-05-03-cebra"
+    ],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
   }
 ]
