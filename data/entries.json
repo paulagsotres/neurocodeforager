@@ -71,6 +71,86 @@
     "verified": true
   },
   {
+    "id": "2017-10-04-chips",
+    "title": "CHIPS: an Extensible Toolbox for Cellular and Hemodynamic Two-Photon Image Analysis",
+    "authors": "Barrett M.J.P., Ferrari K.D., Stobart J.L., Holub M., Weber B.",
+    "journal": "Neuroinformatics",
+    "year": 2017,
+    "date": "2017-10-04",
+    "doi": "10.1007/s12021-017-9344-y",
+    "paper_url": "https://doi.org/10.1007/s12021-017-9344-y",
+    "website_url": "",
+    "access_status": "paywall_restricted",
+    "citation_count": null,
+    "category": "image-analysis",
+    "categories": [
+      "image-analysis"
+    ],
+    "tags": [
+      "two-photon microscopy",
+      "CHIPS",
+      "blood vessel diameter",
+      "red blood cell velocity",
+      "calcium imaging",
+      "hemodynamics",
+      "motion correction",
+      "spectral unmixing",
+      "line scan",
+      "ScanImage",
+      "OME Bio-Formats",
+      "Radon transform",
+      "GUI",
+      "parameter optimization",
+      "MATLAB toolbox",
+      "neurovascular coupling",
+      "astrocyte imaging",
+      "RRID:SCR_015741"
+    ],
+    "summary": "CHIPS is a MATLAB toolbox that integrates the full two-photon image-analysis pipeline — import, pre-processing (motion correction, spectral unmixing, denoising), processing, and plotting — for measuring blood vessel diameter, red blood cell velocity, and cellular activity from line-scan or full-frame two-photon microscopy images, designed to be usable with little programming experience while remaining fully scriptable for advanced users.",
+    "abstract_long": "Two-photon microscopy produces more functional imaging data than can be analyzed manually, but published analysis algorithms are often hard to combine into one workflow: extracting metadata is tedious, pre-processing steps like motion correction or spectral unmixing must be bolted on separately, code may not run across platforms or MATLAB versions, and running several algorithms for the same analysis type usually means maintaining several disparate pipelines. CHIPS (Cellular and Hemodynamic Image Processing Suite) addresses this by wrapping import, pre-processing, processing, and plotting into one set of MATLAB classes built around common analysis types — line-scan or cross-sectional blood vessel diameter, red-blood-cell velocity from line scans, and cellular activity from a wide range of functional indicators. It auto-extracts metadata from ScanImage TIFFs or any OME Bio-Formats-compatible file, includes pre-processing helpers (whole-frame or line-by-line motion correction, spectral unmixing, channel combination for FRET ratios, denoising), runs its algorithms without interaction (many parallelized, either within an algorithm or across an array of images), and ships a GUI for interactive parameter optimization plus built-in plots and CSV export. Its modular, class-based design is intended to make it straightforward for developers to add new analysis types or alternative algorithms for existing ones.",
+    "data_acquisition": "Two-photon microscopy images of cells and blood vessels — line scans or full-frame images, primarily ScanImage TIFF or any OME Bio-Formats-compatible format",
+    "language": "MATLAB",
+    "animal": "Not applicable — general-purpose toolbox for two-photon image analysis, demonstrated in rodent brain imaging",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "CHIPS is organized around a small set of analysis classes, one per image/analysis type — for example LineScanVel for line-scan red-blood-cell velocity, LineScanDiam for line-scan vessel diameter, XSectScan for full-frame vessel cross-sectional diameter, or CellScan for cellular activity — each following the same import → pre-process → process → plot/output workflow.",
+    "tutorial_steps": [
+      "Download the self-contained MATLAB toolbox from the GitHub repo and add it to your MATLAB path (works on Windows, macOS, and Linux, MATLAB R2013a or later; no additional MATLAB toolboxes needed in most cases).",
+      "Create an object of the analysis class matching your data and question: <code>LineScanVel</code> for RBC velocity from a line scan along a vessel centreline, <code>LineScanDiam</code> for vessel diameter from a line scan across a vessel, <code>XSectScan</code> for vessel diameter from a full-frame cross-section image, or <code>CellScan</code> for cellular activity.",
+      "Import your images — CHIPS reads ScanImage TIFF files directly (auto-extracting the relevant metadata) or any format supported by the OME Bio-Formats framework; other image data already loaded into MATLAB via your own scripts can be wrapped with <code>RawImgDummy</code>.",
+      "Apply any needed pre-processing methods, such as <code>motion_correct</code> (whole-frame or line-by-line shift correction) and <code>unmix_chs</code> (spectral unmixing to remove fluorophore bleed-through), plus channel combination (for example, building a ratio channel for FRET sensors) or denoising as needed.",
+      "Call <code>process</code> to run the core algorithm — this executes without further interaction, and many algorithms are parallelized (across an array of images, or within a single algorithm) for substantial speed-ups on multi-core machines. Where CHIPS offers more than one algorithm for the same analysis type (for example, different cell-activity detection methods), choose the one suited to your indicator and cell type.",
+      "Use the built-in <code>opt_config</code> GUI to interactively tune analysis parameters against your own data before running a full batch.",
+      "Call <code>plot</code> for the default visualization for your object type (for a <code>LineScanVel</code>, this includes velocity, pixel shift, and estimated SNR traces over time), or use the data-output functions to export the underlying results to CSV for analysis outside MATLAB.",
+      "For groups of images, apply the same workflow with shared parameters across nearly identical images (for example, repeated trials from the same location), or with per-image parameter adjustments across similar-but-distinct images — and, within a single image, run separate analyses simultaneously on different regions (for example, a cell's activity and a nearby vessel's diameter together)."
+    ],
+    "tutorial_output": "Depending on the analysis class used: blood vessel diameter or red-blood-cell velocity over time (from line-scan or full-frame vessel images), or per-cell activity traces (from calcium or other functional indicators) — each with CHIPS's default diagnostic plots (for example raw pixel shift and estimated SNR alongside the measured quantity) and CSV-exportable underlying data for further analysis.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/EIN-lab/CHIPS",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "RRID:SCR_015741 (Research Resource Identifier for CHIPS)",
+        "url": "https://scicrunch.org/resolver/RRID:SCR_015741"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2018-08-20-deeplabcut",
     "title": "DeepLabCut: markerless pose estimation of user-defined body parts with deep learning",
     "authors": "Mathis A., Mamidanna P., Cury K.M., Abe T., Murthy V.N., Mathis M.W., Bethge M.",
@@ -1093,6 +1173,84 @@
       "platform": "github"
     },
     "extra_links": [],
+    "related_ids": [],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2023-11-21-salsa",
+    "title": "SaLSa: A Combinatory Approach of Semi-Automatic Labeling and Long Short-Term Memory to Classify Behavioral Syllables",
+    "authors": "Sakata S.",
+    "journal": "eNeuro",
+    "year": 2023,
+    "date": "2023-11-21",
+    "doi": "10.1523/ENEURO.0201-23.2023",
+    "paper_url": "https://doi.org/10.1523/ENEURO.0201-23.2023",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "automated-behavioral-tracking",
+    "categories": [
+      "automated-behavioral-tracking",
+      "neural-networks"
+    ],
+    "tags": [
+      "SaLSa",
+      "LSTM",
+      "long short-term memory",
+      "behavioral syllables",
+      "semi-automatic labeling",
+      "DeepLabCut",
+      "UMAP",
+      "spectral clustering",
+      "computational ethology",
+      "Alzheimer's disease",
+      "5xFAD",
+      "keypoint-MoSeq benchmark",
+      "egocentric coordinates",
+      "wavelet transform",
+      "open field",
+      "MATLAB"
+    ],
+    "summary": "SaLSa combines a semi-automatic labeling pipeline (unsupervised PCA/UMAP/spectral clustering to surface behavioral-syllable candidates for fast manual labeling) with an LSTM classifier trained on the resulting labels, reaching over 97% classification accuracy for six mouse behavioral syllables (locomotion, turning, rearing, sniffing, grooming, pause) from DeepLabCut-tracked open-field video — used to show that female 5xFAD Alzheimer's-model mice specifically develop hyperlocomotion between 4 and 8 months of age.",
+    "abstract_long": "LSTM networks are well suited to behavioral syllable classification because behavior often has long-term temporal dependencies that convolutional or frame-by-frame approaches don't capture — but LSTMs need substantial labeled training data. SaLSa addresses this with a two-stage pipeline: first, semi-automatic labeling, where 910 spatial and temporal features (extracted from egocentric, DeepLabCut-tracked body-part coordinates via PCA dimensionality reduction, UMAP embedding, and deliberately over-split spectral clustering) surface candidate behavioral-syllable snippets that a human then labels quickly via a GUI, rather than labeling raw video from scratch; second, an LSTM classifier (a 200-unit LSTM layer plus fully connected/softmax/classification layers) trained on those labels. Evaluated on independently labeled videos, the trained classifier reached over 97% accuracy and AUC above 0.95 for most syllables (locomotion, turning, rearing, grooming, pause; sniffing was harder to classify reliably). Benchmarked against keypoint-MoSeq — a leading fully-unsupervised alternative — SaLSa's top-down, predefined-syllable approach classified grooming reliably where keypoint-MoSeq tended to misclassify it, though keypoint-MoSeq automatically subdivided syllables like locomotion and turning by movement direction that SaLSa does not distinguish. Applying the trained classifier across 43 mice, the author found that female 5xFAD mice develop significantly elevated locomotion specifically between 4 and 8 months old, while age-related decline in rearing was common to both sexes and genotypes.",
+    "data_acquisition": "Top-down webcam video (25 fps) of a single mouse in an open-field arena, pose-tracked with DeepLabCut",
+    "language": "MATLAB",
+    "animal": "Mouse (5xFAD Alzheimer's-disease model and wild-type littermates)",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "SaLSa expects DeepLabCut-tracked body-part coordinates from top-down open-field video as its starting point — the paper tracked 10 points (nose, head, left/right ear, neck, anterior/posterior back, tail base, mid-tail, tail tip), though the two tail points were later excluded since tail shape didn't reflect behavioral syllables in this setup. All downstream feature extraction, labeling, and classification are implemented as MATLAB scripts. Note: independent peer review of this paper found the package's usability had some rough edges (e.g. no early-stopping during LSTM training, no dataloader for large files) — budget some troubleshooting time if you're setting this up for the first time.",
+    "tutorial_steps": [
+      "Track your mouse video with DeepLabCut, labeling at minimum nose, head, ears, neck, and back/tail-base body parts.",
+      "Convert tracked coordinates to egocentric coordinates (in the paper, the neck was set as the body center and the nose-neck axis as the body-center axis), then extract SaLSa's feature set: spatial features (relative coordinates across body parts, relative angle of each body part to the body-center axis, inter-body-part distances) and temporal features (frame-by-frame velocities of positions and distances, plus their spectrotemporal characteristics via wavelet transform using MATLAB's <code>cwt</code> function) — 910 features total in the paper's configuration, which assumes a fixed frame rate (25 fps); a different frame rate changes the feature count and requires retraining.",
+      "Run the unsupervised syllable-candidate identification: PCA to reduce dimensionality (keep enough components to explain over 85% variance — around 15 components in the paper), UMAP for further reduction to 2D (paper used <code>min_dist</code>=0.3, <code>n_neighbors</code>=5), then spectral clustering into a deliberately large number of clusters (35-50, chosen via the Calinski-Harabasz criterion) so each cluster stays relatively free of contamination from other behaviors. Discard fragmented sequences under 0.25 s, since they're too short to label reliably.",
+      "Manually label each remaining cluster snippet using SaLSa's built-in GUI, assigning it to one of your predefined behavioral syllables (the paper used locomotion, turning, rearing, sniffing, grooming, pause, plus a miscellaneous catch-all for contaminated or unrecognized snippets) — this semi-automatic step is much faster than labeling video from scratch, since the unsupervised step has already surfaced syllable-like candidates for you to confirm or reject.",
+      "Train the LSTM classifier on your labeled data: an input layer sized to your feature count, an LSTM layer (200 hidden units in the paper), a fully connected layer, a softmax layer, and a classification layer — trained with the ADAM optimizer and L2 regularization (paper defaults: gradient threshold 1, up to 60 epochs, 80/20 train/validation split), keeping the model with the best validation performance.",
+      "Evaluate on independently labeled videos not used in training, computing an ROC curve and AUC per behavioral syllable, before trusting the classifier on new, unlabeled data — in the paper, most syllables reached AUC above 0.95, but rarer syllables (sniffing, at under 1% of labeled frames) classified less reliably and were excluded from downstream analysis.",
+      "Run the trained classifier on your full video set to get frame-by-frame syllable labels, then compute per-episode metrics — speed (nose travel distance per frame), cumulative turning angle (of the nose-to-tail-base axis), and \"compactness\" (mean pairwise body-part distance) — to characterize each syllable quantitatively or compare syllable fractions and durations across experimental groups."
+    ],
+    "tutorial_output": "Frame-by-frame behavioral syllable labels for every processed video, per-syllable ROC/AUC performance metrics when evaluated against held-out labeled data, and derived per-episode kinematic summaries (speed, turning angle, compactness) usable for downstream group comparisons such as genotype, sex, or age effects on syllable usage.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/Sakata-Lab/SaLSa",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "DeepLabCut (the pose-estimation tool SaLSa's tracking step depends on)",
+        "url": "https://github.com/DeepLabCut/DeepLabCut"
+      }
+    ],
     "related_ids": [],
     "added_date": "2026-09-26",
     "added_by": "manual",

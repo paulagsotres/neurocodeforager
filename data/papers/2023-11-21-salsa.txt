@@ -1,0 +1,41 @@
+title: SaLSa: A Combinatory Approach of Semi-Automatic Labeling and Long Short-Term Memory to Classify Behavioral Syllables
+authors: Sakata S.
+journal: eNeuro
+year: 2023
+date: 2023-11-21
+doi: 10.1523/ENEURO.0201-23.2023
+paper_url: https://doi.org/10.1523/ENEURO.0201-23.2023
+github_url: https://github.com/Sakata-Lab/SaLSa
+access_status: open_access
+category: automated-behavioral-tracking, neural-networks
+tags: SaLSa, LSTM, long short-term memory, behavioral syllables, semi-automatic labeling, DeepLabCut, UMAP, spectral clustering, computational ethology, Alzheimer's disease, 5xFAD, keypoint-MoSeq benchmark, egocentric coordinates, wavelet transform, open field, MATLAB
+data_acquisition: Top-down webcam video (25 fps) of a single mouse in an open-field arena, pose-tracked with DeepLabCut
+language: MATLAB
+animal: Mouse (5xFAD Alzheimer's-disease model and wild-type littermates)
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-26
+
+summary:
+SaLSa combines a semi-automatic labeling pipeline (unsupervised PCA/UMAP/spectral clustering to surface behavioral-syllable candidates for fast manual labeling) with an LSTM classifier trained on the resulting labels, reaching over 97% classification accuracy for six mouse behavioral syllables (locomotion, turning, rearing, sniffing, grooming, pause) from DeepLabCut-tracked open-field video — used to show that female 5xFAD Alzheimer's-model mice specifically develop hyperlocomotion between 4 and 8 months of age.
+
+abstract_long:
+LSTM networks are well suited to behavioral syllable classification because behavior often has long-term temporal dependencies that convolutional or frame-by-frame approaches don't capture — but LSTMs need substantial labeled training data. SaLSa addresses this with a two-stage pipeline: first, semi-automatic labeling, where 910 spatial and temporal features (extracted from egocentric, DeepLabCut-tracked body-part coordinates via PCA dimensionality reduction, UMAP embedding, and deliberately over-split spectral clustering) surface candidate behavioral-syllable snippets that a human then labels quickly via a GUI, rather than labeling raw video from scratch; second, an LSTM classifier (a 200-unit LSTM layer plus fully connected/softmax/classification layers) trained on those labels. Evaluated on independently labeled videos, the trained classifier reached over 97% accuracy and AUC above 0.95 for most syllables (locomotion, turning, rearing, grooming, pause; sniffing was harder to classify reliably). Benchmarked against keypoint-MoSeq — a leading fully-unsupervised alternative — SaLSa's top-down, predefined-syllable approach classified grooming reliably where keypoint-MoSeq tended to misclassify it, though keypoint-MoSeq automatically subdivided syllables like locomotion and turning by movement direction that SaLSa does not distinguish. Applying the trained classifier across 43 mice, the author found that female 5xFAD mice develop significantly elevated locomotion specifically between 4 and 8 months old, while age-related decline in rearing was common to both sexes and genotypes.
+
+extra_links:
+DeepLabCut (the pose-estimation tool SaLSa's tracking step depends on) | https://github.com/DeepLabCut/DeepLabCut
+
+tutorial_intro:
+SaLSa expects DeepLabCut-tracked body-part coordinates from top-down open-field video as its starting point — the paper tracked 10 points (nose, head, left/right ear, neck, anterior/posterior back, tail base, mid-tail, tail tip), though the two tail points were later excluded since tail shape didn't reflect behavioral syllables in this setup. All downstream feature extraction, labeling, and classification are implemented as MATLAB scripts. Note: independent peer review of this paper found the package's usability had some rough edges (e.g. no early-stopping during LSTM training, no dataloader for large files) — budget some troubleshooting time if you're setting this up for the first time.
+
+tutorial_steps:
+Track your mouse video with DeepLabCut, labeling at minimum nose, head, ears, neck, and back/tail-base body parts.
+Convert tracked coordinates to egocentric coordinates (in the paper, the neck was set as the body center and the nose-neck axis as the body-center axis), then extract SaLSa's feature set: spatial features (relative coordinates across body parts, relative angle of each body part to the body-center axis, inter-body-part distances) and temporal features (frame-by-frame velocities of positions and distances, plus their spectrotemporal characteristics via wavelet transform using MATLAB's <code>cwt</code> function) — 910 features total in the paper's configuration, which assumes a fixed frame rate (25 fps); a different frame rate changes the feature count and requires retraining.
+Run the unsupervised syllable-candidate identification: PCA to reduce dimensionality (keep enough components to explain over 85% variance — around 15 components in the paper), UMAP for further reduction to 2D (paper used <code>min_dist</code>=0.3, <code>n_neighbors</code>=5), then spectral clustering into a deliberately large number of clusters (35-50, chosen via the Calinski-Harabasz criterion) so each cluster stays relatively free of contamination from other behaviors. Discard fragmented sequences under 0.25 s, since they're too short to label reliably.
+Manually label each remaining cluster snippet using SaLSa's built-in GUI, assigning it to one of your predefined behavioral syllables (the paper used locomotion, turning, rearing, sniffing, grooming, pause, plus a miscellaneous catch-all for contaminated or unrecognized snippets) — this semi-automatic step is much faster than labeling video from scratch, since the unsupervised step has already surfaced syllable-like candidates for you to confirm or reject.
+Train the LSTM classifier on your labeled data: an input layer sized to your feature count, an LSTM layer (200 hidden units in the paper), a fully connected layer, a softmax layer, and a classification layer — trained with the ADAM optimizer and L2 regularization (paper defaults: gradient threshold 1, up to 60 epochs, 80/20 train/validation split), keeping the model with the best validation performance.
+Evaluate on independently labeled videos not used in training, computing an ROC curve and AUC per behavioral syllable, before trusting the classifier on new, unlabeled data — in the paper, most syllables reached AUC above 0.95, but rarer syllables (sniffing, at under 1% of labeled frames) classified less reliably and were excluded from downstream analysis.
+Run the trained classifier on your full video set to get frame-by-frame syllable labels, then compute per-episode metrics — speed (nose travel distance per frame), cumulative turning angle (of the nose-to-tail-base axis), and "compactness" (mean pairwise body-part distance) — to characterize each syllable quantitatively or compare syllable fractions and durations across experimental groups.
+
+tutorial_output:
+Frame-by-frame behavioral syllable labels for every processed video, per-syllable ROC/AUC performance metrics when evaluated against held-out labeled data, and derived per-episode kinematic summaries (speed, turning angle, compactness) usable for downstream group comparisons such as genotype, sex, or age effects on syllable usage.

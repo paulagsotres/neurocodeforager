@@ -1,0 +1,42 @@
+title: CHIPS: an Extensible Toolbox for Cellular and Hemodynamic Two-Photon Image Analysis
+authors: Barrett M.J.P., Ferrari K.D., Stobart J.L., Holub M., Weber B.
+journal: Neuroinformatics
+year: 2017
+date: 2017-10-04
+doi: 10.1007/s12021-017-9344-y
+paper_url: https://doi.org/10.1007/s12021-017-9344-y
+github_url: https://github.com/EIN-lab/CHIPS
+access_status: paywall_restricted
+category: image-analysis
+tags: two-photon microscopy, CHIPS, blood vessel diameter, red blood cell velocity, calcium imaging, hemodynamics, motion correction, spectral unmixing, line scan, ScanImage, OME Bio-Formats, Radon transform, GUI, parameter optimization, MATLAB toolbox, neurovascular coupling, astrocyte imaging, RRID:SCR_015741
+data_acquisition: Two-photon microscopy images of cells and blood vessels — line scans or full-frame images, primarily ScanImage TIFF or any OME Bio-Formats-compatible format
+language: MATLAB
+animal: Not applicable — general-purpose toolbox for two-photon image analysis, demonstrated in rodent brain imaging
+difficulty: intermediate
+citation_count:
+added_date: 2026-09-26
+
+summary:
+CHIPS is a MATLAB toolbox that integrates the full two-photon image-analysis pipeline — import, pre-processing (motion correction, spectral unmixing, denoising), processing, and plotting — for measuring blood vessel diameter, red blood cell velocity, and cellular activity from line-scan or full-frame two-photon microscopy images, designed to be usable with little programming experience while remaining fully scriptable for advanced users.
+
+abstract_long:
+Two-photon microscopy produces more functional imaging data than can be analyzed manually, but published analysis algorithms are often hard to combine into one workflow: extracting metadata is tedious, pre-processing steps like motion correction or spectral unmixing must be bolted on separately, code may not run across platforms or MATLAB versions, and running several algorithms for the same analysis type usually means maintaining several disparate pipelines. CHIPS (Cellular and Hemodynamic Image Processing Suite) addresses this by wrapping import, pre-processing, processing, and plotting into one set of MATLAB classes built around common analysis types — line-scan or cross-sectional blood vessel diameter, red-blood-cell velocity from line scans, and cellular activity from a wide range of functional indicators. It auto-extracts metadata from ScanImage TIFFs or any OME Bio-Formats-compatible file, includes pre-processing helpers (whole-frame or line-by-line motion correction, spectral unmixing, channel combination for FRET ratios, denoising), runs its algorithms without interaction (many parallelized, either within an algorithm or across an array of images), and ships a GUI for interactive parameter optimization plus built-in plots and CSV export. Its modular, class-based design is intended to make it straightforward for developers to add new analysis types or alternative algorithms for existing ones.
+
+extra_links:
+RRID:SCR_015741 (Research Resource Identifier for CHIPS) | https://scicrunch.org/resolver/RRID:SCR_015741
+
+tutorial_intro:
+CHIPS is organized around a small set of analysis classes, one per image/analysis type — for example LineScanVel for line-scan red-blood-cell velocity, LineScanDiam for line-scan vessel diameter, XSectScan for full-frame vessel cross-sectional diameter, or CellScan for cellular activity — each following the same import → pre-process → process → plot/output workflow.
+
+tutorial_steps:
+Download the self-contained MATLAB toolbox from the GitHub repo and add it to your MATLAB path (works on Windows, macOS, and Linux, MATLAB R2013a or later; no additional MATLAB toolboxes needed in most cases).
+Create an object of the analysis class matching your data and question: <code>LineScanVel</code> for RBC velocity from a line scan along a vessel centreline, <code>LineScanDiam</code> for vessel diameter from a line scan across a vessel, <code>XSectScan</code> for vessel diameter from a full-frame cross-section image, or <code>CellScan</code> for cellular activity.
+Import your images — CHIPS reads ScanImage TIFF files directly (auto-extracting the relevant metadata) or any format supported by the OME Bio-Formats framework; other image data already loaded into MATLAB via your own scripts can be wrapped with <code>RawImgDummy</code>.
+Apply any needed pre-processing methods, such as <code>motion_correct</code> (whole-frame or line-by-line shift correction) and <code>unmix_chs</code> (spectral unmixing to remove fluorophore bleed-through), plus channel combination (for example, building a ratio channel for FRET sensors) or denoising as needed.
+Call <code>process</code> to run the core algorithm — this executes without further interaction, and many algorithms are parallelized (across an array of images, or within a single algorithm) for substantial speed-ups on multi-core machines. Where CHIPS offers more than one algorithm for the same analysis type (for example, different cell-activity detection methods), choose the one suited to your indicator and cell type.
+Use the built-in <code>opt_config</code> GUI to interactively tune analysis parameters against your own data before running a full batch.
+Call <code>plot</code> for the default visualization for your object type (for a <code>LineScanVel</code>, this includes velocity, pixel shift, and estimated SNR traces over time), or use the data-output functions to export the underlying results to CSV for analysis outside MATLAB.
+For groups of images, apply the same workflow with shared parameters across nearly identical images (for example, repeated trials from the same location), or with per-image parameter adjustments across similar-but-distinct images — and, within a single image, run separate analyses simultaneously on different regions (for example, a cell's activity and a nearby vessel's diameter together).
+
+tutorial_output:
+Depending on the analysis class used: blood vessel diameter or red-blood-cell velocity over time (from line-scan or full-frame vessel images), or per-cell activity traces (from calcium or other functional indicators) — each with CHIPS's default diagnostic plots (for example raw pixel shift and estimated SNR alongside the measured quantity) and CSV-exportable underlying data for further analysis.
