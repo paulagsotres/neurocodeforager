@@ -8,7 +8,7 @@ paper_url: https://www.frontiersin.org/journals/behavioral-neuroscience/articles
 github_url: https://github.com/MVIG-SJTU/AlphaTracker
 access_status: open_access
 category: automated-behavioral-tracking
-tags: multi-animal tracking, pose estimation, YOLOv3, SENet, identity tracking, Kalman filter, behavioral clustering, hierarchical clustering, social behavior, mouse, markerless tracking, GUI, Google Colab, AlphaPose, Adjusted Rand Index
+tags: multi-animal tracking, pose estimation, YOLOv3, SENet, identity tracking, Kalman filter, behavioral clustering, hierarchical clustering, social behavior, mouse, markerless tracking, Google Colab, AlphaPose, Adjusted Rand Index
 data_acquisition: Standard top-down video of multiple unmarked animals — works with low-cost webcams (tested down to 540p), no specialized hardware or markers required
 language: Python (PyTorch)
 animal: Mouse (demonstrated); adaptable to other species with retraining on new annotated data

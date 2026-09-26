@@ -9,7 +9,7 @@ github_url: https://github.com/DiseaseNeuroGenomics/PsychADxD
 website_url: https://psych-ad.org/
 access_status: open_access
 category: gene-protein-analysis
-tags: single-cell RNA-seq, snRNA-seq, single-nucleus, transcriptomics, Alzheimer's disease, Parkinson's disease, schizophrenia, bipolar disorder, dorsolateral prefrontal cortex, DLPFC, cell type composition, differential expression, dreamlet, crumblr, GWAS, heritability, disease trajectory, PsychAD, cross-disorder, pseudobulk
+tags: single-cell RNA-seq, snRNA-seq, single-nucleus, transcriptomics, Alzheimer's disease, Parkinson's disease, schizophrenia, bipolar disorder, dorsolateral prefrontal cortex, dorsolateral prefrontal cortex, cell type composition, differential expression, dreamlet, crumblr, genome-wide association study, heritability, disease trajectory, PsychAD, cross-disorder, pseudobulk
 data_acquisition: Single-nucleus RNA sequencing (snRNA-seq) — 10x Genomics Chromium, postmortem human DLPFC
 language: R, Python
 animal: Not applicable (human postmortem tissue)

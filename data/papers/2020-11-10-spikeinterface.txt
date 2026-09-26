@@ -9,7 +9,7 @@ github_url: https://github.com/SpikeInterface/spikeinterface
 website_url: https://spikeinterface.readthedocs.io
 access_status: open_access
 category: electrophysiology
-tags: spike sorting, unified framework, Kilosort, MountainSort, IronClust, SpyKING CIRCUS, Phy, preprocessing, postprocessing, quality metrics, benchmarking, curation, extracellular electrophysiology, Neuropixels, DANDI, NWB
+tags: spike sorting, unified framework, Kilosort, MountainSort, IronClust, SpyKING CIRCUS, Phy, preprocessing, postprocessing, quality metrics, benchmarking, curation, extracellular electrophysiology, Neuropixels, neurodata without borders
 data_acquisition: Extracellular electrophysiology recordings in any common file format (Neuropixels, Open Ephys, Intan, Blackrock, NWB, and many others)
 language: Python
 animal: Not applicable — a format- and algorithm-agnostic framework, not tied to a species or acquisition system

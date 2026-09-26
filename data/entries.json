@@ -22,12 +22,10 @@
       "ROI detection",
       "cell detection",
       "spike deconvolution",
-      "GUI",
       "neuropil correction",
       "GCaMP",
       "in vivo imaging",
-      "Janelia",
-      "HHMI"
+      "Janelia"
     ],
     "summary": "Suite2p is a complete, fast pipeline for two-photon calcium imaging data — registering raw movies to correct for motion, automatically detecting active cells, extracting their fluorescence and neuropil-corrected traces, and deconvolving spike times — built to run faster than real time and recover roughly twice as many cells as prior state-of-the-art methods, with a full GUI for inspecting and curating results.",
     "abstract_long": "Suite2p addresses the four core steps of two-photon calcium imaging analysis in one pipeline: registration (correcting for brain motion across frames, including rigid and non-rigid components), cell detection (finding active ROIs directly from the registered movie's statistics rather than requiring a separate structural channel), signal extraction (fluorescence traces per cell, with neuropil contamination subtracted), and spike deconvolution (inferring approximate spike times from the calcium traces). The pipeline runs on standard workstations, processes data faster than real time, and — because it detects cells based on activity rather than static anatomy — recovers substantially more active cells (roughly 2x) than prior approaches, enabling routine detection of well over 10,000 neurons per recording. A companion GUI lets users visually inspect detected ROIs, manually curate the automatic cell/non-cell classification, and explore extracted traces before further analysis.",
@@ -88,7 +86,6 @@
     ],
     "tags": [
       "two-photon microscopy",
-      "CHIPS",
       "blood vessel diameter",
       "red blood cell velocity",
       "calcium imaging",
@@ -99,7 +96,6 @@
       "ScanImage",
       "OME Bio-Formats",
       "Radon transform",
-      "GUI",
       "parameter optimization",
       "MATLAB toolbox",
       "neurovascular coupling",
@@ -170,10 +166,8 @@
       "markerless pose estimation",
       "transfer learning",
       "DeepLabCut",
-      "DLC",
       "SuperAnimal",
       "multi-animal tracking",
-      "GUI",
       "Google Colab",
       "Docker",
       "mouse",
@@ -259,7 +253,6 @@
       "napari",
       "ImageJ",
       "Fiji",
-      "KNIME",
       "Icy",
       "digital pathology",
       "H&E",
@@ -267,7 +260,6 @@
       "object detection",
       "non-maximum suppression",
       "bioimage analysis",
-      "MICCAI",
       "StarDist"
     ],
     "summary": "StarDist detects and segments cell/nuclei instances in microscopy images by predicting a star-convex polygon per pixel, avoiding the merging and suppression errors common with per-pixel or bounding-box approaches in crowded images — available as a Python package with pretrained 2D/3D models, and as plugins for QuPath, napari, Fiji, Icy, and KNIME.",
@@ -343,18 +335,15 @@
       "fMRI",
       "functional MRI",
       "preprocessing",
-      "BIDS",
+      "brain imaging data structure",
       "NiPreps",
       "FreeSurfer",
-      "FSL",
       "ANTs",
-      "AFNI",
       "motion correction",
       "normalization",
       "quality reports",
       "reproducibility",
       "neuroimaging",
-      "MRIQC",
       "confound regression"
     ],
     "summary": "fMRIPrep is an analysis-agnostic preprocessing pipeline for functional MRI that automatically adapts a best-practice workflow (combining FSL, ANTs, FreeSurfer, and AFNI) to the specifics of virtually any BIDS-organized dataset, producing standardized, quality-checked outputs without requiring manual parameter tuning for each new dataset.",
@@ -403,6 +392,91 @@
     "verified": true
   },
   {
+    "id": "2019-01-28-idtracker",
+    "title": "idtracker.ai: tracking all individuals in small or large collectives of unmarked animals",
+    "authors": "Romero-Ferrero F., Bergomi M.G., Hinz R.C., Heras F.J.H., de Polavieja G.G.",
+    "journal": "Nature Methods",
+    "year": 2019,
+    "date": "2019-01-28",
+    "doi": "10.1038/s41592-018-0295-5",
+    "paper_url": "https://www.nature.com/articles/s41592-018-0295-5",
+    "website_url": "https://idtracker.ai",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "automated-behavioral-tracking",
+    "categories": [
+      "automated-behavioral-tracking"
+    ],
+    "tags": [
+      "animal tracking",
+      "identity tracking",
+      "multi-animal tracking",
+      "unmarked animals",
+      "zebrafish",
+      "Drosophila",
+      "mice",
+      "ants",
+      "markerless tracking",
+      "deep learning",
+      "convolutional neural network",
+      "video analysis",
+      "collective behavior",
+      "social behavior",
+      "trajectory analysis",
+      "Python",
+      "idtracker.ai"
+    ],
+    "summary": "idtracker.ai tracks and maintains the identity of every individual in a group of unmarked animals across an entire video using two cascaded convolutional networks: one to detect and separate touching animals, one to assign consistent identities frame by frame — eliminating the need for manual tagging, color-coding, or RFID and achieving near-perfect identity accuracy even in large groups with frequent crossings.",
+    "abstract_long": "The core problem in multi-animal tracking is not detection but identity: when two animals touch or cross, classical tracking algorithms lose track of who is who. idtracker.ai solves this with a cascade of two deep neural networks trained on automatically extracted image patches from the video itself (no external labeled data required). The first network (the \"crossing detector\") classifies each blob as a single animal or a group of touching animals and separates touching individuals by subtracting a learned single-animal blob shape. The second network (the \"identification network\") learns the visual appearance of each individual from frames where animals are isolated and uses this to assign consistent identities across crossings. The system uses the GPU to process video at close to real-time speed and requires no manual annotation of identities or manual labeling for training — the networks are trained automatically from scratch on each new video. The authors validate the approach on groups of up to 100 zebrafish and show near-zero identity errors, and demonstrate generalization across species (Drosophila, mice, ants).",
+    "data_acquisition": "Standard video of a group of unmarked animals moving freely in an arena — no markers, dyes, or specialized hardware required; works with top-down or side-view recordings from a standard camera",
+    "language": "Python (PyTorch backend)",
+    "animal": "Demonstrated in zebrafish, Drosophila, mice, ants, and other species; general-purpose for any visually distinct animals in a shared arena",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "The idtracker.ai workflow is GUI-driven but fully scriptable via its Python API. The core pipeline runs on a single video and produces per-animal trajectory files; the networks are trained automatically from scratch on each video, so there is no pretrained model to download or fine-tune. A GPU is strongly recommended (required for groups larger than ~10 animals at reasonable speed). The key output is a <code>trajectories_wo_gaps.npy</code> file with identity-assigned (x, y) coordinates per frame per animal, which feeds directly into trajectory analysis with <a href=\"https://github.com/fjhheras/trajectorytools\">trajectorytools</a> or any custom analysis.",
+    "tutorial_steps": [
+      "Install idtracker.ai following the <a href=\"https://idtracker.ai/latest/install/installation.html\">installation guide</a>: create a dedicated conda environment (<code>conda create -n idtrackerai python=3.10</code>), activate it, and install with <code>pip install idtrackerai</code>. For GPU support (strongly recommended), install the matching PyTorch CUDA build before installing idtracker.ai. Verify the install with <code>idtrackerai --help</code>.",
+      "Launch the GUI with <code>idtrackerai</code> or run headlessly via the CLI. In the GUI, load your video and set the three key preprocessing parameters: (1) <strong>intensity threshold</strong> — separates animals from the background (use the preview to find a value where all animals are cleanly segmented); (2) <strong>number of animals</strong> — must be set correctly; (3) <strong>min/max blob area</strong> in pixels — filters out noise and background artifacts. These parameters are saved to a <code>local_settings.py</code> file that can be reused or scripted.",
+      "Run the tracking session. idtracker.ai will automatically: (a) segment every frame to extract animal blobs, (b) detect crossings using the crossing-detector network trained on blobs from that video, (c) train the identification network on isolated-animal image patches extracted from the video, and (d) assign consistent identities across all frames including crossings. Progress is shown in the GUI; intermediate results are saved to disk so a crashed session can be resumed.",
+      "Inspect the output in the session folder: <code>trajectories_wo_gaps.npy</code> (shape: frames × n_animals × 2) contains identity-assigned (x, y) pixel coordinates per frame; <code>trajectories.npy</code> contains the same with gaps where identity was uncertain; <code>validation.npy</code> stores the per-frame identity-assignment probabilities from the identification network. Load with <code>import numpy as np; traj = np.load('trajectories_wo_gaps.npy', allow_pickle=True).item()</code>.",
+      "Run trajectory analysis with <a href=\"https://github.com/fjhheras/trajectorytools\">trajectorytools</a> (<code>pip install trajectorytools</code>): load the trajectories, convert pixel coordinates to real-world units using the known arena size, compute per-animal and pairwise metrics (speed, acceleration, distance to neighbors, heading direction, border distance, inter-individual distance distributions). Example: <code>import trajectorytools as tt; tr = tt.Trajectories.from_idtracker(session_folder)</code>.",
+      "For scripted/batch processing of multiple videos, use idtracker.ai's CLI mode: <code>idtrackerai --video path/to/video.avi --number_of_animals 10 --intensity_ths 0 50 --area_ths 150 600 --exec</code> — all parameters map directly to the GUI fields and can be looped over a folder of videos in a shell script or Python subprocess call."
+    ],
+    "tutorial_output": "A session folder per video containing <code>trajectories_wo_gaps.npy</code> (frames × n_animals × 2 array of identity-assigned pixel coordinates), <code>trajectories.npy</code> (with gaps where identity was uncertain), per-animal identity images, and network training logs. These trajectory arrays are the direct input to downstream collective behavior analysis: inter-individual distances, speed distributions, social network metrics, leader-follower dynamics, alignment, and cohesion.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/shaliulab/idtrackerai",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "idtracker.ai documentation (usage guide)",
+        "url": "https://idtracker.ai/latest/user_guide/usage.html"
+      },
+      {
+        "label": "idtracker.ai installation guide",
+        "url": "https://idtracker.ai/latest/install/installation.html"
+      },
+      {
+        "label": "trajectorytools (companion Python library for trajectory analysis)",
+        "url": "https://github.com/fjhheras/trajectorytools"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2020-01-22-hnn",
     "title": "Human Neocortical Neurosolver (HNN), a new software tool for interpreting the cellular and network origin of human MEG/EEG data",
     "authors": "Neymotin S.A., Daniels D.S., Caldwell B., McDougal R.A., Carnevale N.T., Jas M., Moore C.I., Hines M.L., Hämäläinen M., Jones S.R.",
@@ -420,20 +494,19 @@
       "brain-imaging"
     ],
     "tags": [
-      "MEG",
-      "EEG",
+      "magnetoencephalography",
+      "electroencephalography",
       "ECoG",
       "current dipole",
       "neocortical circuit model",
       "biophysical modeling",
       "NEURON simulator",
-      "ERP",
+      "event-related potential",
       "alpha rhythm",
       "beta rhythm",
       "gamma rhythm",
       "pyramidal neurons",
       "thalamocortical",
-      "GUI",
       "translational neuroscience",
       "source localization",
       "parameter optimization",
@@ -507,11 +580,11 @@
     "tags": [
       "resting-state fMRI",
       "functional connectivity",
-      "BOLD",
+      "blood oxygen level dependent",
       "slow wave activity",
       "persistent activity",
       "independent component analysis",
-      "ICA",
+      "independent component analysis",
       "graph theory",
       "small-world network",
       "fALFF",
@@ -589,8 +662,7 @@
       "curation",
       "extracellular electrophysiology",
       "Neuropixels",
-      "DANDI",
-      "NWB"
+      "neurodata without borders"
     ],
     "summary": "SpikeInterface is a Python framework that wraps essentially every popular spike-sorting algorithm (including Kilosort, MountainSort, IronClust, SpyKING CIRCUS, and others) behind one consistent API, so you can read/write dozens of extracellular file formats, preprocess and postprocess recordings, run and directly compare multiple sorters on the same data, compute standard quality metrics, and export curated results to Phy — all without learning each tool's own idiosyncratic interface.",
     "abstract_long": "Before SpikeInterface, comparing spike-sorting algorithms meant learning a different, often incompatible tool for each one — complicating reproducible benchmarking and slowing adoption of newer methods. SpikeInterface unifies this landscape: its extractors module reads and writes dozens of recording and sorting file formats (so a recording loaded once works with any wrapped sorter); its preprocessing module handles standard steps like filtering, common referencing, and whitening; its sorters module wraps essentially all popular spike sorters (many packaged for one-line execution via Docker/Singularity, avoiding manual installation of each one's dependencies); its postprocessing and quality-metrics modules compute standard curation statistics (ISI violations, waveform metrics, and more) usable for automatic or manual curation; and its comparison module benchmarks sorter outputs against each other or against ground truth. The authors demonstrate the framework by reproducibly running, comparing, and benchmarking multiple spike sorters on real and simulated datasets with only a few lines of code, substantially reducing the manual-curation burden compared to running each sorter's own native pipeline.",
@@ -660,7 +732,6 @@
       "human-in-the-loop",
       "cyto3",
       "Cellpose-SAM",
-      "GUI",
       "napari",
       "3D segmentation",
       "microscopy",
@@ -730,7 +801,7 @@
     ],
     "tags": [
       "hidden Markov model",
-      "HMM",
+      "hidden Markov model",
       "investigatory behavior",
       "novelty seeking",
       "zona incerta",
@@ -745,7 +816,6 @@
       "mouse social behavior",
       "curiosity",
       "motivation",
-      "JAABA",
       "behavior labeling"
     ],
     "summary": "Using a 3-state hidden Markov model fit to JAABA-labeled investigatory action sequences, this paper distinguishes \"deep\" from \"shallow\" investigation of novel objects/conspecifics, and identifies a prelimbic-cortex-to-zona-incerta-to-periaqueductal-gray circuit — with a TAC1+ inhibitory zona incerta subpopulation in particular — that drives this novelty-seeking, curiosity-motivated behavior.",
@@ -874,6 +944,191 @@
     "verified": true
   },
   {
+    "id": "2022-02-01-squidpy",
+    "title": "Squidpy: a scalable framework for spatial omics analysis",
+    "authors": "Palla G., Spitzer H., Klein M., Fischer D., Schaar A.C., Kuemmerle L.B., Rybakov S., Ibarra I.L., Holmberg O., Virshup I., Lotfollahi M., Richter S., Theis F.J.",
+    "journal": "Nature Methods",
+    "year": 2022,
+    "date": "2022-02-01",
+    "doi": "10.1038/s41592-021-01358-2",
+    "paper_url": "https://www.nature.com/articles/s41592-021-01358-2",
+    "website_url": "https://squidpy.readthedocs.io/en/stable/",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "spatial-omics",
+    "categories": [
+      "spatial-omics"
+    ],
+    "tags": [
+      "spatial omics",
+      "spatial transcriptomics",
+      "spatial proteomics",
+      "single-cell analysis",
+      "spatial statistics",
+      "spatial neighborhood graph",
+      "neighborhood enrichment",
+      "co-occurrence analysis",
+      "Ripley's statistics",
+      "Moran's I",
+      "Geary's C",
+      "spatially variable genes",
+      "ligand-receptor interactions",
+      "cell-cell communication",
+      "image analysis",
+      "tissue morphology",
+      "image features",
+      "cell segmentation",
+      "Visium",
+      "Slide-seq",
+      "MERFISH",
+      "seqFISH",
+      "imaging mass cytometry",
+      "MIBI-TOF",
+      "AnnData",
+      "Scanpy",
+      "SpatialData",
+      "Dask",
+      "napari",
+      "Python",
+      "scverse"
+    ],
+    "summary": "Squidpy is a scalable Python framework for analyzing spatial molecular data. It represents spatial observations as neighborhood graphs and associated tissue images, enabling quantitative analysis of cellular organization, spatially variable genes, cell-cell interactions, tissue morphology and image-derived features within a common Scanpy/AnnData workflow.",
+    "abstract_long": "Squidpy, or Spatial Quantification of Molecular Data in Python, provides a unified framework for analyzing spatially resolved omics data across spot-based, single-cell and subcellular technologies. The framework combines two central representations: a spatial neighborhood graph constructed from coordinates and an image container for large tissue images. The graph supports grid-based, k-nearest-neighbor, radius-based and Delaunay neighborhoods, while the image representation uses memory-efficient and lazy-loading mechanisms based on xarray and Dask. On top of these representations, Squidpy implements neighborhood enrichment, cluster co-occurrence, Ripley's F/G/L statistics, Moran's I and Geary's C spatial autocorrelation, spatially variable gene analysis, ligand-receptor interaction testing, graph centrality measures and image-feature extraction. The framework also connects molecular observations with microscopy-derived features such as intensity, texture, segmentation-object counts and morphology. It is built on Scanpy and AnnData and is designed to interoperate with the wider Python single-cell ecosystem.",
+    "data_acquisition": "Spatially resolved molecular data from spot-based, single-cell and subcellular assays, including Visium, Slide-seq, seqFISH, MERFISH, imaging mass cytometry, MIBI-TOF and related spatial transcriptomic or proteomic technologies, optionally accompanied by high-resolution tissue microscopy images.",
+    "language": "Python",
+    "animal": "Technology-agnostic; demonstrated on mouse, human and other spatial molecular datasets.",
+    "gpu_required": "No for the core workflow; GPU may be useful for external deep-learning segmentation or image-feature extraction.",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "This tutorial demonstrates a general Squidpy workflow for a spatial transcriptomics dataset: install the package, load an AnnData object, inspect the spatial coordinates, construct a spatial neighborhood graph, visualize clusters, test neighborhood enrichment, identify spatially variable genes and optionally connect molecular data with tissue-image features. The workflow is modular: you can stop after graph-based spatial statistics or extend it with image processing, segmentation and ligand-receptor analysis. The current Squidpy documentation recommends using napari-spatialdata for interactive visualization in the SpatialData ecosystem rather than the deprecated original Squidpy napari plugin.",
+    "tutorial_steps": [
+      "Install Squidpy in an isolated Python environment. The current repository recommends Python 3.12 or newer on Linux or macOS, with Windows supported through WSL. Run <code>python -m venv squidpy-env</code>, activate the environment, and then run <code>python -m pip install --upgrade pip</code> followed by <code>pip install squidpy</code>. Alternatively, use <code>conda install -c conda-forge squidpy</code>.",
+      "Import the main packages with <code>import scanpy as sc</code> and <code>import squidpy as sq</code>. Squidpy uses AnnData, so molecular measurements should be stored in <code>adata.X</code>, observation metadata in <code>adata.obs</code>, gene or protein metadata in <code>adata.var</code>, spatial coordinates in <code>adata.obsm</code> and images in the associated image container.",
+      "Load a dataset from the Squidpy example-data registry or from your own experiment. For a Visium dataset, use <code>adata = sq.datasets.visium_hne_adata()</code>. For custom data, load an AnnData or Visium object with Scanpy and verify that spatial coordinates are available before performing graph-based analyses.",
+      "Inspect the object and its annotations with <code>adata</code>, <code>adata.obs.head()</code>, <code>adata.obsm.keys()</code> and <code>sc.pl.spatial(adata, color='clusters')</code>. Replace <code>clusters</code> with the name of the cell-type or cluster annotation in your own dataset.",
+      "Construct the spatial neighborhood graph. For grid-like Visium data, use <code>sq.gr.spatial_neighbors(adata, coord_type='grid', n_rings=1)</code>. For generic cell coordinates, use <code>sq.gr.spatial_neighbors(adata, coord_type='generic', n_neigh=6)</code>. If interactions are expected within a physical distance, use <code>sq.gr.spatial_neighbors(adata, coord_type='generic', radius=50)</code>, adjusting the radius to the coordinate units of the assay.",
+      "Quantify neighborhood enrichment between annotated cell types or clusters. Run <code>sq.gr.nhood_enrichment(adata, cluster_key='cell_type')</code> and visualize the result with <code>sq.pl.nhood_enrichment(adata, cluster_key='cell_type')</code>. Squidpy permutes cell-type labels while keeping the spatial graph fixed, then compares observed and randomized adjacency counts. Positive z-scores indicate over-represented neighboring cell-type pairs, whereas negative values indicate depletion.",
+      "Measure spatial co-occurrence across increasing distances. Run <code>sq.gr.co_occurrence(adata, cluster_key='cell_type')</code> and plot the result with <code>sq.pl.co_occurrence(adata, cluster_key='cell_type')</code>. This analysis tests whether one cell type occurs near another more often than expected at different spatial radii.",
+      "Identify globally clustered or dispersed cell types with Ripley's statistics. Run <code>sq.gr.ripley(adata, cluster_key='cell_type', mode='L')</code> and plot the result with <code>sq.pl.ripley(adata, cluster_key='cell_type', mode='L')</code>. The L, F and G functions quantify spatial organization across distance scales rather than at a single neighborhood radius.",
+      "Identify spatially variable genes. Run <code>sq.gr.spatial_autocorr(adata, mode='moran')</code> and inspect the ranked results in <code>adata.uns['moranI']</code>. A high positive Moran's I indicates that similar expression values tend to occur near one another in the spatial graph. Visualize candidate genes with <code>sc.pl.spatial(adata, color=['gene_1', 'gene_2'])</code>.",
+      "Analyze ligand-receptor interactions after defining cell-type annotations. Run <code>sq.gr.ligrec(adata, cluster_key='cell_type')</code> and inspect the results in <code>adata.uns['ligrec']</code>. Treat these results as candidate communication signals rather than direct evidence of physical or causal signaling, and interpret them together with spatial proximity and independent expression or protein measurements.",
+      "If tissue images are available, connect image data to the AnnData observations using Squidpy's image functionality. Add the image layer and, where appropriate, a segmentation mask, then extract intensity, texture or segmentation-object features. These features can be aggregated at spot or cell level and compared with molecular clusters or marker expression.",
+      "For interactive image exploration in the current software ecosystem, use napari-spatialdata rather than the deprecated original Squidpy napari plugin. This is useful when inspecting tissue boundaries, segmentation masks, cell-type annotations and molecular features in a common spatial coordinate system.",
+      "Save the processed object and analysis results with <code>adata.write('squidpy_analysis.h5ad')</code>. Also save the figures, parameter settings and Python environment specification so that neighborhood definitions, permutation counts, gene filters and image-processing settings can be reproduced."
+    ],
+    "tutorial_output": "The workflow produces an AnnData object containing a spatial neighborhood graph in <code>adata.obsp</code>, spatial distances and connectivities, neighborhood-enrichment scores and permutation-based significance values, co-occurrence curves, Ripley's F/G/L statistics, spatial-autocorrelation results for genes, ligand-receptor interaction statistics and, when images are available, spot-level or cell-level morphology and intensity features. The main biological outputs are quantitative maps of tissue organization, enriched or depleted cellular neighborhoods, spatially variable molecular features and candidate cell-cell communication patterns.\n\ncode:\nrepo_url: https://github.com/scverse/squidpy\nplatform: github",
+    "sample_data": {
+      "text": "The Squidpy documentation provides example datasets and tutorials for Visium, seqFISH, MERFISH, Slide-seq and other spatial molecular modalities. A representative workflow uses a mouse brain Visium dataset with hematoxylin and eosin imaging and spatial gene-expression measurements.",
+      "url": "https://squidpy.readthedocs.io/en/stable/notebooks/tutorial_visium_hne.html"
+    },
+    "code": {
+      "repo_url": "https://github.com/scverse/squidpy",
+      "platform": "github"
+    },
+    "extra_links": [],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2022-02-04-valero-subthreshold-optogenetics",
+    "title": "Probing subthreshold dynamics of hippocampal neurons by pulsed optogenetics",
+    "authors": "Valero M., Zutshi I., Yoon E., Buzsáki G.",
+    "journal": "Science",
+    "year": 2022,
+    "date": "2022-02-04",
+    "doi": "10.1126/science.abm1891",
+    "paper_url": "https://www.science.org/doi/10.1126/science.abm1891",
+    "website_url": "https://buzsakilab.com/wp/public-data/",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "neural-circuits",
+    "categories": [
+      "neural-circuits"
+    ],
+    "tags": [
+      "hippocampus",
+      "CA1",
+      "place cells",
+      "place fields",
+      "subthreshold dynamics",
+      "excitability",
+      "E/I balance",
+      "excitation-inhibition",
+      "sharp-wave ripples",
+      "SPW-R",
+      "theta oscillations",
+      "optogenetics",
+      "μLED",
+      "micro-LED",
+      "pulsed optogenetics",
+      "ghost fields",
+      "unmasked place fields",
+      "non-place cells",
+      "cell assemblies",
+      "independent component analysis",
+      "neural decoding",
+      "Bayesian decoding",
+      "membrane potential",
+      "CaMKIIα",
+      "freely moving",
+      "mouse"
+    ],
+    "summary": "Valero et al. use brief optogenetic depolarizing pulses delivered via μLED probes to probe the subthreshold excitability of large CA1 pyramidal neuron populations in freely moving mice, without disrupting their normal spiking. During SPW-Rs excitability decreases (balanced E/I model), during theta and within place fields it increases (reciprocal model); critically, optogenetic unmasking reveals stable latent place fields in 69% of apparent non-place cells, implying the fraction of CA1 neurons with a place representation is far higher than classical firing-threshold criteria suggest.",
+    "abstract_long": "The paper develops a population-scale, non-invasive proxy for membrane potential dynamics by delivering brief (20 ms), low-power μLED pulses to CA1 pyramidal neurons at random intervals while monitoring their spike responses. The magnitude of the evoked firing-rate change (ΔRate = μLED response − control) serves as a readout of the neuron's instantaneous excitability (Vm). Three main findings emerge. First, during SPW-Rs individual pyramidal neurons decrease their light-evoked responses (negative gain, balanced E/I model), even though population firing increases — resolving an apparent paradox between population and single-cell excitability. Second, during theta oscillations and within place fields, light-evoked responses are enhanced (reciprocal/disinhibition model), consistent with place cells receiving reduced inhibition inside their fields. Third — the most striking result — optogenetic depolarization unmasks stable, spatially selective \"ghost\" place fields in 69% of neurons classified as non-place cells under normal conditions; these latent fields are spatially correlated with the sparse spontaneous spikes of the same cells, are as stable as real place fields, and their SPW-R cofiring patterns predict their spatial overlap on the track, just as for real place cells. The implication is that essentially the entire CA1 pyramidal population carries a spatial representation, with most cells held below firing threshold by inhibition under normal conditions.",
+    "data_acquisition": "Extracellular electrophysiology with 4-shank μLED probes (3 μLEDs per shank, Neurolight) implanted in CA1 of freely moving CaMKIIα-Cre::Ai32 mice; 20-ms light pulses (0.02–0.1 μW) delivered at random 0.3–0.6 s intervals to depolarize pyramidal neurons while recording spiking responses; animal position tracked on a linear track",
+    "language": "MATLAB (custom scripts, buzcode toolbox)",
+    "animal": "Mouse (CaMKIIα-Cre::Ai32, C57BL/6 background; 4 mice, 822 CA1 pyramidal neurons, 43.3 ± 8.37 neurons per session)",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "The analysis code lives in <a href=\"https://github.com/buzsakilab/buzcode\">buzcode</a> and <a href=\"https://github.com/valegarman/HippoCookBook\">HippoCookBook</a> (MATLAB). The key analysis concept is ΔRate: for each neuron, subtract the firing rate during matched no-light control windows from the firing rate during light-pulse windows. This single number — computed per brain state, per theta phase bin, or per spatial position bin — is the excitability proxy that drives all the paper's analyses. The required input is a standard buzcode/HippoCookBook session struct with spike times, light pulse times (stored as events), LFP, and animal position.",
+    "tutorial_steps": [
+      "Classify light-responsive units using <code>getOptogeneticResponse.m</code> (HippoCookBook): it computes the cross-correlogram between each unit's spikes and the μLED pulse times, then applies four statistical tests (mean ΔRate > 2 SD, P < 10⁻³ vs shuffled pulses, bootstrap, SALT latency jitter). Returns a per-unit <code>optogeneticResponse</code> struct with <code>.isResponsive</code>, <code>.deltaRate</code> per intensity level, and response PSTHs. Only responsive units are used as the excitability proxy.",
+      "Compute ΔRate across brain states with <code>getAveragedPeriEventResponses.m</code>: pass spike times, light pulse event times, and a brain state vector (from <code>SleepScoreMaster.m</code>) to get mean ΔRate separately for Run, Quiet, NREM, and REM. For SPW-R-aligned analysis, pass SPW-R peak times (from <code>rippleMasterDetector.m</code>) as the reference event to get ΔRate as a function of time relative to ripple onset — this produces the \"negative gain during SPW-R\" result.",
+      "Compute ΔRate as a function of spatial position: bin the animal's track position into 2.2-cm bins and compute mean ΔRate per bin per neuron using <code>getSpikesReturnPlaceFields.m</code>. Comparing in-field vs out-of-field ΔRate (using the place field boundaries from control epochs) gives the within-field excitability gain. The same function run on light-stimulation epochs for non-place cells identifies unmasked (ghost) fields as spatial bins with significantly elevated ΔRate that are stable across trial halves.",
+      "For population assembly analysis, run <code>getAssemblies.m</code> (buzcode) on the z-scored spike matrix of all pyramidal neurons during home-cage SPW-Rs to extract ICA assembly membership weights. Then correlate assembly membership with pairwise spatial overlap on the track using <code>getSpikesReturnPlaceFields.m</code> output. To test replay, run <code>replayDetect.m</code> (buzcode) with and without unmasked place field spikes included in the place field sequence template, and compare the fraction of SPW-R events with significant Bayesian trajectory probabilities."
+    ],
+    "tutorial_output": "Per-unit <code>optogeneticResponse</code> struct (ΔRate per intensity, brain state, and spatial bin); place field maps for control and light epochs with ghost field flags; ICA assembly weight matrix; pairwise spatial-vs-ripple cofiring correlation matrices; replay trajectory significance fractions with and without unmasked fields included.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/buzsakilab/buzcode",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "buzcode (Buzsaki lab MATLAB toolbox, used for all analyses)",
+        "url": "https://github.com/buzsakilab/buzcode"
+      },
+      {
+        "label": "HippoCookBook (Valero lab toolbox, extends buzcode with place field and cell-type analysis)",
+        "url": "https://github.com/valegarman/HippoCookBook"
+      },
+      {
+        "label": "Buzsaki Lab public data repository",
+        "url": "https://buzsakilab.com/wp/public-data/"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2022-04-04-sleap",
     "title": "SLEAP: A deep learning system for multi-animal pose tracking",
     "authors": "Pereira T.D., Tabris N., Matsliah A., Turner D.M., Li J., Ravindranath S., Papadoyannis E.S., Normand E., Deutsch D.S., Wang Z.Y., McKenzie-Smith G.C., Mitelut C.C., Diez Castro M., D'Uva J., Kislin M., Sanes D.H., Kocher S.D., Wang S.S.-H., Falkner A.L., Shaevitz J.W., Murthy M.",
@@ -895,7 +1150,7 @@
       "top-down",
       "bottom-up",
       "part affinity fields",
-      "PAF",
+      "part affinity fields",
       "identity tracking",
       "optical flow",
       "appearance model",
@@ -906,7 +1161,6 @@
       "bumblebee",
       "gerbil",
       "mouse",
-      "GUI",
       "UNet",
       "transfer learning"
     ],
@@ -969,7 +1223,6 @@
       "neural-networks"
     ],
     "tags": [
-      "CEBRA",
       "contrastive learning",
       "self-supervised learning",
       "latent embedding",
@@ -1048,7 +1301,6 @@
       "social behavior",
       "mouse",
       "markerless tracking",
-      "GUI",
       "Google Colab",
       "AlphaPose",
       "Adjusted Rand Index"
@@ -1123,7 +1375,7 @@
     ],
     "tags": [
       "hidden Markov model",
-      "HMM",
+      "hidden Markov model",
       "Bayesian",
       "multilevel model",
       "Poisson log-normal emission",
@@ -1131,7 +1383,7 @@
       "primary motor cortex",
       "macaque",
       "chronic multi-electrode array",
-      "MCMC",
+      "Markov chain Monte Carlo",
       "Gibbs sampling",
       "Viterbi algorithm",
       "state decoding",
@@ -1197,12 +1449,12 @@
     ],
     "tags": [
       "SaLSa",
-      "LSTM",
+      "long short-term memory",
       "long short-term memory",
       "behavioral syllables",
       "semi-automatic labeling",
       "DeepLabCut",
-      "UMAP",
+      "uniform manifold approximation and projection",
       "spectral clustering",
       "computational ethology",
       "Alzheimer's disease",
@@ -1210,8 +1462,7 @@
       "keypoint-MoSeq benchmark",
       "egocentric coordinates",
       "wavelet transform",
-      "open field",
-      "MATLAB"
+      "open field"
     ],
     "summary": "SaLSa combines a semi-automatic labeling pipeline (unsupervised PCA/UMAP/spectral clustering to surface behavioral-syllable candidates for fast manual labeling) with an LSTM classifier trained on the resulting labels, reaching over 97% classification accuracy for six mouse behavioral syllables (locomotion, turning, rearing, sniffing, grooming, pause) from DeepLabCut-tracked open-field video — used to show that female 5xFAD Alzheimer's-model mice specifically develop hyperlocomotion between 4 and 8 months of age.",
     "abstract_long": "LSTM networks are well suited to behavioral syllable classification because behavior often has long-term temporal dependencies that convolutional or frame-by-frame approaches don't capture — but LSTMs need substantial labeled training data. SaLSa addresses this with a two-stage pipeline: first, semi-automatic labeling, where 910 spatial and temporal features (extracted from egocentric, DeepLabCut-tracked body-part coordinates via PCA dimensionality reduction, UMAP embedding, and deliberately over-split spectral clustering) surface candidate behavioral-syllable snippets that a human then labels quickly via a GUI, rather than labeling raw video from scratch; second, an LSTM classifier (a 200-unit LSTM layer plus fully connected/softmax/classification layers) trained on those labels. Evaluated on independently labeled videos, the trained classifier reached over 97% accuracy and AUC above 0.95 for most syllables (locomotion, turning, rearing, grooming, pause; sniffing was harder to classify reliably). Benchmarked against keypoint-MoSeq — a leading fully-unsupervised alternative — SaLSa's top-down, predefined-syllable approach classified grooming reliably where keypoint-MoSeq tended to misclassify it, though keypoint-MoSeq automatically subdivided syllables like locomotion and turning by movement direction that SaLSa does not distinguish. Applying the trained classifier across 43 mice, the author found that female 5xFAD mice develop significantly elevated locomotion specifically between 4 and 8 months old, while age-related decline in rearing was common to both sexes and genotypes.",
@@ -1378,7 +1629,7 @@
       "extracellular electrophysiology",
       "Phy",
       "SpikeInterface",
-      "IBL",
+      "international brain laboratory",
       "high-density probes"
     ],
     "summary": "Kilosort4 is a spike-sorting algorithm that extracts single-neuron firing times from extracellular electrophysiology recordings, introducing a graph-based clustering approach (built around modularity optimization and a hierarchical merging tree) that outperformed all prior algorithms — including earlier Kilosort versions — across a range of realistic drift simulations.",
@@ -1438,14 +1689,11 @@
       "SimBA",
       "random forest",
       "supervised behavioral classification",
-      "SHAP",
+      "Shapley values",
       "explainable AI",
-      "XAI",
-      "GUI",
+      "explainable AI",
       "DeepLabCut",
-      "SLEAP",
       "DeepPoseKit",
-      "MARS",
       "aggression",
       "resident-intruder",
       "chronic social defeat stress",
@@ -1526,9 +1774,8 @@
       "MoSeq",
       "syllables",
       "switching linear dynamical system",
-      "SLDS",
+      "switching linear dynamical system",
       "AR-HMM",
-      "SLEAP",
       "DeepLabCut",
       "mouse",
       "rat",
@@ -1608,7 +1855,7 @@
       "visual cortex",
       "calcium imaging",
       "two-photon imaging",
-      "ANN",
+      "artificial neural network",
       "Conv-LSTM",
       "CvT-LSTM",
       "transfer learning",
@@ -1784,11 +2031,10 @@
       "GABAergic neurons",
       "glutamatergic neurons",
       "partial least squares correlation",
-      "PLSC",
+      "partial least squares correlation",
       "shared neural subspace",
       "multi-agent reinforcement learning",
-      "MARL",
-      "SLEAP",
+      "multi-agent reinforcement learning",
       "pose tracking",
       "CNMF-E",
       "NoRMCorre",
@@ -1866,6 +2112,110 @@
     "verified": true
   },
   {
+    "id": "2025-09-04-valero-interneurons-hippocampal-spatial-code",
+    "title": "Cooperative actions of interneuron families support the hippocampal spatial code",
+    "authors": "Valero M., Abad-Perez P., Gallardo A., Picco M., García-Hernandez R., Brotons J., Martínez-Félix A., Machold R., Rudy B., Buzsáki G.",
+    "journal": "Science",
+    "year": 2025,
+    "date": "2025-09-04",
+    "doi": "10.1126/science.adv5638",
+    "paper_url": "https://www.science.org/doi/10.1126/science.adv5638",
+    "website_url": "https://buzsakilab.com/wp/database/",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "neural-circuits",
+    "categories": [
+      "neural-circuits"
+    ],
+    "tags": [
+      "hippocampus",
+      "interneurons",
+      "place cells",
+      "place fields",
+      "spatial coding",
+      "cognitive map",
+      "Pvalb",
+      "Sst",
+      "Vip",
+      "Id2",
+      "GABAergic",
+      "optogenetics",
+      "opto-tagging",
+      "silicon probe",
+      "extracellular electrophysiology",
+      "spike sorting",
+      "KiloSort",
+      "interneuron classification",
+      "decision tree classifier",
+      "machine learning",
+      "physiological fingerprinting",
+      "sharp-wave ripples",
+      "SPW-R",
+      "theta oscillations",
+      "gamma oscillations",
+      "neural decoding",
+      "CA1",
+      "mouse",
+      "freely moving",
+      "delayed alternation task",
+      "Python"
+    ],
+    "summary": "This paper shows that the four major hippocampal GABAergic interneuron families (Pvalb, Sst, Vip, Id2) can be reliably identified in large-scale extracellular recordings using only physiological features — spike width, firing irregularity, ACG rise time, waveform asymmetry, theta modulation — trained on opto-tagged ground-truth data, and that these families cooperate to differentially shape the spatial features (stability, selectivity, generalization, place-field amplitude) of CA1 pyramidal place cells.",
+    "abstract_long": "Valero et al. combined silicon probe recordings with optogenetic identification (ChR2 in Pvalb, Sst, Vip, Id2, and CaMK2α lines) to collect ground-truth physiological fingerprints for all major interneuron families in freely moving mice, across both the hippocampus and neocortex. A decision tree classifier trained on six physiological features (CV2, ACG rise time, spike width, anatomical location, waveform asymmetry, firing rate) achieved >89% accuracy per family in 10-fold cross-validation and was then applied to large-scale, unlabeled recordings (5276 CA1 units from 155 sessions, 30 mice), whose predicted family fractions matched gene-expression-based fractions. The study then examined how the four interneuron families cooperatively shape pyramidal place cell spatial coding: Pvalb suppressed the first half of place fields, while Sst and Id2 suppressed the second half; Vip disinhibited CaMK2α neurons via Sst suppression and increased place-field amplitude. CEBRA-based decoding showed that interneurons alone (at matched cell counts) decode spatial position as accurately as pyramidal cells, and leaving out any single family increased decoding error. The physiological fingerprinting strategy is paradigm-independent and applicable to datasets from different labs and species.",
+    "data_acquisition": "Extracellular electrophysiology with 64-site, 5-shank silicon probes (or 32-site 4-shank μLED probes) implanted in CA1 of freely moving mice; optogenetic identification via ChR2 expressed selectively in each interneuron family through Cre/Flp mouse lines; animal position tracked with a Basler camera at 30 Hz",
+    "language": "MATLAB (primary analysis, KiloSort spike sorting, SleepScoreMaster, HippoCookBook toolbox); Python (CEBRA for decoding)",
+    "animal": "Mouse (C57BL/6 background, 12–32 weeks; transgenic lines: Pvalb-Cre::Ai32, Sst-Flip::Ai80F, Id2-CreER/Dlx5-Flpe::Ai80, Vip-Flip::Ai80F, CaMK2α-Cre::Ai32)",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "The core reusable output of this paper is the interneuron family classifier in <a href=\"https://github.com/valegarman/HippoCookBook/tree/main/analysis/cell_type_classification\">HippoCookBook/analysis/cell_type_classification</a>. Given any sorted CA1 hippocampal dataset, it assigns each unit to one of five families: Pvalb, Sst, Id2, Vip, or CaMK2α. Important constraints: (1) the classifier reads the <code>cell_metrics</code> struct produced by CellExplorer — this is a hard dependency, CellExplorer must be run first; (2) the full classifier only works for hippocampal CA1 neurons, as the CA1-specific LFP features (theta modulation, SPW-R response, gamma phase locking) depend on hippocampal oscillatory landmarks that don't exist in neocortex.",
+    "tutorial_steps": [
+      "Run CellExplorer (<a href=\"https://github.com/petersenpeter/CellExplorer\">petersenpeter/CellExplorer</a>) on your KiloSort-sorted CA1 data. CellExplorer outputs a <code>cell_metrics</code> struct (saved as <code>session.cell_metrics.cellinfo.mat</code>) containing the waveform and spike-train features the classifier needs: <code>cell_metrics.waveforms</code> (spike width, asymmetry), <code>cell_metrics.acg</code> (autocorrelogram and rise time), <code>cell_metrics.firingRate</code>, <code>cell_metrics.cv2</code>, and <code>cell_metrics.general.chanCoords</code> (anatomical location). This struct is the required input format.",
+      "Run the LFP feature extraction functions in HippoCookBook to add CA1-specific features to <code>cell_metrics</code>: theta phase modulation (<code>computePhaseModulation.m</code>), SPW-R response (<code>rippleMasterDetector.m</code> + PSTH), and slow/mid/fast gamma phase preferences. These are computed from the raw LFP alongside the spike data and appended to <code>cell_metrics</code> before classification.",
+      "Call the classifier: load the pretrained model from <code>cell_type_classification/</code> and pass your <code>cell_metrics</code> struct. The classifier returns a predicted family label (Pvalb / Sst / Id2 / Vip / CaMK2α) and a confidence score per unit. A classification cutoff of ≥95% confidence per family is recommended (as used in the paper)."
+    ],
+    "tutorial_output": "A per-unit table of predicted interneuron family labels and confidence scores, ready to use as cell-type annotations for any downstream analysis (place fields, functional coupling, population decoding). The classifier achieves >89% accuracy per family (>97% for CA1 with LFP features) in 10-fold cross-validation against opto-tagged ground truth.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/valegarman/HippoCookBook",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "CellExplorer (prerequisite: computes the cell metrics that the classifier reads)",
+        "url": "https://github.com/petersenpeter/CellExplorer"
+      },
+      {
+        "label": "HippoCookBook Arduino circuits and software for optogenetic control during behavior",
+        "url": "https://github.com/valegarman/HippoPlayground"
+      },
+      {
+        "label": "CEBRA toolbox (used for position decoding from interneuron ensembles)",
+        "url": "https://cebra.ai"
+      },
+      {
+        "label": "KiloSort spike sorter",
+        "url": "https://github.com/cortex-lab/KiloSort"
+      },
+      {
+        "label": "Neuroscience Information Theory Toolbox (MI-based coupling)",
+        "url": "https://github.com/nmtimme/NeuroscienceInformationTheoryToolbox"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-25",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2026-03-02-jabs",
     "title": "JAX Animal Behavior System (JABS), a genetics-informed, end-to-end advanced behavioral phenotyping platform for the laboratory mouse",
     "authors": "Choudhary A., Geuther B.Q., Sproule T.J., Beane G., Kohar V., Trapszo J., Kumar V.",
@@ -1893,11 +2243,10 @@
       "posture",
       "ethogram",
       "ethograph",
-      "GWAS",
+      "genome-wide association study",
       "heritability",
       "genetic correlation",
       "strain survey",
-      "JAABA",
       "Random Forest",
       "XGBoost",
       "mouse genetics",
@@ -1985,9 +2334,8 @@
       "human electrophysiology",
       "joystick task",
       "iELVis",
-      "RAVE",
       "changes of mind",
-      "GAM",
+      "generalized additive model",
       "latent dynamical systems",
       "LDS clustering"
     ],
@@ -2056,8 +2404,7 @@
       "monosynaptic connectivity",
       "Neuropixels",
       "silicon probe",
-      "extracellular recording",
-      "MATLAB"
+      "extracellular recording"
     ],
     "summary": "Turns spike-sorted extracellular recordings into standardized physiological metrics and helps classify units into cell types (e.g. pyramidal cells, interneurons) via a MATLAB GUI.",
     "abstract_long": "",
@@ -2215,14 +2562,14 @@
       "Neuropixels",
       "optogenetic tagging",
       "whole-brain imaging",
-      "SPIM",
+      "selective plane illumination microscopy",
       "light-sheet microscopy",
       "single-neuron reconstruction",
       "MAPseq",
       "BARseq",
       "snRNA-seq",
       "axonal projection mapping",
-      "CCF",
+      "common coordinate framework",
       "Allen Institute",
       "fiber photometry",
       "reinforcement learning"
@@ -2303,7 +2650,6 @@
       "multi-area recordings",
       "V1",
       "lateromedial area",
-      "LM",
       "visual cortex",
       "optogenetic perturbation",
       "PV interneurons",
@@ -2377,7 +2723,7 @@
       "gene-protein-analysis"
     ],
     "tags": [
-      "MPRA",
+      "massively parallel reporter assay",
       "massively parallel reporter assay",
       "gene regulatory variants",
       "cortical structure",
@@ -2391,11 +2737,8 @@
       "Alu elements",
       "transposable elements",
       "CUT&RUN",
-      "TFIIIC",
       "MPRAnalyze",
       "motifbreakR",
-      "FIMO",
-      "JASPAR",
       "CRISPRi",
       "chromatin accessibility",
       "caQTL",
@@ -2469,12 +2812,12 @@
       "schizophrenia",
       "bipolar disorder",
       "dorsolateral prefrontal cortex",
-      "DLPFC",
+      "dorsolateral prefrontal cortex",
       "cell type composition",
       "differential expression",
       "dreamlet",
       "crumblr",
-      "GWAS",
+      "genome-wide association study",
       "heritability",
       "disease trajectory",
       "PsychAD",
@@ -2543,9 +2886,8 @@
       "statistical-analysis"
     ],
     "tags": [
-      "GLM",
       "generalized linear model",
-      "JAX",
+      "generalized linear model",
       "GPU-accelerated",
       "spike train modeling",
       "basis functions",
@@ -2625,11 +2967,13 @@
     "date": "2025-03-01",
     "doi": "10.1523/ENEURO.0529-24.2025",
     "paper_url": "https://www.eneuro.org/content/12/3/ENEURO.0529-24.2025",
-    "github_url": "https://github.com/jazlab/medicine",
     "website_url": "https://jazlab.github.io/medicine/",
     "access_status": "open_access",
     "citation_count": null,
     "category": "electrophysiology",
+    "categories": [
+      "electrophysiology"
+    ],
     "tags": [
       "motion correction",
       "drift correction",
@@ -2644,26 +2988,35 @@
       "contrastive learning",
       "motion estimation",
       "neural recording",
-      "NHP",
-      "primate",
-      "Python",
-      "GPU"
+      "non-human primate",
+      "Python"
     ],
-    "summary": "MEDiCINe estimates brain motion (drift) during electrophysiology recordings by jointly optimizing two components — a motion function and an activity distribution along the probe — via gradient descent on detected spike amplitudes, depths, and times. It plugs directly into SpikeInterface and Kilosort4 pipelines, requires no manual parameter tuning across dozens of NHP datasets, and produces motion estimates as simple numpy arrays.",
-    "abstract_long": "Probe drift during extracellular recordings distorts spike waveforms and degrades spike sorting quality. MEDiCINe addresses this by decomposing neural activity data into two jointly-optimized components: a motion function m(t, depth) describing how the brain moves relative to the probe over time and depth, and an activity distribution a(depth) describing the baseline firing rate distribution along the probe. These are fit simultaneously via gradient descent to maximize the likelihood of the observed spike amplitude-depth-time dataset. The motion function is parameterized as a smooth (triangular kernel-smoothed) function with configurable temporal resolution (default 1s bins, 30s smoothing kernel) and depth bins (default 2, allowing linear interpolation of non-rigid motion). The activity distribution is parameterized as a small MLP. No labeled data is required — the model trains entirely on detected spikes from the session itself. The output is a motion array (time_bins x depth_bins) in microns that can be used directly with SpikeInterface's InterpolateMotionRecording or with Kilosort4's datashift module.",
+    "summary": "MEDiCINe estimates brain motion (drift) during electrophysiology recordings by jointly optimizing two components — a motion function and an activity distribution along the probe — via gradient descent on detected spike amplitudes, depths, and times. It plugs directly into SpikeInterface and Kilosort4 pipelines, requires no manual parameter tuning, and produces motion estimates as simple numpy arrays.",
+    "abstract_long": "Probe drift during extracellular recordings distorts spike waveforms and degrades spike sorting quality. MEDiCINe addresses this by decomposing neural activity data into two jointly-optimized components: a motion function m(t, depth) describing how the brain moves relative to the probe over time and depth, and an activity distribution a(depth) describing the baseline firing rate distribution along the probe. These are fit simultaneously via gradient descent to maximize the likelihood of the observed spike amplitude-depth-time dataset. No labeled data is required — the model trains entirely on detected spikes from the session itself. The output is a motion array (time_bins × depth_bins) in microns that plugs directly into SpikeInterface's InterpolateMotionRecording or Kilosort4's datashift module. The authors validated on dozens of non-human primate datasets and report that hyperparameters almost never need tuning.",
     "data_acquisition": "Extracellular electrophysiology recordings from silicon probes (e.g. Neuropixels); input is detected spike amplitudes, depths, and times — not raw voltage traces — so MEDiCINe is agnostic to recording hardware and compatible with any upstream spike detection pipeline",
-    "language": "Python (PyTorch)",
-    "animal": "Not species-specific; validated on NHP recordings across dozens of sessions",
-    "gpu_required": "recommended",
+    "language": "Python (PyTorch); installed via pip as medicine-neuro; integrates with SpikeInterface and Kilosort4",
+    "animal": "Not species-specific; validated on non-human primate recordings across dozens of sessions",
+    "gpu_required": "",
     "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
     "tutorial_intro": "MEDiCINe is installed as <code>medicine-neuro</code> from PyPI. The single entry point is <code>medicine.run_medicine()</code>, which takes spike amplitudes, depths, and times as numpy arrays and writes motion estimates to an output directory. It does not process raw voltage — any upstream spike detector works. The most common use is as a drop-in motion correction step inside a SpikeInterface pipeline, but it also integrates with Kilosort4 directly.",
     "tutorial_steps": [
-      "Install and verify:\n<code>pip install medicine-neuro\npython -m medicine_demos.run_demo</code>\nThe demo downloads a sample dataset and displays motion estimation figures.",
-      "Run motion estimation by passing detected spike times, depths, and amplitudes to <code>medicine.run_medicine()</code>. These can come from SpikeInterface peak detection, Kilosort, or any other detector:\n<code>import medicine, numpy as np\nfrom pathlib import Path\n\noutput_dir = Path(\"medicine_output\")\noutput_dir.mkdir(parents=True, exist_ok=True)\n\nmedicine.run_medicine(\n    peak_amplitudes=...,\n    peak_depths=...,\n    peak_times=...,\n    output_dir=output_dir,\n)\n\nmotion     = np.load(output_dir / \"motion.npy\")\ntime_bins  = np.load(output_dir / \"time_bins.npy\")\ndepth_bins = np.load(output_dir / \"depth_bins.npy\")</code>",
-      "Apply motion correction in a SpikeInterface pipeline:\n<code>from spikeinterface.core.motion import Motion\nfrom spikeinterface.sortingcomponents.motion.motion_interpolation import InterpolateMotionRecording\n\nmotion_object = Motion(\n    displacement=motion,\n    temporal_bins_s=time_bins,\n    spatial_bins_um=depth_bins,\n)\nrecording_corrected = InterpolateMotionRecording(\n    recording, motion_object, border_mode=\"force_extrapolate\"\n)\n# Pass recording_corrected to your spike sorter with its built-in motion correction disabled</code>",
-      "Check the figures saved to <code>output_dir/</code>, especially <code>corrected_motion_raster.png</code>. The defaults work for most datasets — the only parameters worth adjusting are <code>motion_bound</code> (increase if drift is very large), <code>time_kernel_width</code> (decrease if motion is fast), and <code>amplitude_threshold_quantile</code> (increase to exclude noisy low-amplitude spikes). See the README for the full parameter reference and Kilosort4 integration instructions."
+      "Install and verify with the demo: <code>pip install medicine-neuro &amp;&amp; python -m medicine_demos.run_demo</code>. The demo downloads a sample dataset and shows motion estimation figures.",
+      "Run motion estimation — pass detected spike amplitudes, depths, and times (as numpy arrays, in microns and seconds) to <code>medicine.run_medicine(peak_amplitudes=..., peak_depths=..., peak_times=..., output_dir=Path('medicine_output'))</code>. These can come from SpikeInterface peak detection, Kilosort, or any other detector.",
+      "Load results from the output directory: <code>motion = np.load('medicine_output/motion.npy')</code> (shape: n_time_bins × n_depth_bins, units: microns), plus <code>time_bins.npy</code> and <code>depth_bins.npy</code> for the bin centers.",
+      "Apply motion correction in SpikeInterface by wrapping the output in a <code>Motion</code> object and passing it to <code>InterpolateMotionRecording(recording, motion_object)</code>, then feed the corrected recording to your spike sorter with its built-in motion correction disabled.",
+      "Check the output figures in <code>medicine_output/</code>, especially <code>corrected_motion_raster.png</code>. Defaults work for most datasets — only consider adjusting <code>motion_bound</code> (large drift), <code>time_kernel_width</code> (fast motion), or <code>amplitude_threshold_quantile</code> (noisy detections). See the README for Kilosort4 integration and the full parameter reference."
     ],
-    "tutorial_output": "<code>motion.npy</code>: estimated probe motion in microns (n_time_bins x n_depth_bins). <code>time_bins.npy</code> and <code>depth_bins.npy</code>: corresponding bin centers. Diagnostic figures saved to <code>output_dir</code> including raw raster, motion overlay, and corrected raster.",
+    "tutorial_output": "<code>motion.npy</code>: estimated probe motion in microns (n_time_bins × n_depth_bins). <code>time_bins.npy</code> and <code>depth_bins.npy</code>: corresponding bin centers. Diagnostic figures saved to <code>output_dir</code> including raw raster, motion overlay, and corrected raster.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
     "code": {
       "repo_url": "https://github.com/jazlab/medicine",
       "platform": "github"

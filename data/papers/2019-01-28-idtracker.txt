@@ -9,7 +9,7 @@ github_url: https://github.com/shaliulab/idtrackerai
 website_url: https://idtracker.ai
 access_status: open_access
 category: automated-behavioral-tracking
-tags: animal tracking, identity tracking, multi-animal tracking, unmarked animals, zebrafish, Drosophila, mice, ants, markerless tracking, deep learning, convolutional neural network, GPU, video analysis, collective behavior, social behavior, trajectory analysis, Python, idtracker.ai
+tags: animal tracking, identity tracking, multi-animal tracking, unmarked animals, zebrafish, Drosophila, mice, ants, markerless tracking, deep learning, convolutional neural network, video analysis, collective behavior, social behavior, trajectory analysis, Python, idtracker.ai
 data_acquisition: Standard video of a group of unmarked animals moving freely in an arena — no markers, dyes, or specialized hardware required; works with top-down or side-view recordings from a standard camera
 language: Python (PyTorch backend)
 animal: Demonstrated in zebrafish, Drosophila, mice, ants, and other species; general-purpose for any visually distinct animals in a shared arena

@@ -9,7 +9,7 @@ github_url: https://github.com/talmolab/sleap
 website_url: https://sleap.ai
 access_status: open_access
 category: automated-behavioral-tracking
-tags: multi-animal pose tracking, pose estimation, top-down, bottom-up, part affinity fields, PAF, identity tracking, optical flow, appearance model, real-time tracking, closed-loop, optogenetics, Drosophila, bumblebee, gerbil, mouse, GUI, UNet, transfer learning
+tags: multi-animal pose tracking, pose estimation, top-down, bottom-up, part affinity fields, part affinity fields, identity tracking, optical flow, appearance model, real-time tracking, closed-loop, optogenetics, Drosophila, bumblebee, gerbil, mouse, UNet, transfer learning
 data_acquisition: Video of one or more freely-moving or interacting animals of any species, from top-down or side camera angles
 language: Python (TensorFlow)
 animal: Fruit flies, bumblebees, mice, gerbils (general-purpose, demonstrated across species)

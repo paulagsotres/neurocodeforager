@@ -8,7 +8,7 @@ paper_url: https://www.science.org/doi/10.1126/science.abe9681
 github_url: https://github.com/herseninstituut/Ahmadlou_etal_Science_2021
 access_status: paywall_restricted
 category: automated-behavioral-tracking, statistical-analysis
-tags: hidden Markov model, HMM, investigatory behavior, novelty seeking, zona incerta, periaqueductal gray, prelimbic cortex, optogenetics, fiber photometry, in situ hybridization, TAC1, GABAergic neurons, action sequence classification, mouse social behavior, curiosity, motivation, JAABA, behavior labeling
+tags: hidden Markov model, hidden Markov model, investigatory behavior, novelty seeking, zona incerta, periaqueductal gray, prelimbic cortex, optogenetics, fiber photometry, in situ hybridization, TAC1, GABAergic neurons, action sequence classification, mouse social behavior, curiosity, motivation, behavior labeling
 data_acquisition: Mouse behavioral video (frame-by-frame labeled with JAABA) during object/conspecific investigation, combined with fiber photometry calcium recordings and optogenetic manipulation of zona incerta (ZIm) neurons
 language: MATLAB (HMM fitting, behavior sequence analysis, photometry processing via InVivoTools); JAABA (Matlab/Java) for behavior labeling
 animal: Mouse

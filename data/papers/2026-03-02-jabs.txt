@@ -9,7 +9,7 @@ github_url: https://github.com/KumarLabJax/JABS-behavior-classifier
 website_url: https://jabs-tutorial.readthedocs.io/en/latest/JABS_user_guide.html
 access_status: open_access
 category: automated-behavioral-tracking
-tags: behavior phenotyping, open field, pose estimation, keypoints, active learning, behavior classifier, grooming, gait, posture, ethogram, ethograph, GWAS, heritability, genetic correlation, strain survey, JAABA, Random Forest, XGBoost, mouse genetics, computational ethology, video phenotyping
+tags: behavior phenotyping, open field, pose estimation, keypoints, active learning, behavior classifier, grooming, gait, posture, ethogram, ethograph, genome-wide association study, heritability, genetic correlation, strain survey, Random Forest, XGBoost, mouse genetics, computational ethology, video phenotyping
 data_acquisition: Top-down IR video, custom open-field arena (Basler acA1300-75gm camera, 800x800px/30fps)
 language: Python
 animal: Mouse

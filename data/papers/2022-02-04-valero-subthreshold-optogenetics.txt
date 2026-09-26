@@ -9,7 +9,7 @@ github_url: https://github.com/buzsakilab/buzcode
 website_url: https://buzsakilab.com/wp/public-data/
 access_status: open_access
 category: neural-circuits
-tags: hippocampus, CA1, place cells, place fields, subthreshold dynamics, excitability, E/I balance, excitation-inhibition, sharp-wave ripples, SPW-R, theta oscillations, optogenetics, μLED, micro-LED, pulsed optogenetics, ghost fields, unmasked place fields, non-place cells, cell assemblies, ICA, neural decoding, Bayesian decoding, membrane potential, CaMKIIα, freely moving, mouse, MATLAB
+tags: hippocampus, CA1, place cells, place fields, subthreshold dynamics, excitability, E/I balance, excitation-inhibition, sharp-wave ripples, SPW-R, theta oscillations, optogenetics, μLED, micro-LED, pulsed optogenetics, ghost fields, unmasked place fields, non-place cells, cell assemblies, independent component analysis, neural decoding, Bayesian decoding, membrane potential, CaMKIIα, freely moving, mouse
 data_acquisition: Extracellular electrophysiology with 4-shank μLED probes (3 μLEDs per shank, Neurolight) implanted in CA1 of freely moving CaMKIIα-Cre::Ai32 mice; 20-ms light pulses (0.02–0.1 μW) delivered at random 0.3–0.6 s intervals to depolarize pyramidal neurons while recording spiking responses; animal position tracked on a linear track
 language: MATLAB (custom scripts, buzcode toolbox)
 animal: Mouse (CaMKIIα-Cre::Ai32, C57BL/6 background; 4 mice, 822 CA1 pyramidal neurons, 43.3 ± 8.37 neurons per session)

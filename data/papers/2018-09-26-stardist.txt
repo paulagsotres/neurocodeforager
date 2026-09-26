@@ -9,7 +9,7 @@ github_url: https://github.com/stardist/stardist
 website_url: https://qupath.readthedocs.io/en/stable/docs/deep/stardist.html
 access_status: open_access
 category: image-analysis
-tags: cell segmentation, nuclei segmentation, star-convex polygons, instance segmentation, deep learning, U-Net, QuPath, napari, ImageJ, Fiji, KNIME, Icy, digital pathology, H&E, fluorescence microscopy, object detection, non-maximum suppression, bioimage analysis, MICCAI, StarDist
+tags: cell segmentation, nuclei segmentation, star-convex polygons, instance segmentation, deep learning, U-Net, QuPath, napari, ImageJ, Fiji, Icy, digital pathology, H&E, fluorescence microscopy, object detection, non-maximum suppression, bioimage analysis, StarDist
 data_acquisition: Fluorescence and brightfield (H&E) microscopy images of cell nuclei — 2D and 3D
 language: Python (core package); Groovy for the QuPath integration
 animal: Not applicable — general-purpose nuclei/cell segmentation, not species-specific

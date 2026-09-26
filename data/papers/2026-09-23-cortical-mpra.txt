@@ -8,7 +8,7 @@ paper_url: https://doi.org/10.1038/s41593-026-02454-2
 github_url: https://github.com/thewonlab/schizophrenia-MPRA
 access_status: open_access
 category: gene-protein-analysis
-tags: MPRA, massively parallel reporter assay, gene regulatory variants, cortical structure, ENIGMA GWAS, Wnt signaling, CHIR99021, neural progenitor cells, phNPC, emVar, expression-modulating variant, Alu elements, transposable elements, CUT&RUN, TFIIIC, MPRAnalyze, motifbreakR, FIMO, JASPAR, CRISPRi, chromatin accessibility, caQTL, Pol III promoter
+tags: massively parallel reporter assay, massively parallel reporter assay, gene regulatory variants, cortical structure, ENIGMA GWAS, Wnt signaling, CHIR99021, neural progenitor cells, phNPC, emVar, expression-modulating variant, Alu elements, transposable elements, CUT&RUN, MPRAnalyze, motifbreakR, CRISPRi, chromatin accessibility, caQTL, Pol III promoter
 data_acquisition: Massively parallel reporter assay (barcoded RNA/DNA sequencing) plus CUT&RUN chromatin profiling in primary human neural progenitor cells (phNPCs), at baseline and after Wnt-pathway (CHIR99021) stimulation
 language: R (MPRAnalyze, mpra, limma, motifbreakR); Nextflow (CUT&RUN pipeline)
 animal: Not applicable — human primary neural progenitor cells derived from fetal brain tissue

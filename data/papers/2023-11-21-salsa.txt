@@ -8,7 +8,7 @@ paper_url: https://doi.org/10.1523/ENEURO.0201-23.2023
 github_url: https://github.com/Sakata-Lab/SaLSa
 access_status: open_access
 category: automated-behavioral-tracking, neural-networks
-tags: SaLSa, LSTM, long short-term memory, behavioral syllables, semi-automatic labeling, DeepLabCut, UMAP, spectral clustering, computational ethology, Alzheimer's disease, 5xFAD, keypoint-MoSeq benchmark, egocentric coordinates, wavelet transform, open field, MATLAB
+tags: SaLSa, long short-term memory, long short-term memory, behavioral syllables, semi-automatic labeling, DeepLabCut, uniform manifold approximation and projection, spectral clustering, computational ethology, Alzheimer's disease, 5xFAD, keypoint-MoSeq benchmark, egocentric coordinates, wavelet transform, open field
 data_acquisition: Top-down webcam video (25 fps) of a single mouse in an open-field arena, pose-tracked with DeepLabCut
 language: MATLAB
 animal: Mouse (5xFAD Alzheimer's-disease model and wild-type littermates)

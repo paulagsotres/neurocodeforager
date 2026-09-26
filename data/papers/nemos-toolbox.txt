@@ -8,7 +8,7 @@ github_url: https://github.com/flatironinstitute/nemos
 website_url: https://nemos-neuro.org/en/latest/
 access_status: open_access
 category: statistical-analysis
-tags: GLM, generalized linear model, JAX, GPU-accelerated, spike train modeling, basis functions, splines, B-spline, M-spline, raised cosine basis, regularization, Ridge, Lasso, ElasticNet, GroupLasso, Poisson regression, population GLM, PopulationGLM, feature engineering, systems neuroscience, Flatiron Institute, pynapple
+tags: generalized linear model, generalized linear model, GPU-accelerated, spike train modeling, basis functions, splines, B-spline, M-spline, raised cosine basis, regularization, Ridge, Lasso, ElasticNet, GroupLasso, Poisson regression, population GLM, PopulationGLM, feature engineering, systems neuroscience, Flatiron Institute, pynapple
 data_acquisition: Not applicable — general-purpose statistical modeling toolbox for any spike-count or continuous time-series data (works with whatever neurophysiology or behavioral recordings you already have)
 language: Python (GPU-accelerated via JAX)
 animal: Not applicable — general-purpose framework, not species- or acquisition-specific

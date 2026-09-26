@@ -9,7 +9,7 @@ github_url: https://github.com/AllenNeuralDynamics/locus_coeruleus_norepinephrin
 website_url: https://codeocean.allenneuraldynamics.org/collections/9cf044ce-93c7-4c7e-bfa1-5d8c37aa42ec
 access_status: open_access
 category: image-analysis, electrophysiology, brain-imaging
-tags: locus coeruleus, noradrenaline, norepinephrine, LC-NE, reward prediction error, dynamic foraging, Neuropixels, optogenetic tagging, whole-brain imaging, SPIM, light-sheet microscopy, single-neuron reconstruction, MAPseq, BARseq, snRNA-seq, axonal projection mapping, CCF, Allen Institute, fiber photometry, reinforcement learning
+tags: locus coeruleus, noradrenaline, norepinephrine, LC-NE, reward prediction error, dynamic foraging, Neuropixels, optogenetic tagging, whole-brain imaging, selective plane illumination microscopy, light-sheet microscopy, single-neuron reconstruction, MAPseq, BARseq, snRNA-seq, axonal projection mapping, common coordinate framework, Allen Institute, fiber photometry, reinforcement learning
 data_acquisition: Multi-modal — whole-brain light-sheet imaging (ExA-SPIM) for single-neuron reconstruction, electrophysiology (Neuropixels probes/tetrodes) with optogenetic tagging, snRNA-seq, MAPseq/BARseq projection mapping, fiber photometry
 language: Python
 animal: Mouse

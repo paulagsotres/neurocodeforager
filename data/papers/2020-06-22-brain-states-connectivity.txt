@@ -8,7 +8,7 @@ paper_url: https://elifesciences.org/articles/53186
 github_url: https://github.com/Strohlab/connectivityelife
 access_status: open_access
 category: brain-imaging, statistical-analysis
-tags: resting-state fMRI, functional connectivity, BOLD, slow wave activity, persistent activity, independent component analysis, ICA, graph theory, small-world network, fALFF, fiber photometry, calcium imaging, down-up transitions, rat, default mode network, anesthesia
+tags: resting-state fMRI, functional connectivity, blood oxygen level dependent, slow wave activity, persistent activity, independent component analysis, independent component analysis, graph theory, small-world network, fALFF, fiber photometry, calcium imaging, down-up transitions, rat, default mode network, anesthesia
 data_acquisition: Simultaneous rat resting-state fMRI (BOLD, 9.4T) and optic-fiber-based calcium photometry recordings, under isoflurane (slow wave activity) or medetomidine (persistent activity) conditions
 language: MATLAB
 animal: Rat

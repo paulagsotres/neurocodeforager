@@ -8,7 +8,7 @@ paper_url: https://doi.org/10.1038/s41586-025-08829-y
 github_url: https://github.com/cajal/fnn
 access_status: open_access
 category: neural-networks, brain-imaging
-tags: foundation model, digital twin, visual cortex, calcium imaging, two-photon imaging, ANN, Conv-LSTM, CvT-LSTM, transfer learning, MICrONS, connectomics, encoding model, neural response prediction, in silico experiments, natural videos, parametric tuning, orientation selectivity, direction selectivity, functional barcode, readout, DataJoint, CAImAn, mouse visual cortex
+tags: foundation model, digital twin, visual cortex, calcium imaging, two-photon imaging, artificial neural network, Conv-LSTM, CvT-LSTM, transfer learning, MICrONS, connectomics, encoding model, neural response prediction, in silico experiments, natural videos, parametric tuning, orientation selectivity, direction selectivity, functional barcode, readout, DataJoint, CAImAn, mouse visual cortex
 data_acquisition: Two-photon calcium imaging (large field-of-view mesoscope) of roughly 135,000 excitatory neurons across mouse visual cortex, recorded during natural-video and parametric visual stimulation, paired with eye-tracking and treadmill locomotion data
 language: Python
 animal: Mouse

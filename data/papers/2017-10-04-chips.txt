@@ -8,7 +8,7 @@ paper_url: https://doi.org/10.1007/s12021-017-9344-y
 github_url: https://github.com/EIN-lab/CHIPS
 access_status: paywall_restricted
 category: image-analysis
-tags: two-photon microscopy, CHIPS, blood vessel diameter, red blood cell velocity, calcium imaging, hemodynamics, motion correction, spectral unmixing, line scan, ScanImage, OME Bio-Formats, Radon transform, GUI, parameter optimization, MATLAB toolbox, neurovascular coupling, astrocyte imaging, RRID:SCR_015741
+tags: two-photon microscopy, blood vessel diameter, red blood cell velocity, calcium imaging, hemodynamics, motion correction, spectral unmixing, line scan, ScanImage, OME Bio-Formats, Radon transform, parameter optimization, MATLAB toolbox, neurovascular coupling, astrocyte imaging, RRID:SCR_015741
 data_acquisition: Two-photon microscopy images of cells and blood vessels — line scans or full-frame images, primarily ScanImage TIFF or any OME Bio-Formats-compatible format
 language: MATLAB
 animal: Not applicable — general-purpose toolbox for two-photon image analysis, demonstrated in rodent brain imaging

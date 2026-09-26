@@ -7,7 +7,7 @@ paper_url: https://doi.org/10.1016/j.neuron.2021.09.002
 github_url: https://github.com/petersenpeter/CellExplorer
 access_status: open_access
 category: electrophysiology
-tags: waveform, spike sorting, single-unit, neuron classification, cell type, pyramidal cell, interneuron, monosynaptic connectivity, Neuropixels, silicon probe, extracellular recording, MATLAB
+tags: waveform, spike sorting, single-unit, neuron classification, cell type, pyramidal cell, interneuron, monosynaptic connectivity, Neuropixels, silicon probe, extracellular recording
 data_acquisition: Extracellular electrophysiology — silicon probes / Neuropixels (IMEC)
 language: MATLAB
 animal: Mouse, rat

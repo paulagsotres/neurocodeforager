@@ -9,7 +9,7 @@ github_url: https://github.com/dattalab/keypoint-moseq
 website_url: https://keypoint-moseq.readthedocs.io/en/latest/
 access_status: open_access
 category: automated-behavioral-tracking, statistical-analysis
-tags: keypoint tracking, pose estimation, behavior segmentation, unsupervised learning, MoSeq, syllables, switching linear dynamical system, SLDS, AR-HMM, SLEAP, DeepLabCut, mouse, rat, fruit fly, Drosophila, dopamine, striatum, jitter correction, ethogram, computational ethology
+tags: keypoint tracking, pose estimation, behavior segmentation, unsupervised learning, MoSeq, syllables, switching linear dynamical system, switching linear dynamical system, AR-HMM, DeepLabCut, mouse, rat, fruit fly, Drosophila, dopamine, striatum, jitter correction, ethogram, computational ethology
 data_acquisition: 2D or 3D keypoint tracking data from an existing pose-estimation pipeline (SLEAP, DeepLabCut, anipose, etc.), optionally paired with depth video, accelerometry or neural recordings for validation
 language: Python (JAX-accelerated)
 animal: Mouse, rat, fruit fly (Drosophila) — demonstrated to generalize across species

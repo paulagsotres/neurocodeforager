@@ -8,7 +8,7 @@ paper_url: https://doi.org/10.1038/s41593-026-02437-3
 github_url: https://github.com/marineschimel/ilqr_vae
 access_status: open_access
 category: statistical-analysis, electrophysiology
-tags: iLQR-VAE, latent circuit model, system identification, line attractor, excitation-inhibition, multi-area recordings, V1, lateromedial area, LM, visual cortex, optogenetic perturbation, PV interneurons, variational autoencoder, dynamical systems, mouse, inter-area consensus, cortical hierarchy
+tags: iLQR-VAE, latent circuit model, system identification, line attractor, excitation-inhibition, multi-area recordings, V1, lateromedial area, visual cortex, optogenetic perturbation, PV interneurons, variational autoencoder, dynamical systems, mouse, inter-area consensus, cortical hierarchy
 data_acquisition: Simultaneous multi-channel electrophysiological recordings from V1 and higher-order area LM in head-fixed mice performing a visual go/no-go task, with brief optogenetic silencing (PV+ interneuron activation) of one area on a subset of trials
 language: Python (iLQR-VAE)
 animal: Mouse
