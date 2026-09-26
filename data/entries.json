@@ -3040,90 +3040,80 @@
     "verified": true
   },
   {
-    "id": "2026-09-09-netneurotools",
-    "title": "netneurotools: a trainee-oriented approach to network neuroscience",
-    "authors": "Liu Z.Q., Bazinet V., Hansen J.Y., Milisav F., Luppi A.I., Ceballos E.G., Farahani A., Suarez L.E., Shafiei G., Markello R.D., Misic B.",
-    "journal": "Nature Protocols",
+    "id": "2026-10-27-mapseq-visual-cortex",
+    "title": "Structured and target-specific development of cortico-cortical connectivity in the mouse visual cortex",
+    "authors": "Jacobs M.W., Ratliff J.M., Soronow A.L.R., Nichols J.A., James H.T., Eddy J.A.G., Murray A.M., Kim E.J.",
+    "journal": "Cell Reports",
     "year": 2026,
-    "date": "2026-09-09",
-    "doi": "10.1038/s41596-026-01446-7",
-    "paper_url": "https://www.nature.com/articles/s41596-026-01446-7",
-    "github_url": "https://github.com/netneurolab/netneurotools",
-    "website_url": "https://netneurolab.github.io/netneurotools/",
-    "access_status": "paywall_restricted",
+    "date": "2026-10-27",
+    "doi": "10.1016/j.celrep.2026.118027",
+    "paper_url": "https://www.cell.com/cell-reports/fulltext/S2211-1247(26)01105-8",
+    "github_url": "https://github.com/Kim-Neuroscience-Lab/mapseq_processing_kimlab",
+    "website_url": "",
+    "access_status": "open_access",
     "citation_count": null,
-    "category": "statistical-analysis",
+    "category": "neural-circuits",
     "categories": [
-      "statistical-analysis",
-      "brain-imaging"
+      "neural-circuits"
     ],
     "tags": [
-      "network neuroscience",
-      "connectome",
-      "graph theory",
-      "brain networks",
-      "community detection",
-      "consensus clustering",
-      "surrogate networks",
-      "spatial statistics",
-      "Moran's I",
-      "dominance analysis",
-      "parcellation",
-      "brain atlas",
-      "surface visualization",
-      "FreeSurfer",
-      "CIFTI",
-      "network metrics",
-      "communicability",
-      "permutation testing",
-      "Python",
-      "human",
-      "MRI"
+      "MAPseq",
+      "axonal projection",
+      "cortico-cortical connectivity",
+      "visual cortex",
+      "V1",
+      "higher visual areas",
+      "projection motif",
+      "single-cell tracing",
+      "barcoded virus",
+      "Sindbis virus",
+      "retrograde tracing",
+      "anterograde tracing",
+      "circuit development",
+      "pruning",
+      "postnatal development",
+      "mouse",
+      "Python"
     ],
-    "summary": "netneurotools is a Python toolbox that fills the gap between large, specialized neuroimaging packages — offering modular, trainee-tested functions for the full network neuroscience workflow: fetching datasets and atlases, constructing consensus and surrogate networks, computing graph metrics and spatial statistics, running permutation tests, and visualizing results on brain surfaces. Developed organically by the Misic lab since 2017 and used across more than 15 publications.",
-    "abstract_long": "Modern network neuroscience projects typically involve many moving parts: importing brain atlases, parcellating brain maps, constructing consensus connectivity matrices, computing graph metrics, running spatially-informed statistical tests, and rendering results on brain surfaces. The \"daylight\" between major specialized packages — fMRIPrep, Nilearn, NetworkX, Brain Connectivity Toolbox — is substantial, and trainees are left to develop ad hoc scripts that rarely survive beyond one or two generations. netneurotools fills this gap with nine modules covering the full analytical lifecycle: datasets (programmatic download of atlases, templates, and published datasets), networks (consensus and surrogate network construction), metrics (graph-theoretic measures including communicability, navigation efficiency, and assortativity), modularity (consensus community detection via the Louvain algorithm), stats (correlation, permutation testing, regression, and dominance analysis), spatial (Moran's I, Geary's C, and Lee's L spatial autocorrelation), plotting (surface-based and parcellated brain visualization via PyVista/VTK), interface (parsers for FreeSurfer, CIFTI, and GIfTI formats), and experimental (sandbox for community contributions). The toolbox is BSD-3 licensed, continuously tested via GitHub Actions, and distributed via PyPI and Docker.",
-    "data_acquisition": "Not applicable — a general-purpose toolbox for any parcellated brain imaging data (MRI connectivity matrices, brain maps, atlases); operates on regionalized data rather than raw imaging",
+    "summary": "Using MAPseq barcoded single-cell tracing alongside retrograde and anterograde bulk methods, Jacobs et al. map how V1 cortico-cortical projection neurons develop their axonal targeting to eleven higher visual areas across postnatal development, finding that individual neurons initialize specific projection motifs early and retain them with little variation — supporting a directed guidance model over exuberant growth and pruning.",
+    "abstract_long": "The mammalian visual cortex establishes highly stereotyped long-range connectivity, yet whether this specificity arises from exuberant outgrowth followed by pruning or from initially directed axonal targeting has remained unresolved. Jacobs et al. systematically map the postnatal development of V1 cortico-cortical projection neurons (CCPNs) to eleven higher visual areas (HVAs) across three postnatal windows (P14→P16, P22→P24, P60+→P62+). Bulk retrograde tracing (CTB, AAV-retro) revealed that medial HVAs are innervated days earlier than lateral ones, while anterograde tracing (VSV, barcoded Sindbis) showed medial circuits refine gradually while lateral circuits transiently overshoot and prune rapidly by P24. MAPseq single-cell profiling of thousands of individual V1 CCPNs revealed that projection motif complexity, target number per neuron, and motif frequencies remained largely stable across timepoints (99.87% unique barcode rate; 584,899 total barcodes), arguing against global inter-areal reorganization and supporting a directed guidance model in which distinct CCPN subtypes establish selective projections early, with subsequent local, target-dependent refinement.",
+    "data_acquisition": "MAPseq (Multiplexed Analysis of Projections by Sequencing) using barcoded Sindbis virus injected into V1; brains harvested 48h post-injection, target areas microdissected at −20°C, RNA extracted and sequenced (NextSeq/NovaSeq); complemented by retrograde (CTB, AAV-retro) and anterograde (VSV, rabies) bulk tracing",
     "language": "Python",
-    "animal": "Not species-specific (primarily demonstrated on human MRI data)",
+    "animal": "Mouse",
     "gpu_required": "",
-    "difficulty": "intermediate",
+    "difficulty": "advanced",
     "subjects": {
       "count": "",
       "strains": "",
       "notes": ""
     },
     "tutorial": "",
-    "tutorial_intro": "netneurotools is installed via pip and works on any parcellated brain data — connectivity matrices, brain maps, or atlases. The typical workflow starts with the <code>datasets</code> module to fetch standard atlases or published datasets, then passes through <code>networks</code>, <code>metrics</code>/<code>modularity</code>, and <code>stats</code> for analysis, and ends with <code>plotting</code> for surface visualization. Modules are decoupled and can be used independently.",
+    "tutorial_intro": "This repository contains the Kim Lab's downstream MAPseq analysis pipeline, which picks up from the output of the CSHL Zador Lab <code>mapseq-processing</code> pipeline. The CSHL pipeline takes raw FASTQ files and produces per-sample <code>.nbcm.tsv</code> barcode count matrices (rows = neurons/barcodes, columns = dissected brain regions). The Kim Lab scripts then filter, normalize, and analyze these matrices to identify projection motifs and quantify projection strengths across animals and developmental timepoints.",
     "tutorial_steps": [
-      "Install via pip: <code>pip install netneurotools</code>. For the latest development version: <code>pip install git+https://github.com/netneurolab/netneurotools.git</code>.",
-      "Fetch a standard dataset or atlas using the <code>datasets</code> module. For example, <code>nnt.datasets.fetch_schaefer2018()</code> returns a Schaefer parcellation, and <code>nnt.datasets.fetch_cammoun2012()</code> returns the Lausanne multi-scale atlas. Published datasets from the lab's own papers (myelin maps, connectivity matrices, receptor maps) can be fetched similarly — no manual downloading required.",
-      "Construct a consensus or surrogate network using the <code>networks</code> module. <code>nnt.networks.struct_consensus()</code> builds a group-representative structural connectivity matrix from individual subjects using distance-dependent thresholding. Surrogate networks preserving edge length and degree distribution can be generated with <code>nnt.networks.match_length_degree_distribution()</code> for null-model testing.",
-      "Compute graph-theoretic or communication metrics using the <code>metrics</code> module — for example <code>nnt.metrics.communicability_wei()</code>, <code>nnt.metrics.navigation_wu()</code>, or <code>nnt.metrics.assortativity_und()</code>. For community structure, use <code>nnt.modularity.consensus_modularity()</code>, which runs the Louvain algorithm across multiple resolutions and derives a robust consensus partition.",
-      "Run spatial or statistical tests using the <code>stats</code> and <code>spatial</code> modules. <code>nnt.stats.permtest_pearsonr()</code> performs spin-test-corrected correlation between brain maps. <code>nnt.stats.get_dominance_stats()</code> decomposes variance explained in a multiple regression into per-predictor contributions. <code>nnt.spatial.morans_i()</code> quantifies spatial autocorrelation of a brain map on a parcellation.",
-      "Visualize results on the brain surface using the <code>plotting</code> module. <code>nnt.plotting.pv_plot_parcellated_data()</code> renders a vector of parcellated values onto a cortical surface mesh using PyVista, with customizable views, colormaps, and lighting. <code>nnt.plotting.plot_mod_heatmap()</code> generates publication-quality community-ordered connectivity heatmaps."
+      "Run the CSHL upstream pipeline first (<a href=\"https://github.com/ZadorLaboratory/mapseq-processing\">ZadorLaboratory/mapseq-processing</a>) on your raw FASTQ files to produce per-sample <code>.nbcm.tsv</code> barcode count matrices — the Kim Lab scripts start from these files, not raw sequencing data.",
+      "Install the Kim Lab pipeline: clone the repo, create a conda environment (<code>conda create -n mapseq_processing python==3.9 pip</code>), activate it, and run <code>pip install -r requirements.txt</code>. On macOS you can also use the automated install script from the releases page to reproduce the paper dataset end-to-end.",
+      "Run <code>preprocess_and_aggregate.py</code> on your <code>.nbcm.tsv</code> files. This standardizes column names across replicates (interactive prompts), applies noise thresholding based on the negative control column, removes rows where the negative control is non-zero, and concatenates replicates into a single <code>aggregated_cleaned_matrix.tsv</code>.",
+      "Run <code>process-nbcm-tsv.py</code> on the aggregated matrix. Required arguments: output directory (<code>-o</code>), input data (<code>-d</code>), file prefix (<code>-s</code>), and column labels (<code>-l</code>, e.g. <code>\"area,area,neg,inj,area\"</code> — use <code>neg</code> for negative controls and <code>inj</code> for the injection site). This applies stringent barcode filtering (injection UMI ≥ 300, target UMI ≥ 10, injection/target ratio ≥ 10), normalizes projection strengths, and identifies projection motifs.",
+      "Run the numbered helper scripts in order from <code>helpers/scripts/</code>: motif analysis per animal (01), projection analysis (02), composition by age (03), proportions over time (04), motif frequency (05), motif divergence (06, requires 05), trajectory analysis (07), clustering (08, requires 07), and projection strength plots (09). Use <code>run_commands.sh</code> to execute all steps from <code>all_commands.txt</code> with automatic logging.",
+      "Check outputs with <code>postprocessing_checks.py</code> and generate publication-ready multi-panel figures with <code>figure_generation/generate_figure_from_outputs.py</code>."
     ],
-    "tutorial_output": "Depends on the module used: consensus connectivity matrices, surrogate network ensembles, graph metrics per node or edge, community assignments across resolutions, permutation p-values, dominance statistics, spatial autocorrelation coefficients, or rendered brain surface figures and heatmaps — all as standard Python objects (numpy arrays, pandas DataFrames) or saved figures.",
+    "tutorial_output": "Filtered and normalized barcode-by-region matrices (one row per neuron), projection motif classifications for each neuron, per-animal and cohort-level motif frequency statistics, projection strength heatmaps, motif divergence metrics across developmental timepoints, k-means clustering results, and multi-panel publication figures.",
     "sample_data": {
-      "text": "The datasets module provides direct access to the datasets used in the paper's three tutorial examples (assortative mixing in annotated connectomes, structure-function coupling across MEG frequency bands, community structure across connectivity modes).",
-      "url": "https://netneurolab.github.io/netneurotools/auto_examples/index.html"
+      "text": "A truncated sample dataset with associated labels is provided in the repository for testing the pipeline before running on your own data.",
+      "url": "https://github.com/Kim-Neuroscience-Lab/mapseq_processing_kimlab"
     },
     "code": {
-      "repo_url": "https://github.com/netneurolab/netneurotools",
+      "repo_url": "https://github.com/Kim-Neuroscience-Lab/mapseq_processing_kimlab",
       "platform": "github"
     },
     "extra_links": [
       {
-        "label": "Full documentation and API reference",
-        "url": "https://netneurolab.github.io/netneurotools/"
-      },
-      {
-        "label": "Tutorial examples",
-        "url": "https://netneurolab.github.io/netneurotools/auto_examples/index.html"
+        "label": "CSHL MAPseq upstream processing pipeline (Zador Lab)",
+        "url": "https://github.com/ZadorLaboratory/mapseq-processing"
       }
     ],
     "related_ids": [
-      "2018-12-10-fmriprep",
-      "2023-05-03-cebra"
+      "2025-07-01-projection-tags"
     ],
     "added_date": "2026-09-26",
     "added_by": "manual",

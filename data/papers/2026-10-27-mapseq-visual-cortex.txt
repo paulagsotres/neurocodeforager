@@ -1,0 +1,42 @@
+title: Structured and target-specific development of cortico-cortical connectivity in the mouse visual cortex
+authors: Jacobs M.W., Ratliff J.M., Soronow A.L.R., Nichols J.A., James H.T., Eddy J.A.G., Murray A.M., Kim E.J.
+journal: Cell Reports
+year: 2026
+date: 2026-10-27
+doi: 10.1016/j.celrep.2026.118027
+paper_url: https://www.cell.com/cell-reports/fulltext/S2211-1247(26)01105-8
+github_url: https://github.com/Kim-Neuroscience-Lab/mapseq_processing_kimlab
+access_status: open_access
+category: neural-circuits
+tags: MAPseq, axonal projection, cortico-cortical connectivity, visual cortex, V1, higher visual areas, projection motif, single-cell tracing, barcoded virus, Sindbis virus, retrograde tracing, anterograde tracing, circuit development, pruning, postnatal development, mouse, Python
+data_acquisition: MAPseq (Multiplexed Analysis of Projections by Sequencing) using barcoded Sindbis virus injected into V1; brains harvested 48h post-injection, target areas microdissected at −20°C, RNA extracted and sequenced (NextSeq/NovaSeq); complemented by retrograde (CTB, AAV-retro) and anterograde (VSV, rabies) bulk tracing
+language: Python
+animal: Mouse
+difficulty: advanced
+citation_count:
+added_date: 2026-09-26
+
+summary:
+Using MAPseq barcoded single-cell tracing alongside retrograde and anterograde bulk methods, Jacobs et al. map how V1 cortico-cortical projection neurons develop their axonal targeting to eleven higher visual areas across postnatal development, finding that individual neurons initialize specific projection motifs early and retain them with little variation — supporting a directed guidance model over exuberant growth and pruning.
+
+abstract_long:
+The mammalian visual cortex establishes highly stereotyped long-range connectivity, yet whether this specificity arises from exuberant outgrowth followed by pruning or from initially directed axonal targeting has remained unresolved. Jacobs et al. systematically map the postnatal development of V1 cortico-cortical projection neurons (CCPNs) to eleven higher visual areas (HVAs) across three postnatal windows (P14→P16, P22→P24, P60+→P62+) using a battery of tracing approaches. Bulk retrograde tracing (CTB, AAV-retro) revealed that medial HVAs are innervated days earlier than lateral ones, while anterograde tracing (VSV, barcoded Sindbis) showed that medial circuits refine gradually while lateral circuits transiently overshoot and then prune rapidly by P24. Feedback projections from HVAs to V1 emerged with less spatiotemporal heterogeneity than feedforward projections, producing progressive "like-to-like" reciprocal connectivity. Crucially, MAPseq single-cell profiling of thousands of individual V1 CCPNs across development revealed that projection motif complexity, target number per neuron, and motif frequencies remained largely stable across timepoints (99.87% unique barcode rate; 584,899 total barcodes). Together these results argue against global inter-areal axon reorganization and support a directed guidance model in which distinct CCPN subtypes establish selective projections early, with subsequent local, target-dependent refinement.
+
+extra_links:
+CSHL MAPseq upstream processing pipeline (Zador Lab) | https://github.com/ZadorLaboratory/mapseq-processing
+
+tutorial_intro:
+This repository contains the Kim Lab's downstream MAPseq analysis pipeline, which picks up from the output of the CSHL Zador Lab <code>mapseq-processing</code> pipeline. The CSHL pipeline takes raw FASTQ files and produces per-sample <code>.nbcm.tsv</code> barcode count matrices (rows = neurons/barcodes, columns = dissected brain regions). The Kim Lab scripts then filter, normalize, and analyze these matrices to identify projection motifs and quantify projection strengths across animals and developmental timepoints. There is also a GUI wizard for the main processing step and a macOS automated install for reproducing the paper's dataset.
+
+tutorial_steps:
+Run the CSHL upstream pipeline first (<a href="https://github.com/ZadorLaboratory/mapseq-processing">ZadorLaboratory/mapseq-processing</a>) on your raw FASTQ files to produce per-sample <code>.nbcm.tsv</code> barcode count matrices — the Kim Lab scripts start from these files, not raw sequencing data.
+Install the Kim Lab pipeline: clone the repo, create a conda environment (<code>conda create -n mapseq_processing python==3.9 pip</code>), activate it, and run <code>pip install -r requirements.txt</code>. On macOS you can also use the automated install script from the releases page to reproduce the paper dataset end-to-end.
+Run <code>preprocess_and_aggregate.py</code> on your <code>.nbcm.tsv</code> files. This script standardizes column names across replicates (interactive prompts map original headers to standardized ones), applies noise thresholding based on the negative control column (mean + SD), removes rows where the negative control is non-zero, and concatenates replicates into a single <code>aggregated_cleaned_matrix.tsv</code>.
+Run the main analysis script <code>process-nbcm-tsv.py</code> on the aggregated matrix. Required arguments: output directory (<code>-o</code>), input data (<code>-d</code>), file prefix (<code>-s</code>), and a comma-separated list of column labels (<code>-l</code>, e.g. <code>"area,area,neg,inj,area"</code> — use <code>neg</code> for negative controls and <code>inj</code> for the injection site column). This applies stringent barcode filtering (injection UMI ≥ 300, target UMI ≥ 10 in at least one area, injection/target ratio ≥ 10), normalizes projection strengths, and identifies projection motifs.
+Run the numbered helper scripts in order from <code>helpers/scripts/</code>: motif analysis per animal (01), projection analysis (02), composition by age (03), proportions over time (04), motif frequency (05), motif divergence (06, requires 05), trajectory analysis (07, requires 05), clustering (08, requires 07), and projection strength visualization (09). For convenience, use <code>run_commands.sh</code> to execute all steps from <code>all_commands.txt</code> with automatic logging.
+Check outputs with <code>postprocessing_checks.py</code>, which parses log files for errors and verifies expected output files across all processing and helper script directories. Finally, generate publication-ready figures with <code>figure_generation/generate_figure_from_outputs.py</code>.
+
+tutorial_output:
+Filtered and normalized barcode-by-region matrices (one row per neuron), projection motif classifications (each neuron assigned to a motif based on which target areas it innervates), per-animal and cohort-level motif frequency statistics, projection strength heatmaps, motif divergence metrics across developmental timepoints, k-means clustering results, and multi-panel publication figures.
+
+related_ids: 2025-07-01-projection-tags, 2020-11-10-spikeinterface
