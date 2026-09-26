@@ -1,0 +1,40 @@
+title: Massively parallel assessment of gene regulatory activity at human cortical-structure-associated variants
+authors: Matoba N., McAfee J.C., Krupa O., Beltran A.A., Bell J.L., Le B.D., Valone J.M., Min H., Crawford G.E., Raab J.R., Won H., Stein J.L.
+journal: Nature Neuroscience
+year: 2026
+date: 2026-09-23
+doi: 10.1038/s41593-026-02454-2
+paper_url: https://doi.org/10.1038/s41593-026-02454-2
+github_url: https://github.com/thewonlab/schizophrenia-MPRA
+access_status: open_access
+category: gene-protein-analysis
+tags: MPRA, massively parallel reporter assay, gene regulatory variants, cortical structure, ENIGMA GWAS, Wnt signaling, CHIR99021, neural progenitor cells, phNPC, emVar, expression-modulating variant, Alu elements, transposable elements, CUT&RUN, TFIIIC, MPRAnalyze, motifbreakR, FIMO, JASPAR, CRISPRi, chromatin accessibility, caQTL, Pol III promoter
+data_acquisition: Massively parallel reporter assay (barcoded RNA/DNA sequencing) plus CUT&RUN chromatin profiling in primary human neural progenitor cells (phNPCs), at baseline and after Wnt-pathway (CHIR99021) stimulation
+language: R (MPRAnalyze, mpra, limma, motifbreakR); Nextflow (CUT&RUN pipeline)
+animal: Not applicable — human primary neural progenitor cells derived from fetal brain tissue
+difficulty: advanced
+citation_count:
+added_date: 2026-09-26
+
+summary:
+A massively parallel reporter assay (MPRA) testing the regulatory activity of over 9,000 human cortical-structure-associated genetic variants in neural progenitor cells, identifying hundreds of "expression-modulating variants" (emVars) — many driven by Alu-element-derived Pol III promoter elements and sensitive to Wnt-pathway stimulation — with the barcode-mapping and CUT&RUN analysis code released alongside it.
+
+abstract_long:
+The authors designed an MPRA testing four sets of 150-bp DNA elements in primary human neural progenitor cells (phNPCs): positive-control promoters, caQTL-overlapping elements, elements centered on 9,092 variants from 198 ENIGMA GWAS loci associated with human cortical surface area or thickness, and scrambled negative controls. Regulatory activity (transcription rate relative to negative controls) and allelic effects (differences between the two alleles of a variant) were quantified via barcoded RNA/DNA sequencing, at baseline and after Wnt-pathway stimulation with CHIR99021. They found that 76% of tested loci contained at least one element with detectable regulatory activity, and more than half of regulatory variants showed significant allelic effects (emVars). Regulatory activity was strongly driven by Alu retrotransposons — specifically their left-arm RNA polymerase III promoter elements (A and B boxes) — with younger, less-diverged Alu elements showing higher activity, and CUT&RUN confirmed endogenous TFIIIC binding at these same elements in phNPCs. Disrupted transcription-factor motifs (notably RARA, RARG, ZNF135, and NR2F1) correlated with the strength of allelic effects, and the regional expression pattern of these TFs during prenatal cortical development helped explain why individual variants affect specific cortical regions rather than the whole cortex. A subset of variants showed Wnt-stimulation-dependent regulatory activity, and CRISPR interference at one such condition-dependent element (near FOXO3) experimentally confirmed its effect on endogenous gene expression.
+
+extra_links:
+raab-lab/cut-n-run (Nextflow pipeline for the CUT&RUN alignment, quality-filtering, and peak-calling used in this paper) | https://github.com/raab-lab/cut-n-run
+
+tutorial_intro:
+This isn't a general-purpose software package — it's the analysis code (barcode-to-variant mapping, and a separate CUT&RUN peak-calling pipeline) behind this specific MPRA screen. The core statistical analyses (regulatory activity, allelic effects) instead rely on established R/Bioconductor packages that you'd install directly rather than custom code from this paper.
+
+tutorial_steps:
+If you're running your own MPRA experiment and need to map random barcodes to the variants/elements they tag, start from the linked thewonlab/schizophrenia-MPRA repo, which implements the barcode-mapping step described in the Methods (extracting 20-bp barcodes from paired-end sequencing reads and associating each with the oligo it was ligated to).
+To quantify regulatory activity from your own RNA/DNA barcode counts, use the R/Bioconductor package MPRAnalyze — specifically its <code>analyzeQuantification()</code> function to estimate a transcription-rate parameter (α, adjusted for batch effects and library size) per element relative to your negative controls, as done in this paper.
+To test for allelic effects (a difference in activity between two alleles of the same variant) or condition-dependent effects (activity differing between two experimental conditions), use the Bioconductor package mpra's <code>mpralm()</code> function followed by limma's <code>topTable()</code> — this paper's condition-dependent test additionally used a model with a genotype × condition interaction term.
+To predict which transcription-factor binding motifs a variant disrupts, use the motifbreakR Bioconductor package against a JASPAR motif database (method = 'ic', threshold = 1e-4), filtering to motifs for TFs actually expressed in your cell type of interest; to scan more generally for motif matches within your reporter elements (not just at variant positions), use FIMO from the MEME Suite.
+If you're processing your own CUT&RUN chromatin-profiling data, the raab-lab/cut-n-run Nextflow pipeline (linked above) implements this paper's alignment, quality-filtering, and peak-calling workflow, with deepTools (computeMatrix/plotHeatmap) for coverage visualization.
+To annotate transposable elements (for example, Alu subfamilies) overlapping your reporter elements and estimate their relative evolutionary age, use the RepeatMasker annotation track from the UCSC Table Browser and stratify by the milliDiv divergence score, as done in this paper.
+
+tutorial_output:
+Per-element regulatory activity scores (transcription rate relative to negative controls) and allelic-effect statistics (log-fold-change and FDR per variant) from the MPRA; predicted disrupted transcription-factor motifs per variant; and, from CUT&RUN, called peaks and coverage tracks for your transcription factor of interest — the building blocks this paper used to nominate causal variants, their target genes, and the transcription factors mediating their effects on cortical structure.

@@ -2278,6 +2278,172 @@
     "verified": true
   },
   {
+    "id": "2026-09-18-v1-lm-consensus",
+    "title": "Reciprocal connections dynamically build consensus between neocortical areas",
+    "authors": "Javadzadeh M., Schimel M., Hofer S.B., Ahmadian Y., Hennequin G.",
+    "journal": "Nature Neuroscience",
+    "year": 2026,
+    "date": "2026-09-18",
+    "doi": "10.1038/s41593-026-02437-3",
+    "paper_url": "https://doi.org/10.1038/s41593-026-02437-3",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "statistical-analysis",
+    "categories": [
+      "statistical-analysis",
+      "electrophysiology"
+    ],
+    "tags": [
+      "iLQR-VAE",
+      "latent circuit model",
+      "system identification",
+      "line attractor",
+      "excitation-inhibition",
+      "multi-area recordings",
+      "V1",
+      "lateromedial area",
+      "LM",
+      "visual cortex",
+      "optogenetic perturbation",
+      "PV interneurons",
+      "variational autoencoder",
+      "dynamical systems",
+      "mouse",
+      "inter-area consensus",
+      "cortical hierarchy"
+    ],
+    "summary": "Using iLQR-VAE — a control-based variational method that jointly infers latent circuit dynamics and unobserved trial-by-trial external inputs — the authors fit biologically constrained excitation-inhibition circuit models to simultaneous V1-LM recordings and optogenetic perturbations, finding that reciprocal long-range excitatory connections between the two areas create an approximate line attractor that dynamically builds consensus between them about both the presence and identity of a visual stimulus.",
+    "abstract_long": "The authors built latent circuit models of joint V1-LM dynamics constrained to reflect known cortical circuit organization: separate excitatory/inhibitory subpopulations within each area (Dale's law), with only excitatory units projecting across areas, and neurons assigned a definite E or I identity via a structured sparsity penalty. Trial-by-trial external inputs (visual stimulus and optogenetic perturbation) were inferred per trial using iLQR-VAE, a control-based sequential variational autoencoder that uses the iterative linear-quadratic-regulator algorithm as its recognition model. Fitted models generalized across animals, correctly labeled directly photo-stimulated PV+ interneurons as inhibitory in most fits, and predicted the effect of held-out optogenetic perturbations on unperturbed neurons — validation that the constrained circuit structure reflects real biology rather than an arbitrary parameterization. The fitted dynamics revealed that sustained visual responses depend on long-range (not local) recurrent connections, and that these reciprocal excitatory connections between V1 and LM create an approximate \"line attractor\": activity patterns where the two areas agree decay slowly, while patterns where they disagree decay quickly. A minimal, hand-derived E-I circuit model reproduced this mechanism analytically and showed it extends naturally to stimulus-identity consensus (not just stimulus-presence consensus) when connections carry feature-specific structure. Predictions of the model — that \"agreeing\" activity patterns should have longer autocorrelation timescales than \"disagreeing\" ones, and that silencing one area should speed up fluctuations in the other — were confirmed directly in the neural data, independent of the fitted model itself.",
+    "data_acquisition": "Simultaneous multi-channel electrophysiological recordings from V1 and higher-order area LM in head-fixed mice performing a visual go/no-go task, with brief optogenetic silencing (PV+ interneuron activation) of one area on a subset of trials",
+    "language": "Python (iLQR-VAE)",
+    "animal": "Mouse",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "iLQR-VAE is a general-purpose method for learning input-driven latent dynamics from neural population recordings — this paper's specific circuit constraints (E-I structure, area partitioning, cross-area excitation-only connections) are a particular application of it, implemented on top of the base iLQR-VAE package rather than shipped as a separate turnkey tool.",
+    "tutorial_steps": [
+      "Install iLQR-VAE from the linked repository (a JAX-based Python package) and review the base method's own examples before adapting it to a multi-area or circuit-constrained setting like this paper's.",
+      "Prepare your data as binned spike counts (this paper used 5 ms bins) per neuron per trial, along with any known trial-structured external events you want the model to condition on (for example, stimulus onset/offset times, or optogenetic perturbation windows) — these inform the time-varying prior variance placed on each input channel, per equation (6) of the paper, rather than being fed to the model as hard-coded inputs.",
+      "Define your latent circuit's structure: the paper partitions latent units into areas and, within each area, into excitatory/inhibitory subpopulations, constraining the recurrent weight matrix so only excitatory units project across areas (their equation 10) — adapt this block structure to whatever circuit hypothesis you want to test, or omit it entirely for an unconstrained baseline model to check whether your constraints hurt model fit.",
+      "If you want neurons to be assigned an unambiguous cell-type identity (as this paper does for excitatory vs. inhibitory), add a structured sparsity penalty on the readout matrix (their equation 12) that discourages a neuron from loading onto both an excitatory and inhibitory latent subpopulation simultaneously.",
+      "Fit the model by maximizing the evidence lower bound (ELBO) via iLQR-VAE's control-based recognition model, which solves for the most likely trial-specific input trajectory using the iterative LQR algorithm rather than a separate encoder network.",
+      "Select hyperparameters (number of latent units, number of input channels) via cross-validation on held-out trials, and validate the fitted model with domain-specific checks where available — this paper used the known identity of directly photo-stimulated PV+ interneurons and the model's ability to predict held-out optogenetic perturbation effects as two such checks; reject or refit models that fail these checks.",
+      "To probe the resulting circuit's dynamics (for example, testing for a line attractor or characterizing relaxation timescales), linearize the fitted nonlinear dynamics around a period of interest and examine the eigenvalues/eigenvectors of the resulting linear system, or systematically down-scale specific connectivity blocks (for example, long-range vs. local) and measure the resulting change in the network's response."
+    ],
+    "tutorial_output": "A fitted latent circuit model per animal, with inferred trial-specific external input trajectories, a decoded excitatory/inhibitory identity per recorded neuron, and — from downstream analysis of the fitted dynamics — relaxation time constants, eigenmode decompositions, and predicted responses to novel (including held-out or simulated) perturbations, usable to test specific circuit-mechanistic hypotheses about how the recorded areas interact.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/marineschimel/ilqr_vae",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Schimel et al. 2022, iLQR-VAE method paper (ICLR, oral)",
+        "url": "https://openreview.net/forum?id=wRODLDHaAiW"
+      },
+      {
+        "label": "Underlying V1-LM electrophysiology dataset (Figshare)",
+        "url": "https://doi.org/10.6084/m9.figshare.30983044.v1"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2026-09-23-cortical-mpra",
+    "title": "Massively parallel assessment of gene regulatory activity at human cortical-structure-associated variants",
+    "authors": "Matoba N., McAfee J.C., Krupa O., Beltran A.A., Bell J.L., Le B.D., Valone J.M., Min H., Crawford G.E., Raab J.R., Won H., Stein J.L.",
+    "journal": "Nature Neuroscience",
+    "year": 2026,
+    "date": "2026-09-23",
+    "doi": "10.1038/s41593-026-02454-2",
+    "paper_url": "https://doi.org/10.1038/s41593-026-02454-2",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "gene-protein-analysis",
+    "categories": [
+      "gene-protein-analysis"
+    ],
+    "tags": [
+      "MPRA",
+      "massively parallel reporter assay",
+      "gene regulatory variants",
+      "cortical structure",
+      "ENIGMA GWAS",
+      "Wnt signaling",
+      "CHIR99021",
+      "neural progenitor cells",
+      "phNPC",
+      "emVar",
+      "expression-modulating variant",
+      "Alu elements",
+      "transposable elements",
+      "CUT&RUN",
+      "TFIIIC",
+      "MPRAnalyze",
+      "motifbreakR",
+      "FIMO",
+      "JASPAR",
+      "CRISPRi",
+      "chromatin accessibility",
+      "caQTL",
+      "Pol III promoter"
+    ],
+    "summary": "A massively parallel reporter assay (MPRA) testing the regulatory activity of over 9,000 human cortical-structure-associated genetic variants in neural progenitor cells, identifying hundreds of \"expression-modulating variants\" (emVars) — many driven by Alu-element-derived Pol III promoter elements and sensitive to Wnt-pathway stimulation — with the barcode-mapping and CUT&RUN analysis code released alongside it.",
+    "abstract_long": "The authors designed an MPRA testing four sets of 150-bp DNA elements in primary human neural progenitor cells (phNPCs): positive-control promoters, caQTL-overlapping elements, elements centered on 9,092 variants from 198 ENIGMA GWAS loci associated with human cortical surface area or thickness, and scrambled negative controls. Regulatory activity (transcription rate relative to negative controls) and allelic effects (differences between the two alleles of a variant) were quantified via barcoded RNA/DNA sequencing, at baseline and after Wnt-pathway stimulation with CHIR99021. They found that 76% of tested loci contained at least one element with detectable regulatory activity, and more than half of regulatory variants showed significant allelic effects (emVars). Regulatory activity was strongly driven by Alu retrotransposons — specifically their left-arm RNA polymerase III promoter elements (A and B boxes) — with younger, less-diverged Alu elements showing higher activity, and CUT&RUN confirmed endogenous TFIIIC binding at these same elements in phNPCs. Disrupted transcription-factor motifs (notably RARA, RARG, ZNF135, and NR2F1) correlated with the strength of allelic effects, and the regional expression pattern of these TFs during prenatal cortical development helped explain why individual variants affect specific cortical regions rather than the whole cortex. A subset of variants showed Wnt-stimulation-dependent regulatory activity, and CRISPR interference at one such condition-dependent element (near FOXO3) experimentally confirmed its effect on endogenous gene expression.",
+    "data_acquisition": "Massively parallel reporter assay (barcoded RNA/DNA sequencing) plus CUT&RUN chromatin profiling in primary human neural progenitor cells (phNPCs), at baseline and after Wnt-pathway (CHIR99021) stimulation",
+    "language": "R (MPRAnalyze, mpra, limma, motifbreakR); Nextflow (CUT&RUN pipeline)",
+    "animal": "Not applicable — human primary neural progenitor cells derived from fetal brain tissue",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "This isn't a general-purpose software package — it's the analysis code (barcode-to-variant mapping, and a separate CUT&RUN peak-calling pipeline) behind this specific MPRA screen. The core statistical analyses (regulatory activity, allelic effects) instead rely on established R/Bioconductor packages that you'd install directly rather than custom code from this paper.",
+    "tutorial_steps": [
+      "If you're running your own MPRA experiment and need to map random barcodes to the variants/elements they tag, start from the linked thewonlab/schizophrenia-MPRA repo, which implements the barcode-mapping step described in the Methods (extracting 20-bp barcodes from paired-end sequencing reads and associating each with the oligo it was ligated to).",
+      "To quantify regulatory activity from your own RNA/DNA barcode counts, use the R/Bioconductor package MPRAnalyze — specifically its <code>analyzeQuantification()</code> function to estimate a transcription-rate parameter (α, adjusted for batch effects and library size) per element relative to your negative controls, as done in this paper.",
+      "To test for allelic effects (a difference in activity between two alleles of the same variant) or condition-dependent effects (activity differing between two experimental conditions), use the Bioconductor package mpra's <code>mpralm()</code> function followed by limma's <code>topTable()</code> — this paper's condition-dependent test additionally used a model with a genotype × condition interaction term.",
+      "To predict which transcription-factor binding motifs a variant disrupts, use the motifbreakR Bioconductor package against a JASPAR motif database (method = 'ic', threshold = 1e-4), filtering to motifs for TFs actually expressed in your cell type of interest; to scan more generally for motif matches within your reporter elements (not just at variant positions), use FIMO from the MEME Suite.",
+      "If you're processing your own CUT&RUN chromatin-profiling data, the raab-lab/cut-n-run Nextflow pipeline (linked above) implements this paper's alignment, quality-filtering, and peak-calling workflow, with deepTools (computeMatrix/plotHeatmap) for coverage visualization.",
+      "To annotate transposable elements (for example, Alu subfamilies) overlapping your reporter elements and estimate their relative evolutionary age, use the RepeatMasker annotation track from the UCSC Table Browser and stratify by the milliDiv divergence score, as done in this paper."
+    ],
+    "tutorial_output": "Per-element regulatory activity scores (transcription rate relative to negative controls) and allelic-effect statistics (log-fold-change and FDR per variant) from the MPRA; predicted disrupted transcription-factor motifs per variant; and, from CUT&RUN, called peaks and coverage tracks for your transcription factor of interest — the building blocks this paper used to nominate causal variants, their target genes, and the transcription factors mediating their effects on cortical structure.",
+    "sample_data": {
+      "text": "",
+      "url": ""
+    },
+    "code": {
+      "repo_url": "https://github.com/thewonlab/schizophrenia-MPRA",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "raab-lab/cut-n-run (Nextflow pipeline for the CUT&RUN alignment, quality-filtering, and peak-calling used in this paper)",
+        "url": "https://github.com/raab-lab/cut-n-run"
+      }
+    ],
+    "related_ids": [],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2026-09-23-psychad-atlas",
     "title": "Single-cell atlas of transcriptomic vulnerability across brain disorders",
     "authors": "Lee D., Koutrouli M., Masse N.Y., Hoffman G.E., Kinrot S., et al.",

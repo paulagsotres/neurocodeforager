@@ -306,6 +306,7 @@ async function initHome(){
   const fuse = new Fuse(entries, {
     includeScore: true,
     threshold: 0.35,
+    ignoreLocation: true,
     keys: [
       { name: 'title', weight: 0.3 },
       { name: 'tags', weight: 0.25 },
@@ -325,7 +326,10 @@ async function initHome(){
     catsSection.style.display = isSearching ? 'none' : '';
     if (lastIndexedSection) lastIndexedSection.style.display = isSearching ? 'none' : '';
     if (suggestSection) suggestSection.style.display = isSearching ? 'none' : '';
-    if (!isSearching) return;
+    if (!isSearching){
+      countLabel.textContent = '';
+      return;
+    }
 
     const hits = fuse.search(query).map(r => r.item);
     countLabel.textContent = `${hits.length} result${hits.length === 1 ? '' : 's'}`;

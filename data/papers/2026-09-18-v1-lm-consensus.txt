@@ -1,0 +1,42 @@
+title: Reciprocal connections dynamically build consensus between neocortical areas
+authors: Javadzadeh M., Schimel M., Hofer S.B., Ahmadian Y., Hennequin G.
+journal: Nature Neuroscience
+year: 2026
+date: 2026-09-18
+doi: 10.1038/s41593-026-02437-3
+paper_url: https://doi.org/10.1038/s41593-026-02437-3
+github_url: https://github.com/marineschimel/ilqr_vae
+access_status: open_access
+category: statistical-analysis, electrophysiology
+tags: iLQR-VAE, latent circuit model, system identification, line attractor, excitation-inhibition, multi-area recordings, V1, lateromedial area, LM, visual cortex, optogenetic perturbation, PV interneurons, variational autoencoder, dynamical systems, mouse, inter-area consensus, cortical hierarchy
+data_acquisition: Simultaneous multi-channel electrophysiological recordings from V1 and higher-order area LM in head-fixed mice performing a visual go/no-go task, with brief optogenetic silencing (PV+ interneuron activation) of one area on a subset of trials
+language: Python (iLQR-VAE)
+animal: Mouse
+difficulty: advanced
+citation_count:
+added_date: 2026-09-26
+
+summary:
+Using iLQR-VAE — a control-based variational method that jointly infers latent circuit dynamics and unobserved trial-by-trial external inputs — the authors fit biologically constrained excitation-inhibition circuit models to simultaneous V1-LM recordings and optogenetic perturbations, finding that reciprocal long-range excitatory connections between the two areas create an approximate line attractor that dynamically builds consensus between them about both the presence and identity of a visual stimulus.
+
+abstract_long:
+The authors built latent circuit models of joint V1-LM dynamics constrained to reflect known cortical circuit organization: separate excitatory/inhibitory subpopulations within each area (Dale's law), with only excitatory units projecting across areas, and neurons assigned a definite E or I identity via a structured sparsity penalty. Trial-by-trial external inputs (visual stimulus and optogenetic perturbation) were inferred per trial using iLQR-VAE, a control-based sequential variational autoencoder that uses the iterative linear-quadratic-regulator algorithm as its recognition model. Fitted models generalized across animals, correctly labeled directly photo-stimulated PV+ interneurons as inhibitory in most fits, and predicted the effect of held-out optogenetic perturbations on unperturbed neurons — validation that the constrained circuit structure reflects real biology rather than an arbitrary parameterization. The fitted dynamics revealed that sustained visual responses depend on long-range (not local) recurrent connections, and that these reciprocal excitatory connections between V1 and LM create an approximate "line attractor": activity patterns where the two areas agree decay slowly, while patterns where they disagree decay quickly. A minimal, hand-derived E-I circuit model reproduced this mechanism analytically and showed it extends naturally to stimulus-identity consensus (not just stimulus-presence consensus) when connections carry feature-specific structure. Predictions of the model — that "agreeing" activity patterns should have longer autocorrelation timescales than "disagreeing" ones, and that silencing one area should speed up fluctuations in the other — were confirmed directly in the neural data, independent of the fitted model itself.
+
+extra_links:
+Schimel et al. 2022, iLQR-VAE method paper (ICLR, oral) | https://openreview.net/forum?id=wRODLDHaAiW
+Underlying V1-LM electrophysiology dataset (Figshare) | https://doi.org/10.6084/m9.figshare.30983044.v1
+
+tutorial_intro:
+iLQR-VAE is a general-purpose method for learning input-driven latent dynamics from neural population recordings — this paper's specific circuit constraints (E-I structure, area partitioning, cross-area excitation-only connections) are a particular application of it, implemented on top of the base iLQR-VAE package rather than shipped as a separate turnkey tool.
+
+tutorial_steps:
+Install iLQR-VAE from the linked repository (a JAX-based Python package) and review the base method's own examples before adapting it to a multi-area or circuit-constrained setting like this paper's.
+Prepare your data as binned spike counts (this paper used 5 ms bins) per neuron per trial, along with any known trial-structured external events you want the model to condition on (for example, stimulus onset/offset times, or optogenetic perturbation windows) — these inform the time-varying prior variance placed on each input channel, per equation (6) of the paper, rather than being fed to the model as hard-coded inputs.
+Define your latent circuit's structure: the paper partitions latent units into areas and, within each area, into excitatory/inhibitory subpopulations, constraining the recurrent weight matrix so only excitatory units project across areas (their equation 10) — adapt this block structure to whatever circuit hypothesis you want to test, or omit it entirely for an unconstrained baseline model to check whether your constraints hurt model fit.
+If you want neurons to be assigned an unambiguous cell-type identity (as this paper does for excitatory vs. inhibitory), add a structured sparsity penalty on the readout matrix (their equation 12) that discourages a neuron from loading onto both an excitatory and inhibitory latent subpopulation simultaneously.
+Fit the model by maximizing the evidence lower bound (ELBO) via iLQR-VAE's control-based recognition model, which solves for the most likely trial-specific input trajectory using the iterative LQR algorithm rather than a separate encoder network.
+Select hyperparameters (number of latent units, number of input channels) via cross-validation on held-out trials, and validate the fitted model with domain-specific checks where available — this paper used the known identity of directly photo-stimulated PV+ interneurons and the model's ability to predict held-out optogenetic perturbation effects as two such checks; reject or refit models that fail these checks.
+To probe the resulting circuit's dynamics (for example, testing for a line attractor or characterizing relaxation timescales), linearize the fitted nonlinear dynamics around a period of interest and examine the eigenvalues/eigenvectors of the resulting linear system, or systematically down-scale specific connectivity blocks (for example, long-range vs. local) and measure the resulting change in the network's response.
+
+tutorial_output:
+A fitted latent circuit model per animal, with inferred trial-specific external input trajectories, a decoded excitatory/inhibitory identity per recorded neuron, and — from downstream analysis of the fitted dynamics — relaxation time constants, eigenmode decompositions, and predicted responses to novel (including held-out or simulated) perturbations, usable to test specific circuit-mechanistic hypotheses about how the recorded areas interact.
