@@ -32,7 +32,7 @@ function renderLayout(){
     footerHost.innerHTML = `
       <span class="logo-word">neurocode<span class="accent">forager</span></span>
       <div class="footer-links">
-        <a href="https://github.com/paulagsotres/neurocodeforager" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://paulagsotres.github.io/" target="_blank" rel="noopener">GitHub</a>
         <a href="https://www.linkedin.com/in/paula-g%C3%B3mez-sotres-722242151/" target="_blank" rel="noopener">LinkedIn</a>
         <a href="mailto:neurocodeforager@gmail.com">Contact</a>
       </div>`;
