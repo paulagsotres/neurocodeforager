@@ -8,7 +8,7 @@ const CATEGORIES = [
   { slug: 'brain-imaging', name: 'Brain imaging', desc: 'MRI, fMRI, MEG/EEG, light-sheet, fiber photometry, calcium imaging', icon: 'brainImaging' },
   { slug: 'gene-protein-analysis', name: 'Gene and protein analysis', desc: 'sequencing, structure', icon: 'gene' },
   { slug: 'spatial-omics', name: 'Spatial omics', desc: 'tissue-level molecular maps', icon: 'omics' },
-  { slug: 'neural-networks', name: 'Neural networks', desc: 'ML/DL models for neuro data', icon: 'nn' },
+  { slug: 'neural-networks', name: 'Neural networks and computational modelling', desc: 'ML/DL models, biophysical simulations, computational neuroscience', icon: 'nn' },
 ];
 
 function getCategory(slug){

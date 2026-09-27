@@ -1048,9 +1048,9 @@
     "website_url": "https://buzsakilab.com/wp/public-data/",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "neural-circuits",
+    "category": "electrophysiology",
     "categories": [
-      "neural-circuits"
+      "electrophysiology"
     ],
     "tags": [
       "hippocampus",
@@ -2123,9 +2123,9 @@
     "website_url": "https://buzsakilab.com/wp/database/",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "neural-circuits",
+    "category": "electrophysiology",
     "categories": [
-      "neural-circuits"
+      "electrophysiology"
     ],
     "tags": [
       "hippocampus",
@@ -3548,6 +3548,98 @@
       "2018-11-21-tsc",
       "2025-12-17-ripple-csd-classifier",
       "2025-09-04-valero-interneurons-hippocampal-spatial-code"
+    ],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2026-09-14-braincell",
+    "title": "BRAINCELL modelling platform for stochastic nanoscale organisation and dynamic extracellular signalling among neurons and glia",
+    "authors": "Savtchenko L.P., Aleksin S.G., Tsimperi C., Villoslada P., Muttik I., Rusakov D.A.",
+    "journal": "Nature Communications",
+    "year": 2026,
+    "date": "2026-09-14",
+    "doi": "10.1038/s41467-026-77525-w",
+    "paper_url": "https://www.nature.com/articles/s41467-026-77525-w",
+    "github_url": "https://github.com/RusakovLab/BRAINCELL",
+    "website_url": "https://www.neuroalgebra.net",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "neural-networks",
+    "categories": [
+      "neural-networks",
+      "statistical-analysis"
+    ],
+    "tags": [
+      "biophysical modelling",
+      "compartmental model",
+      "dendritic spines",
+      "astrocytes",
+      "extracellular space",
+      "NEURON simulator",
+      "stochastic morphology",
+      "volume transmission",
+      "GABA",
+      "potassium dynamics",
+      "myelinated axons",
+      "microglia",
+      "neuron-astrocyte interaction",
+      "Kir4.1",
+      "synaptic release probability",
+      "nanoscale structures",
+      "AI agent",
+      "Python",
+      "NeuroML",
+      "SWC"
+    ],
+    "summary": "BRAINCELL extends the NEURON simulation environment to enable biophysically realistic modelling of neurons and glia with stochastically generated nanoscale structures (dendritic spines, astrocytic processes) and a dynamic, interactive extracellular milieu tracking spatiotemporal ion and signalling-molecule concentrations — revealing outcomes that differ substantially from conventional spineless, static-extracellular models.",
+    "abstract_long": "Biophysical compartmental models have largely lacked nanoscale structures such as dendritic spines and a dynamic extracellular environment. BRAINCELL addresses both by stochastically generating populations of nanoscale morphological elements constrained by empirical statistics, and implementing a dynamic extracellular milieu tracking spatiotemporal ion and neurotransmitter concentrations via mesh-free Inside-Out diffusion calculators and NEURON RxD. Key results: spine populations expand the synaptic input-output dynamic range from 0–40 Hz to 5–90 Hz; extracellular K+ hotspots boost dendritic excitability several-fold; individual interneurons generate extracellular GABA waves reducing pyramidal firing by ~46%; Kir4.1-expressing astrocytes reduce neuronal firing by ~15%; myelinated axon spike propagation fails when oligodendrocyte Kir4.1 is removed. A built-in AI agent (Claude/Anthropic) supports natural-language modification of MOD/HOC/Python files.",
+    "data_acquisition": "Not applicable — a computational modelling platform; accepts morphological data in SWC, NeuroML, HDF5, and NEURON HOC formats from NeuroMorpho.org, MouseLight, Allen Institute, BlueBrain, and EBRAINS",
+    "language": "Python (built on NEURON simulator; GUI-based, no coding required for standard workflows)",
+    "animal": "Not species-specific; demonstrated on mouse and rat CA1 pyramidal neurons, hippocampal basket cells, and microglial cells",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "BRAINCELL is downloaded from <a href=\"https://www.neuroalgebra.net\">neuroalgebra.net</a> (free registration required) and installs as a desktop application on Windows, macOS, and Linux. It runs through a point-and-click GUI built on NEURON — no coding required for standard workflows. Import cell morphologies from NeuroMorpho.org, Allen Institute, BlueBrain in SWC, NeuroML, or HOC format, then use GUI menus to populate cells with nanoscale structures, configure synaptic inputs, set extracellular parameters, and run simulations.",
+    "tutorial_steps": [
+      "Download and install BRAINCELL from <a href=\"https://www.neuroalgebra.net/tools\">neuroalgebra.net/tools</a>. Launch the application — it prompts you to choose a cell type (Neuron, Astrocyte, or Microglia) and an input file format (SWC, NeuroML, HOC, or BrainCell Export).",
+      "Import a cell morphology: provide a local SWC/NeuroML file or paste a database link (NeuroMorpho.org, Allen Institute, BlueBrain). BRAINCELL parses the morphology and displays it in the 3D viewer.",
+      "Populate dendrites with stochastic dendritic spines using the Manager of Spine Seeding: choose dendrites, set maximum spines per section, and select a geometry distribution (uniform, normal, or empirically matched to STED statistics).",
+      "Configure synaptic inputs via the Seed Synapses menu: number, type (axo-dendritic or axo-spinous), presynaptic firing rate, release probability Pr, and spatial distribution. For extracellular ion dynamics, use the Extracellular Source interface to define 3D regions of elevated K+, GABA, or glutamate concentrations.",
+      "Run the simulation and inspect outputs: membrane voltage heatmaps on the 3D cell, somatic voltage traces, and firing-frequency curves. For multi-cell configurations, use the Manager of Extra Cells to position additional cells and configure extracellular diffusion. Use the built-in AI agent for natural-language modifications to MOD/HOC/Python files."
+    ],
+    "tutorial_output": "3D animated membrane voltage or ion concentration heatmaps; somatic voltage traces and spike rasters; input-output firing frequency curves; extracellular concentration time courses for K+, GABA, glutamate, and ATP; spatial wave snapshots. Results exportable as CSV/HOC files or figures from the GUI.",
+    "sample_data": {
+      "text": "Example cell models (CA1 pyramidal neuron, hippocampal basket cell) available from NeuroMorpho.org and NEURON ModelDB; pre-configured example simulations included in the BRAINCELL installation.",
+      "url": "https://www.neuroalgebra.net/tools"
+    },
+    "code": {
+      "repo_url": "https://github.com/RusakovLab/BRAINCELL",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "User manual and installation",
+        "url": "https://www.neuroalgebra.net/tools"
+      },
+      {
+        "label": "MSGLIA microglia extension",
+        "url": "https://github.com/chrysatbr/MSGLIA1"
+      },
+      {
+        "label": "AI agent guide",
+        "url": "https://www.neuroalgebra.net/support.html"
+      }
+    ],
+    "related_ids": [
+      "2020-01-22-hnn",
+      "2018-11-21-tsc"
     ],
     "added_date": "2026-09-26",
     "added_by": "manual",
