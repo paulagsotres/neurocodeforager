@@ -1048,9 +1048,9 @@
     "website_url": "https://buzsakilab.com/wp/public-data/",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "neural-circuits",
+    "category": "electrophysiology",
     "categories": [
-      "neural-circuits"
+      "electrophysiology"
     ],
     "tags": [
       "hippocampus",
@@ -2123,9 +2123,9 @@
     "website_url": "https://buzsakilab.com/wp/database/",
     "access_status": "open_access",
     "citation_count": null,
-    "category": "neural-circuits",
+    "category": "electrophysiology",
     "categories": [
-      "neural-circuits"
+      "electrophysiology"
     ],
     "tags": [
       "hippocampus",
@@ -3040,6 +3040,612 @@
     "verified": true
   },
   {
+    "id": "2026-09-09-netneurotools",
+    "title": "netneurotools: a trainee-oriented approach to network neuroscience",
+    "authors": "Liu Z.Q., Bazinet V., Hansen J.Y., Milisav F., Luppi A.I., Ceballos E.G., Farahani A., Suarez L.E., Shafiei G., Markello R.D., Misic B.",
+    "journal": "Nature Protocols",
+    "year": 2026,
+    "date": "2026-09-09",
+    "doi": "10.1038/s41596-026-01446-7",
+    "paper_url": "https://www.nature.com/articles/s41596-026-01446-7",
+    "github_url": "https://github.com/netneurolab/netneurotools",
+    "website_url": "https://netneurolab.github.io/netneurotools/",
+    "access_status": "paywall_restricted",
+    "citation_count": null,
+    "category": "statistical-analysis",
+    "categories": [
+      "statistical-analysis",
+      "brain-imaging"
+    ],
+    "tags": [
+      "network neuroscience",
+      "connectome",
+      "graph theory",
+      "brain networks",
+      "community detection",
+      "consensus clustering",
+      "surrogate networks",
+      "spatial statistics",
+      "Moran's I",
+      "dominance analysis",
+      "parcellation",
+      "brain atlas",
+      "surface visualization",
+      "FreeSurfer",
+      "CIFTI",
+      "network metrics",
+      "communicability",
+      "permutation testing",
+      "Python",
+      "human",
+      "MRI"
+    ],
+    "summary": "netneurotools is a Python toolbox that fills the gap between large, specialized neuroimaging packages — offering modular, trainee-tested functions for the full network neuroscience workflow: fetching datasets and atlases, constructing consensus and surrogate networks, computing graph metrics and spatial statistics, running permutation tests, and visualizing results on brain surfaces. Developed organically by the Misic lab since 2017 and used across more than 15 publications.",
+    "abstract_long": "Modern network neuroscience projects typically involve many moving parts: importing brain atlases, parcellating brain maps, constructing consensus connectivity matrices, computing graph metrics, running spatially-informed statistical tests, and rendering results on brain surfaces. netneurotools fills this gap with nine modules: datasets, networks, metrics, modularity, stats, spatial, plotting, interface, and experimental. BSD-3 licensed, continuously tested via GitHub Actions, and distributed via PyPI and Docker.",
+    "data_acquisition": "Not applicable — a general-purpose toolbox for any parcellated brain imaging data (MRI connectivity matrices, brain maps, atlases); operates on regionalized data rather than raw imaging",
+    "language": "Python",
+    "animal": "Not species-specific (primarily demonstrated on human MRI data)",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "netneurotools is installed via <code>pip install netneurotools</code> and works on any parcellated brain data. The nine modules cover the full workflow from data ingestion to visualization. Modules are decoupled and can be used independently.",
+    "tutorial_steps": [
+      "Install and import: <code>pip install netneurotools</code>, then <code>from netneurotools import datasets, networks, metrics, modularity, stats, spatial, plotting</code>.",
+      "Use <code>datasets</code> to programmatically fetch standard templates, atlases, and published datasets with automatic caching — e.g. <code>datasets.fetch_schaefer2018()</code>, <code>datasets.fetch_cammoun2012()</code>, or published datasets from the lab's papers.",
+      "Use <code>networks</code> to build group-representative connectivity matrices (<code>struct_consensus()</code>) or generate distance-preserving surrogate networks for null-model testing (<code>match_length_degree_distribution()</code>).",
+      "Use <code>metrics</code> for graph-theoretic measures (communicability, navigation efficiency, assortativity) and <code>modularity</code> for consensus community detection via Louvain across multiple resolutions.",
+      "Use <code>stats</code> for permutation-based correlation tests, dominance analysis, and confound regression. Use <code>spatial</code> for Moran's I, Geary's C, and Lee's L spatial autocorrelation.",
+      "Use <code>plotting</code> to render results on the brain surface: <code>pv_plot_parcellated_data()</code> for cortical surface maps, <code>plot_mod_heatmap()</code> for community-ordered connectivity heatmaps."
+    ],
+    "tutorial_output": "Group-representative connectivity matrices, surrogate network ensembles, per-node graph metrics, community assignment vectors, permutation p-values, dominance statistics, spatial autocorrelation coefficients, and rendered brain surface figures.",
+    "sample_data": {
+      "text": "The datasets module provides direct access to the datasets used in the paper's three tutorial examples.",
+      "url": "https://netneurolab.github.io/netneurotools/auto_examples/index.html"
+    },
+    "code": {
+      "repo_url": "https://github.com/netneurolab/netneurotools",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Full documentation and API reference",
+        "url": "https://netneurolab.github.io/netneurotools/"
+      },
+      {
+        "label": "Tutorial examples",
+        "url": "https://netneurolab.github.io/netneurotools/auto_examples/index.html"
+      }
+    ],
+    "related_ids": [
+      "2018-12-10-fmriprep",
+      "2023-05-03-cebra"
+    ],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2026-10-27-mapseq-visual-cortex",
+    "title": "Structured and target-specific development of cortico-cortical connectivity in the mouse visual cortex",
+    "authors": "Jacobs M.W., Ratliff J.M., Soronow A.L.R., Nichols J.A., James H.T., Eddy J.A.G., Murray A.M., Kim E.J.",
+    "journal": "Cell Reports",
+    "year": 2026,
+    "date": "2026-10-27",
+    "doi": "10.1016/j.celrep.2026.118027",
+    "paper_url": "https://www.cell.com/cell-reports/fulltext/S2211-1247(26)01105-8",
+    "github_url": "https://github.com/Kim-Neuroscience-Lab/mapseq_processing_kimlab",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "gene-protein-analysis",
+    "categories": [
+      "gene-protein-analysis",
+      "image-analysis",
+      "brain-imaging"
+    ],
+    "tags": [
+      "MAPseq",
+      "axonal projection",
+      "cortico-cortical connectivity",
+      "visual cortex",
+      "V1",
+      "higher visual areas",
+      "projection motif",
+      "single-cell tracing",
+      "barcoded virus",
+      "Sindbis virus",
+      "retrograde tracing",
+      "anterograde tracing",
+      "circuit development",
+      "pruning",
+      "postnatal development",
+      "mouse",
+      "Python"
+    ],
+    "summary": "Using MAPseq barcoded single-cell tracing alongside retrograde and anterograde bulk methods, Jacobs et al. map how V1 cortico-cortical projection neurons develop their axonal targeting to eleven higher visual areas across postnatal development, finding that individual neurons initialize specific projection motifs early and retain them with little variation.",
+    "abstract_long": "The mammalian visual cortex establishes highly stereotyped long-range connectivity, yet whether this specificity arises from exuberant outgrowth followed by pruning or from initially directed axonal targeting has remained unresolved. MAPseq single-cell profiling of thousands of individual V1 CCPNs revealed that projection motif complexity, target number per neuron, and motif frequencies remained largely stable across timepoints (99.87% unique barcode rate; 584,899 total barcodes), arguing against global inter-areal reorganization and supporting a directed guidance model.",
+    "data_acquisition": "MAPseq (Multiplexed Analysis of Projections by Sequencing) using barcoded Sindbis virus injected into V1; brains harvested 48h post-injection, target areas microdissected at -20C, RNA extracted and sequenced (NextSeq/NovaSeq); complemented by retrograde (CTB, AAV-retro) and anterograde (VSV, rabies) bulk tracing",
+    "language": "Python",
+    "animal": "Mouse",
+    "gpu_required": "",
+    "difficulty": "advanced",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "This repository contains the Kim Lab's downstream MAPseq analysis pipeline, which picks up from the output of the CSHL Zador Lab <code>mapseq-processing</code> pipeline. The CSHL pipeline takes raw FASTQ files and produces per-sample <code>.nbcm.tsv</code> barcode count matrices. The Kim Lab scripts then filter, normalize, and analyze these matrices to identify projection motifs.",
+    "tutorial_steps": [
+      "Run the CSHL upstream pipeline first (<a href=\"https://github.com/ZadorLaboratory/mapseq-processing\">ZadorLaboratory/mapseq-processing</a>) on your raw FASTQ files to produce per-sample <code>.nbcm.tsv</code> barcode count matrices.",
+      "Install the Kim Lab pipeline: clone the repo, create a conda environment (<code>conda create -n mapseq_processing python==3.9 pip</code>), activate it, and run <code>pip install -r requirements.txt</code>.",
+      "Run <code>preprocess_and_aggregate.py</code> on your <code>.nbcm.tsv</code> files. This standardizes column names, applies noise thresholding based on the negative control column, and concatenates replicates into <code>aggregated_cleaned_matrix.tsv</code>.",
+      "Run <code>process-nbcm-tsv.py</code> on the aggregated matrix. Required arguments: output directory (<code>-o</code>), input data (<code>-d</code>), file prefix (<code>-s</code>), and column labels (<code>-l</code>, e.g. <code>\"area,area,neg,inj,area\"</code>). This applies barcode filtering, normalizes projection strengths, and identifies projection motifs.",
+      "Run the numbered helper scripts in order from <code>helpers/scripts/</code> (01 through 13). Use <code>run_commands.sh</code> for batch execution with automatic logging.",
+      "Check outputs with <code>postprocessing_checks.py</code> and generate publication-ready figures with <code>figure_generation/generate_figure_from_outputs.py</code>."
+    ],
+    "tutorial_output": "Filtered barcode-by-region matrices, projection motif classifications per neuron, motif frequency statistics, projection strength heatmaps, motif divergence metrics, clustering results, and publication figures.",
+    "sample_data": {
+      "text": "A truncated sample dataset is provided in the repository for testing.",
+      "url": "https://github.com/Kim-Neuroscience-Lab/mapseq_processing_kimlab"
+    },
+    "code": {
+      "repo_url": "https://github.com/Kim-Neuroscience-Lab/mapseq_processing_kimlab",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "CSHL MAPseq upstream processing pipeline (Zador Lab)",
+        "url": "https://github.com/ZadorLaboratory/mapseq-processing"
+      }
+    ],
+    "related_ids": [
+      "2025-07-01-projection-tags"
+    ],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2021-12-20-guppy",
+    "title": "GuPPy, a Python toolbox for the analysis of fiber photometry data",
+    "authors": "Sherathiya V.N., Schaid M.D., Seiler J.L., Lopez G.C., Lerner T.N.",
+    "journal": "Scientific Reports",
+    "year": 2021,
+    "date": "2021-12-20",
+    "doi": "10.1038/s41598-021-03626-9",
+    "paper_url": "https://www.nature.com/articles/s41598-021-03626-9",
+    "github_url": "https://github.com/LernerLab/GuPPy",
+    "website_url": "https://guppy.readthedocs.io",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "brain-imaging",
+    "categories": [
+      "brain-imaging",
+      "statistical-analysis"
+    ],
+    "tags": [
+      "fiber photometry",
+      "GCaMP",
+      "dLight",
+      "isosbestic control",
+      "delta F over F",
+      "z-score",
+      "peri-stimulus time histogram",
+      "peak detection",
+      "area under the curve",
+      "artifact correction",
+      "photobleaching",
+      "batch processing",
+      "group analysis",
+      "Tucker Davis Technologies",
+      "Neurophotometrics",
+      "calcium imaging",
+      "dopamine",
+      "GUI",
+      "Python"
+    ],
+    "summary": "GuPPy (Guided Photometry Analysis in Python) is a GUI-driven, cross-platform Python toolbox for fiber photometry data analysis. It covers the full workflow from raw signal extraction through ΔF/F or z-score computation, artifact correction, PSTH generation, peak detection, area under the curve, and multi-animal group comparisons — requiring no programming knowledge to use.",
+    "abstract_long": "Fiber photometry has grown rapidly as a method for recording in vivo bulk neural activity, but analysis pipelines have remained largely lab-specific and unpublished. GuPPy standardizes this workflow in a GUI-driven, cross-platform Python tool built on Anaconda, designed for users with minimal programming background. It accepts data from TDT processors, Neurophotometrics CSV files, or a generic CSV format. The analysis workflow includes artifact removal, ΔF/F computation using isosbestic control normalization, z-score calculation, PSTH generation, transient detection, and group averaging.",
+    "data_acquisition": "Fiber photometry recordings from any commercial or DIY acquisition system — natively supports TDT/Synapse, Neurophotometrics, and a generic CSV format; behavioral event timestamps accepted as TDT stores or CSV files",
+    "language": "Python",
+    "animal": "Not species-specific; demonstrated in mouse with GCaMP7b and dLight1.3b",
+    "gpu_required": "",
+    "difficulty": "beginner",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "GuPPy runs entirely through a series of GUIs — no command-line or coding required. The workflow has three main stages: setting input parameters, specifying storenames (for TDT data) or CSV files, and running the analysis. Batch mode is triggered simply by selecting multiple folders.",
+    "tutorial_steps": [
+      "Install Anaconda (any OS), then install GuPPy following the GitHub Wiki instructions. Minimum 8 GB RAM; 2-4 core processor recommended for batch processing.",
+      "Open the <strong>Input Parameters GUI</strong>. Select the folder(s) where recorded data is stored. Set key parameters: isosbestic control channel, output as ΔF/F or z-score, PSTH window [A, B] in seconds, and moving window size for transient detection (default 15 s).",
+      "If using TDT data, open the <strong>Open Storenames GUI</strong> to specify which stores contain your signal and isosbestic channels. GuPPy applies a zero-phase moving average filter before fitting.",
+      "Run the analysis. GuPPy fits the isosbestic control to the signal (least-squares polynomial fit, degree 1) and computes ΔF/F = (Signal − Fitted Control) / Fitted Control. The trace is displayed for inspection before continuing.",
+      "Inspect outputs in the <strong>Visualization GUI</strong>: browse PSTH trials, plot mean PSTH ± SEM, view heatmaps, inspect peak detection. For group analysis, set 'Average Group' to True and re-run."
+    ],
+    "tutorial_output": "Per-session HDF5/CSV files with ΔF/F and z-score traces, PSTH matrices, peak statistics, and AUC values. Figures saved as PNG and SVG. All outputs readable in MATLAB via HDF5.",
+    "sample_data": {
+      "text": "Sample data in TDT and CSV formats provided on the GitHub Wiki page.",
+      "url": "https://github.com/LernerLab/GuPPy/wiki"
+    },
+    "code": {
+      "repo_url": "https://github.com/LernerLab/GuPPy",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Step-by-step user guide",
+        "url": "https://github.com/LernerLab/GuPPy/wiki"
+      },
+      {
+        "label": "ReadTheDocs tutorials",
+        "url": "https://guppy.readthedocs.io/tutorials/first_analysis.html"
+      }
+    ],
+    "related_ids": [
+      "2020-06-22-brain-states-connectivity"
+    ],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2018-11-21-tsc",
+    "title": "Parsing Hippocampal Theta Oscillations by Nested Spectral Components during Spatial Exploration and Memory-Guided Behavior",
+    "authors": "Lopes-dos-Santos V., van de Ven G.M., Morley A., Trouche S., Campo-Urriza N., Dupret D.",
+    "journal": "Neuron",
+    "year": 2018,
+    "date": "2018-11-21",
+    "doi": "10.1016/j.neuron.2018.09.031",
+    "paper_url": "https://www.cell.com/neuron/fulltext/S0896-6273(18)30820-1",
+    "github_url": "https://github.com/tortlab/tSC",
+    "website_url": "https://neurocodeforager.org/assets/tSC",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "electrophysiology",
+    "categories": [
+      "electrophysiology",
+      "statistical-analysis"
+    ],
+    "tags": [
+      "theta oscillations",
+      "spectral components",
+      "hippocampus",
+      "CA1",
+      "gamma oscillations",
+      "local field potential",
+      "independent component analysis",
+      "ensemble empirical mode decomposition",
+      "theta-gamma coupling",
+      "sharp-wave ripples",
+      "memory reactivation",
+      "neural oscillations",
+      "cycle-by-cycle analysis",
+      "mouse",
+      "rat",
+      "Python"
+    ],
+    "summary": "tSC (theta-nested Spectral Components) is an unsupervised framework that decomposes CA1 hippocampal LFP into the spectral components nested within individual theta cycles, using ensemble empirical mode decomposition (EEMD) followed by ICA or NMF. It reveals that cycle-to-cycle variability of theta-nested oscillations reflects dynamic switching between hippocampal operating modes linked to different stages of spatial memory.",
+    "abstract_long": "Lopes-dos-Santos et al. developed an unsupervised single-cycle profiling framework: EEMD decomposes raw LFPs into theta and supra-theta signals; a Morlet wavelet spectrogram is computed per theta cycle; ICA extracts statistically independent theta-nested spectral components. Five consistent tSCs emerged: tSC1 (22-Hz beta), tSC2 (35-Hz slow gamma), tSC3 (54-Hz mid-gamma), tSC4 (80-Hz mid-gamma), tSC5 (>100-Hz fast gamma). tSC4 cycles showed the strongest replay in SPW-Rs; tSC4 was strengthened during learning while tSC1-3 increased during retrieval.",
+    "data_acquisition": "Multichannel extracellular tetrode recordings of LFPs and principal cell spiking from CA1 pyramidal layer during open field and goal-directed spatial tasks; data stored as numpy binary files per channel per session",
+    "language": "Python 2",
+    "animal": "Mouse; also validated in rat",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "10 mice, 20 recording days",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "The tSC framework is a command-line Python 2 tool: <code>tSC.py</code> and <code>EMDlib.py</code>. LFP data must be stored as numpy binary files with naming convention <code>[basename]_[session].eeg.[channel]</code>. Dataset, codes, and tutorial are available under <a href=\"https://neurocodeforager.org/assets/tSC\">assets/tSC</a> on this site.",
+    "tutorial_steps": [
+      "Download the tSC package and install dependencies: <code>pip install -r requirements.txt</code>. Python 2 is required. Alternatively use the provided Docker container.",
+      "Organize LFP data as numpy binary files: <code>[basename]_[session].eeg.[channel]</code>. Default sampling rate 1250 Hz (adjustable with <code>sr=</code>).",
+      "Run tSC extraction: <code>python2 tSC.py /data/[basename] ses=2,4,6 ch=4</code>. Combining multiple sessions is recommended. Optional: <code>nPCs=5</code>, <code>dimrec=nmf</code>, <code>nCPUs=N</code>.",
+      "Inspect the tSC dictionary (<code>.tSC.ica</code>): contains component vectors, per-cycle spectral signatures (cyclePSDs), and per-cycle tSC strengths (projections). A scikit-learn model file (<code>.tSC.ica.model</code>) allows cross-session projection.",
+      "Generate theta phase-gamma coupling plots from Jupyter: <code>tsc.plotMeantSCcycle(base, ChLabel=4, sessions=[2,4,6])</code>."
+    ],
+    "tutorial_output": "tSC dictionary (.tSC.ica) with component vectors, per-cycle spectral signatures, and tSC strengths; theta cycle boundary timestamps; instantaneous theta phase; EEMD intrinsic mode functions; saved ICA model for cross-session projection.",
+    "sample_data": {
+      "text": "Example LFP data (3 sessions, channel 4, mouse CA1) included in the tSC package under assets/tSC.",
+      "url": "https://data.mrc.ox.ac.uk/data-set/tsc"
+    },
+    "code": {
+      "repo_url": "https://github.com/tortlab/tSC",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Tutorial PDF",
+        "url": "https://github.com/paulagsotres/neurocodeforager/blob/main/assets/tSC/tSC%20tutorial.pdf"
+      }
+    ],
+    "related_ids": [
+      "2022-02-04-valero-subthreshold-optogenetics",
+      "2025-09-04-valero-interneurons-hippocampal-spatial-code"
+    ],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2025-12-17-ripple-csd-classifier",
+    "title": "Hippocampal ripple diversity organizes neuronal reactivation dynamics in the offline brain",
+    "authors": "Castelli M., Lopes-dos-Santos V., Gava G.P., Lambiotte R., Dupret D.",
+    "journal": "Neuron",
+    "year": 2025,
+    "date": "2025-12-17",
+    "doi": "10.1016/j.neuron.2025.09.012",
+    "paper_url": "https://www.cell.com/neuron/fulltext/S0896-6273(25)00700-7",
+    "github_url": "https://github.com/mcastelli98/Ripple-CSDprof-classifier",
+    "website_url": "https://zenodo.org/doi/10.5281/zenodo.16995136",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "electrophysiology",
+    "categories": [
+      "electrophysiology"
+    ],
+    "tags": [
+      "sharp-wave ripples",
+      "hippocampus",
+      "CA1",
+      "current source density",
+      "local field potential",
+      "LDA",
+      "linear discriminant analysis",
+      "laminar profile",
+      "memory consolidation",
+      "memory reactivation",
+      "silicon probe",
+      "ripple classification",
+      "pyramidal layer",
+      "lacunosum moleculare",
+      "radiatum",
+      "sleep",
+      "coactivity",
+      "Python",
+      "scikit-learn"
+    ],
+    "summary": "Castelli, Lopes-dos-Santos et al. show that CA1 hippocampal ripples divide into two laminar types — Radsink and LMsink — which recruit different neuronal populations and support parallel reactivation channels. The accompanying LDA classifier infers ripple type from CA1 pyramidal layer LFP alone, requiring no CSD recording.",
+    "abstract_long": "By profiling individual ripples using laminar CSD in mouse CA1, Castelli et al. identified Radsink ripples (dominant sink in stratum radiatum) and LMsink ripples (dominant sink in lacunosum-moleculare). Radsink ripples integrate superficial and deep CA1 cells into denser, higher-dimensional coactivity motifs that stably reactivate recent experiences. LMsink ripples recruit deep cells into sparser, lower-dimensional motifs that drift from prior to recent representations. A pretrained LDA classifier enables ripple-type inference from pyramidal layer LFP waveforms alone.",
+    "data_acquisition": "LFP from 64-channel silicon probes spanning CA1 somato-dendritic axis (1250 Hz), mouse sleep/rest sessions; 38 sessions from 5 mice",
+    "language": "Python",
+    "animal": "Mouse",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "5 mice, 38 sleep/rest sessions",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "The classifier (<code>ripple_classifier</code> Python package) requires only CA1 pyramidal layer LFP — no CSD recording needed. Example data (one mouse sleep/rest session, 64-channel probe) included.",
+    "tutorial_steps": [
+      "Set up environment: <code>conda create --name ripple_env python=3.10 numpy pandas scipy scikit-learn matplotlib seaborn jupyter</code>, activate, clone repo.",
+      "Load ripple-triggered LFP as numpy array (n_ripples, n_channels, n_time_samples) plus channel info file mapping electrodes to CA1 layers.",
+      "Optionally visualize grand-average CSD: <code>utils.runCSD()</code> and <code>utils.plotCSD()</code> to confirm probe spans CA1 somato-dendritic axis.",
+      "Preprocess pyramidal layer LFP: <code>lfp_input, taxis = ripple_classifier.format_lfp_inputs_to_classifier(pyr_lfp, taxis)</code>. Applies z-scoring, low-pass filtering, and PCA automatically.",
+      "Classify: <code>lm_sink, intermediate, rad_sink = ripple_classifier.predict_ripple_types(lfp_input)</code>. Cross-validate by plotting mean CSD per class."
+    ],
+    "tutorial_output": "Index arrays for Radsink, Intermediate, LMsink ripples. Mean waveforms with 95% CIs per class. CSD profiles per class for cross-validation.",
+    "sample_data": {
+      "text": "Ripple-triggered LFP from one mouse sleep/rest session (64-channel CA1, 1250 Hz) in /data/.",
+      "url": "https://github.com/mcastelli98/Ripple-CSDprof-classifier/tree/main/data"
+    },
+    "code": {
+      "repo_url": "https://github.com/mcastelli98/Ripple-CSDprof-classifier",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Zenodo data and model archive",
+        "url": "https://zenodo.org/doi/10.5281/zenodo.16995136"
+      },
+      {
+        "label": "Tutorial notebook",
+        "url": "https://github.com/mcastelli98/Ripple-CSDprof-classifier/blob/main/predicting_ripple_types_from_LFP_waveform.ipynb"
+      }
+    ],
+    "related_ids": [
+      "2018-11-21-tsc",
+      "2022-02-04-valero-subthreshold-optogenetics",
+      "2025-09-04-valero-interneurons-hippocampal-spatial-code"
+    ],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2025-06-24-hipp-lfp-embedding",
+    "title": "Spatio-temporal organization of network activity patterns in the hippocampus",
+    "authors": "Lopes-dos-Santos V., Brizee D., Dupret D.",
+    "journal": "Cell Reports",
+    "year": 2025,
+    "date": "2025-06-24",
+    "doi": "10.1016/j.celrep.2025.115808",
+    "paper_url": "https://www.cell.com/cell-reports/fulltext/S2211-1247(25)00579-0",
+    "github_url": "https://github.com/vitorlds/Hipp-LFP-embedding",
+    "website_url": "",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "electrophysiology",
+    "categories": [
+      "electrophysiology",
+      "statistical-analysis"
+    ],
+    "tags": [
+      "hippocampus",
+      "CA1",
+      "dentate gyrus",
+      "local field potential",
+      "low-dimensional embedding",
+      "Isomap",
+      "PCA",
+      "theta oscillations",
+      "gamma oscillations",
+      "sharp-wave ripples",
+      "dentate spikes",
+      "laminar analysis",
+      "anatomical trajectory",
+      "interneurons",
+      "principal cells",
+      "deep-superficial",
+      "radial axis",
+      "Python",
+      "silicon probe",
+      "mouse"
+    ],
+    "summary": "Lopes-dos-Santos et al. develop a low-dimensional embedding of hippocampal LFP signals recorded along the CA1-to-dentate gyrus axis using PCA followed by Isomap, revealing an anatomical trajectory through hippocampal layers that organizes layer-specific gamma profiles, theta-nested rhythms, and the firing behavior of deep vs. superficial CA1 principal cells and interneurons.",
+    "abstract_long": "Lopes-dos-Santos et al. develop a low-dimensional embedding of LFP waveforms recorded along the CA1-to-DG axis using PCA (applied separately to theta-cycle and sharp-wave waveforms) followed by Isomap. The 2D embedding reveals a smooth anatomical trajectory through hippocampal layers that can be reconstructed across mice using pre-trained models. Within this embedding, layer-specific gamma profiles reflect spatially organized rhythms co-varying with interneuron and principal cell firing motifs. Deep and superficial CA1 principal cells show distinguishable firing behaviors, and interneurons from pyramidal, radiatum, and lacunosum-moleculare layers form separable populations.",
+    "data_acquisition": "LFP along the CA1-to-dentate gyrus axis using silicon probes in freely behaving mice (1250 Hz); mean waveforms of theta cycles and sharp-wave events per anatomical control point; 6 mice",
+    "language": "Python",
+    "animal": "Mouse",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "6 mice",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "The repository provides a Python package (<code>hipp_embedding</code>) with <code>embedding.py</code> and <code>trajectory.py</code>. Pre-trained PCA and Isomap models are included for projecting new sessions without retraining. Input: z-scored mean LFP waveforms aligned to theta cycles and sharp-wave events per channel.",
+    "tutorial_steps": [
+      "Install: <code>pip install -r requirements.txt</code>. Use exact versions (Python 3.10, numpy 1.23.5, scikit-learn 1.2.2) — saved models may be incompatible with newer scikit-learn.",
+      "Prepare input as z-scored mean LFP waveforms per channel: theta cycles (189 samples, aligned to descending zero-crossing) and sharp-wave events (629 samples, aligned to ripple-band amplitude peak). Store as <code>.npz</code> with keys <code>'theta'</code> and <code>'sw'</code>.",
+      "Project new sessions using pre-trained models: <code>hipp_embedding.embedding.project()</code> with paths to <code>models/pca/</code> and <code>models/iso/</code>.",
+      "Or fit a new embedding from scratch: <code>hipp_embedding.embedding.fit_embedding()</code> with your <code>.npz</code> path, output folder, and optional parameters (default: 4 PCA components per pattern, n_neighbors=15, n_components=2).",
+      "Compute the anatomical trajectory: <code>hipp_embedding.trajectory.interpolate_trajectory(ctrlpts_proj)</code>. See the example notebook for a full worked example with the included data."
+    ],
+    "tutorial_output": "2D embedding coordinates per channel, smooth anatomical trajectory through CA1-to-DG axis, figures mapping gamma profiles and cell-type firing motifs onto the embedding.",
+    "sample_data": {
+      "text": "Mean theta and sharp-wave waveforms from 6 mice across 13 anatomical control points (trajectory_points.npz) in /data/.",
+      "url": "https://github.com/vitorlds/Hipp-LFP-embedding/tree/v1.0.0/data"
+    },
+    "code": {
+      "repo_url": "https://github.com/vitorlds/Hipp-LFP-embedding",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "Example notebook",
+        "url": "https://github.com/vitorlds/Hipp-LFP-embedding/blob/v1.0.0/notebooks/visualising_embedding_trajectory.ipynb"
+      },
+      {
+        "label": "Data README",
+        "url": "https://github.com/vitorlds/Hipp-LFP-embedding/blob/v1.0.0/data/README.md"
+      }
+    ],
+    "related_ids": [
+      "2018-11-21-tsc",
+      "2025-12-17-ripple-csd-classifier",
+      "2025-09-04-valero-interneurons-hippocampal-spatial-code"
+    ],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
+    "id": "2026-09-14-braincell",
+    "title": "BRAINCELL modelling platform for stochastic nanoscale organisation and dynamic extracellular signalling among neurons and glia",
+    "authors": "Savtchenko L.P., Aleksin S.G., Tsimperi C., Villoslada P., Muttik I., Rusakov D.A.",
+    "journal": "Nature Communications",
+    "year": 2026,
+    "date": "2026-09-14",
+    "doi": "10.1038/s41467-026-77525-w",
+    "paper_url": "https://www.nature.com/articles/s41467-026-77525-w",
+    "github_url": "https://github.com/RusakovLab/BRAINCELL",
+    "website_url": "https://www.neuroalgebra.net",
+    "access_status": "open_access",
+    "citation_count": null,
+    "category": "neural-networks",
+    "categories": [
+      "neural-networks",
+      "statistical-analysis"
+    ],
+    "tags": [
+      "biophysical modelling",
+      "compartmental model",
+      "dendritic spines",
+      "astrocytes",
+      "extracellular space",
+      "NEURON simulator",
+      "stochastic morphology",
+      "volume transmission",
+      "GABA",
+      "potassium dynamics",
+      "myelinated axons",
+      "microglia",
+      "neuron-astrocyte interaction",
+      "Kir4.1",
+      "synaptic release probability",
+      "nanoscale structures",
+      "AI agent",
+      "Python",
+      "NeuroML",
+      "SWC"
+    ],
+    "summary": "BRAINCELL extends the NEURON simulation environment to enable biophysically realistic modelling of neurons and glia with stochastically generated nanoscale structures (dendritic spines, astrocytic processes) and a dynamic, interactive extracellular milieu tracking spatiotemporal ion and signalling-molecule concentrations — revealing outcomes that differ substantially from conventional spineless, static-extracellular models.",
+    "abstract_long": "Biophysical compartmental models have largely lacked nanoscale structures such as dendritic spines and a dynamic extracellular environment. BRAINCELL addresses both by stochastically generating populations of nanoscale morphological elements constrained by empirical statistics, and implementing a dynamic extracellular milieu tracking spatiotemporal ion and neurotransmitter concentrations via mesh-free Inside-Out diffusion calculators and NEURON RxD. Key results: spine populations expand the synaptic input-output dynamic range from 0–40 Hz to 5–90 Hz; extracellular K+ hotspots boost dendritic excitability several-fold; individual interneurons generate extracellular GABA waves reducing pyramidal firing by ~46%; Kir4.1-expressing astrocytes reduce neuronal firing by ~15%; myelinated axon spike propagation fails when oligodendrocyte Kir4.1 is removed. A built-in AI agent supports natural-language modification of MOD/HOC/Python files.",
+    "data_acquisition": "Not applicable — a computational modelling platform; accepts morphological data in SWC, NeuroML, HDF5, and NEURON HOC formats from NeuroMorpho.org, MouseLight, Allen Institute, BlueBrain, and EBRAINS",
+    "language": "Python (built on NEURON simulator; GUI-based, no coding required for standard workflows)",
+    "animal": "Not species-specific; demonstrated on mouse and rat CA1 pyramidal neurons, hippocampal basket cells, and microglial cells",
+    "gpu_required": "",
+    "difficulty": "intermediate",
+    "subjects": {
+      "count": "",
+      "strains": "",
+      "notes": ""
+    },
+    "tutorial": "",
+    "tutorial_intro": "BRAINCELL is downloaded from <a href=\"https://www.neuroalgebra.net\">neuroalgebra.net</a> (free registration required) and installs as a desktop application on Windows, macOS, and Linux. It runs through a point-and-click GUI built on NEURON — no coding required for standard workflows.",
+    "tutorial_steps": [
+      "Download and install BRAINCELL from <a href=\"https://www.neuroalgebra.net/tools\">neuroalgebra.net/tools</a>. Launch the application — it prompts you to choose a cell type (Neuron, Astrocyte, or Microglia) and an input file format (SWC, NeuroML, HOC, or BrainCell Export).",
+      "Import a cell morphology from a local file or database link (NeuroMorpho.org, Allen Institute, BlueBrain). BRAINCELL parses the morphology and displays it in the 3D viewer.",
+      "Populate dendrites with stochastic dendritic spines using the Manager of Spine Seeding: choose dendrites, set maximum spines per section, and select a geometry distribution (uniform, normal, or empirically matched to STED statistics).",
+      "Configure synaptic inputs via the Seed Synapses menu and extracellular ion dynamics via the Extracellular Source interface. For multi-cell configurations, use the Manager of Extra Cells.",
+      "Run the simulation and inspect outputs: membrane voltage heatmaps, somatic voltage traces, firing-frequency curves, and extracellular concentration time courses. Use the built-in AI agent for natural-language modifications to MOD/HOC/Python files."
+    ],
+    "tutorial_output": "3D animated membrane voltage or ion concentration heatmaps; somatic voltage traces and spike rasters; input-output firing frequency curves; extracellular concentration time courses for K+, GABA, glutamate, and ATP. Results exportable as CSV/HOC files or figures from the GUI.",
+    "sample_data": {
+      "text": "Pre-configured example simulations included in the BRAINCELL installation.",
+      "url": "https://www.neuroalgebra.net/tools"
+    },
+    "code": {
+      "repo_url": "https://github.com/RusakovLab/BRAINCELL",
+      "platform": "github"
+    },
+    "extra_links": [
+      {
+        "label": "User manual and installation",
+        "url": "https://www.neuroalgebra.net/tools"
+      },
+      {
+        "label": "MSGLIA microglia extension",
+        "url": "https://github.com/chrysatbr/MSGLIA1"
+      },
+      {
+        "label": "AI agent guide",
+        "url": "https://www.neuroalgebra.net/support.html"
+      }
+    ],
+    "related_ids": [
+      "2020-01-22-hnn",
+      "2018-11-21-tsc"
+    ],
+    "added_date": "2026-09-26",
+    "added_by": "manual",
+    "verified": true
+  },
+  {
     "id": "2026-04-17-cellrake",
     "title": "Dentate gyrus and CA3 activity mediates light-tone second-order conditioning expression in mice",
     "authors": "Canela M., Bach Adell J., Roura Coll D., González-Parra J.A., Pinho J.S., Busquets-García A.",
@@ -3078,7 +3684,7 @@
       "mouse"
     ],
     "summary": "CellRake is a Python package for detecting and counting fluorescently labeled cells in brain section images using a two-step pipeline: blob segmentation with Laplacian of Gaussian filtering, followed by semi-supervised machine learning classification (label spreading + KNN) that requires the user to manually label only ~10 representative blobs per cluster — achieving robust detection across heterogeneous intensity backgrounds where standard thresholding methods fail.",
-    "abstract_long": "Quantifying brain-wide neural activity from fluorescent marker images (cFos, tdTomato, or other activity reporters) is a bottleneck in systems neuroscience: manual counting is slow and unreliable at scale, while standard thresholding methods (Otsu, Multi-Otsu, Li, Yen) fail in heterogeneous backgrounds. CellRake addresses this with a two-phase workflow. Segmentation: a Laplacian of Gaussian (LoG) filter detects blob candidates; for each candidate, local Otsu thresholding is applied within a circular ROI to handle background heterogeneity; morphological operations clean up the result. Classification: 22 morphological and intensity features are extracted per candidate; k-means clustering groups blobs; the user manually labels ~10 blobs per cluster; SMOTE oversamples the minority class; KNN-based label spreading propagates labels across the full dataset. Separate classifiers are trained per marker. Validated on 153 images from 36 mice (BLA region), CellRake outperformed standard thresholding, especially in heterogeneous conditions. Colocalization analysis between multiple markers is also supported.",
+    "abstract_long": "Quantifying brain-wide neural activity from fluorescent marker images (cFos, tdTomato) is a bottleneck in systems neuroscience: manual counting is slow and standard thresholding methods (Otsu, Multi-Otsu, Li, Yen) fail in heterogeneous backgrounds. CellRake uses a two-phase workflow: Laplacian of Gaussian segmentation with local Otsu thresholding per candidate blob, followed by semi-supervised classification using k-means clustering, manual labeling of ~10 blobs per cluster, SMOTE oversampling, and KNN label spreading. Separate classifiers are trained per marker. Validated on 153 images from 36 mice (BLA), CellRake outperformed standard thresholding, especially in heterogeneous conditions. Colocalization analysis between multiple markers is also supported.",
     "data_acquisition": "Fluorescence microscopy images of brain sections with fluorescent markers (tdTomato, cFos); grayscale images per channel per brain region",
     "language": "Python",
     "animal": "Not species-specific; demonstrated in mouse brain sections",
@@ -3090,15 +3696,15 @@
       "notes": ""
     },
     "tutorial": "",
-    "tutorial_intro": "CellRake is installed via pip and works on grayscale fluorescence microscopy images. The workflow has two stages: training a classifier on a small labeled subset of your images, then applying it to new images. No GPU required. Detailed Jupyter notebook tutorials are in the <code>examples/</code> folder of the repository.",
+    "tutorial_intro": "CellRake is installed via pip and works on grayscale fluorescence microscopy images. The workflow has two stages: training a classifier on a small labeled subset, then applying it to new images. No GPU required. Detailed Jupyter notebook tutorials are in the <code>examples/</code> folder.",
     "tutorial_steps": [
-      "Install in a dedicated conda environment: <code>conda create --name cellrake python=3.10 && conda activate cellrake && pip install cellrake</code>.",
-      "Load your grayscale fluorescence images (one channel per marker). CellRake runs segmentation automatically — Laplacian of Gaussian detects blob candidates and local Otsu thresholding isolates each one from its local background.",
-      "Train a classifier: CellRake clusters segmented blobs with k-means (default 10 clusters) and asks you to manually label ~10 representative blobs per cluster as positive (true cell) or negative (artifact). This takes a few minutes and replaces labeling hundreds of individual cells.",
-      "CellRake applies SMOTE to balance the labeled dataset, then uses KNN-based label spreading to propagate your labels across all blobs — producing a trained classifier for your marker and tissue. Train a separate classifier per fluorescent marker (e.g. one for cFos, one for tdTomato).",
-      "Apply the trained classifier to new images to get per-image cell counts. For colocalization analysis (cells positive for multiple markers), use CellRake's built-in colocalization tools."
+      "Install in a conda environment: <code>conda create --name cellrake python=3.10 && conda activate cellrake && pip install cellrake</code>.",
+      "Load your grayscale fluorescence images (one channel per marker). CellRake runs segmentation automatically — Laplacian of Gaussian detects blob candidates and local Otsu thresholding isolates each from its local background.",
+      "Train a classifier: CellRake clusters blobs with k-means (default 10 clusters) and asks you to manually label ~10 blobs per cluster as positive (true cell) or negative (artifact). Train one classifier per fluorescent marker.",
+      "CellRake applies SMOTE and KNN-based label spreading to propagate your labels across all blobs, producing a trained classifier for your marker and tissue type.",
+      "Apply the trained classifier to new images to get per-image cell counts. Use CellRake's built-in colocalization tools for cells positive for multiple markers."
     ],
-    "tutorial_output": "Per-image counts of positive cells per fluorescent marker; colocalization counts for multiply-labeled cells; classified blob tables with per-blob features and predicted labels — ready for downstream statistical analysis.",
+    "tutorial_output": "Per-image counts of positive cells per fluorescent marker; colocalization counts for multiply-labeled cells; classified blob tables with features and predicted labels — ready for downstream statistical analysis.",
     "sample_data": {
       "text": "All data used in the paper are available on Zenodo.",
       "url": "https://doi.org/10.5281/zenodo.19002677"
