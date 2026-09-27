@@ -1,0 +1,43 @@
+title: Dentate gyrus and CA3 activity mediates light-tone second-order conditioning expression in mice
+authors: Canela M., Bach Adell J., Roura Coll D., González-Parra J.A., Pinho J.S., Busquets-García A.
+journal: iScience
+year: 2026
+date: 2026-04-17
+doi: 10.1016/j.isci.2026.115522
+paper_url: https://www.cell.com/iscience/fulltext/S2589-0042(26)00897-7
+github_url: https://github.com/marccanela/cellrake
+website_url:
+access_status: open_access
+category: image-analysis
+tags: cell detection, fluorescence microscopy, immunohistochemistry, cFos, tdTomato, brain-wide imaging, segmentation, semi-supervised learning, label spreading, random forest, SMOTE, colocalization, Laplacian of Gaussian, blob detection, histology, scikit-image, scikit-learn, Python, mouse
+data_acquisition: Fluorescence microscopy images of brain sections with fluorescent markers (tdTomato, cFos); grayscale images per channel per brain region
+language: Python
+animal: Not species-specific; demonstrated in mouse brain sections
+difficulty: beginner
+citation_count:
+added_date: 2026-09-26
+
+summary:
+CellRake is a Python package for detecting and counting fluorescently labeled cells in brain section images using a two-step pipeline: blob segmentation with Laplacian of Gaussian filtering, followed by semi-supervised machine learning classification (label spreading + KNN) that requires the user to manually label only ~10 representative blobs per cluster — achieving robust detection across heterogeneous intensity backgrounds where standard thresholding methods fail.
+
+abstract_long:
+Quantifying brain-wide neural activity from fluorescent marker images (cFos, tdTomato, or other activity reporters) is a bottleneck in systems neuroscience: manual counting is slow and unreliable at scale, while standard thresholding methods (Otsu, Multi-Otsu, Li, Yen) fail in images with heterogeneous backgrounds. CellRake addresses this with a two-phase workflow. First, segmentation: a Laplacian of Gaussian (LoG) filter detects blob-like structures as seeds; for each candidate, a circular ROI is extracted and Otsu's method applied locally to account for background heterogeneity; morphological operations clean up the result. Second, classification: 22 morphological and intensity features are extracted per candidate blob; k-means clustering (default 10 clusters) groups blobs for stratified labeling; the user manually labels ~10 blobs per cluster as positive/negative; SMOTE oversamples the minority class; and a KNN-based label spreading classifier propagates labels across the full dataset. Two separate random forest classifiers are trained — one per marker (cFos and tdTomato in the paper). CellRake was validated on a benchmark of 153 images from 36 mice (BLA region) and outperformed standard thresholding methods, especially in heterogeneous background conditions. It also supports colocalization analysis between multiple fluorescent markers.
+
+extra_links:
+Tutorial notebooks | https://github.com/marccanela/cellrake/tree/master/examples
+Data repository (Zenodo) | https://doi.org/10.5281/zenodo.19002677
+
+tutorial_intro:
+CellRake is installed via pip and works on grayscale fluorescence microscopy images. The workflow has two stages: training a classifier on a small labeled subset of your images, then applying it to new images. A GPU is not required. Detailed Jupyter notebook tutorials are provided in the <code>examples/</code> folder of the repository.
+
+tutorial_steps:
+Install CellRake in a dedicated conda environment: <code>conda create --name cellrake python=3.10 && conda activate cellrake && pip install cellrake</code>.
+Load your grayscale fluorescence images (one channel per marker). CellRake will run the segmentation phase automatically — the Laplacian of Gaussian filter detects blob candidates and local Otsu thresholding isolates each one from its local background.
+Train a classifier on your data: CellRake clusters the segmented blobs with k-means (default 10 clusters) and asks you to manually label ~10 representative blobs per cluster as positive (true cell) or negative (artifact/background). This takes a few minutes and replaces labeling hundreds of individual cells.
+CellRake applies SMOTE to balance the labeled dataset, then uses KNN-based label spreading to propagate your labels across all segmented blobs — producing a trained classifier for your specific marker and tissue. Train a separate classifier for each fluorescent marker (e.g. one for cFos, one for tdTomato).
+Apply the trained classifier to new, unlabeled images to get per-image cell counts. For colocalization analysis (cells positive for both markers), CellRake provides built-in tools to compare detections across channels.
+
+tutorial_output:
+Per-image counts of positive cells per fluorescent marker; colocalization counts for cells expressing multiple markers simultaneously; classified blob tables with per-blob features and predicted labels — ready for downstream statistical analysis (e.g. generalized linear models relating regional cell counts to behavioral responses, as done in the paper).
+
+related_ids: 2020-12-14-cellpose, 2018-09-26-stardist

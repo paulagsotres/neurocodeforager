@@ -117,8 +117,7 @@
 // ── Filter definitions ──────────────────────────────────────────────────────
 
 const TECH_FILTERS = [
-  { label: 'Fiber photometry',       match: e => /fiber photometry|fibre photometry|dLight|fiber optic/i.test(JSON.stringify(e)) },
-  { label: 'In vivo calcium imaging', match: e => /two.photon|2.photon|calcium imaging|GCaMP|miniscope/i.test(JSON.stringify(e)) },
+  { label: 'In vivo calcium imaging', match: e => /two.photon|2.photon|calcium imaging|GCaMP|miniscope|fiber photometry|fibre photometry|dLight|fiber optic/i.test(JSON.stringify(e)) },
   { label: 'Ex vivo calcium imaging', match: e => /ex.vivo.*calcium|calcium.*ex.vivo|slice.*GCaMP|GCaMP.*slice/i.test(JSON.stringify(e)) },
   { label: 'In vivo electrophysiology', match: e => /neuropixels|silicon probe|tetrode|kilosort|spike sort|in.vivo.*electrophys|freely.moving/i.test(JSON.stringify(e)) },
   { label: 'Ex vivo electrophysiology', match: e => /ex.vivo.*electrophys|electrophys.*ex.vivo|patch.clamp|whole.cell|brain.slice|acute.slice/i.test(JSON.stringify(e)) },
